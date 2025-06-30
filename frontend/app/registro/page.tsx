@@ -15,7 +15,23 @@ export default function Registro() {
   const [userType, setUserType] = useState<"cliente" | "cuidador" | "">("");
 
   const [cuidadorData, setCuidadorData] = useState<any>({
-    /* inicial */
+    username: "",
+    email: "",
+    first_name: "",
+    last_name: "",
+    telefono: "",
+    direccion: "",
+    fecha_nacimiento: "",
+    descripcion: "",
+    foto_perfil: "",
+    categorias: [],
+    provincia: "",
+    ciudad: "",
+    experiencia: [],
+    certificados: [],
+    otros: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [clienteData, setClienteData] = useState<ClienteFormPerfil>({
@@ -38,7 +54,13 @@ export default function Registro() {
   });
   const provincias: string[] = [];
   const ciudadesPorProvincia: Record<string, string[]> = {};
-  const categoriasDisponibles: string[] = [];
+  const categoriasDisponibles: string[] = [
+  "Edad avanzada",
+  "Discapacidad motriz",
+  "Discapacidad intelectual",
+  "Enfermedades crónicas",
+  "Recuperación postoperatoria",
+];
   const loading = false;
 
   const handleRegistro = () => {
@@ -48,7 +70,7 @@ export default function Registro() {
       console.log("Registrar cliente:", clienteData);
     }
   };
-
+  console.log(clienteData)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
       <div className="max-w-2xl mx-auto px-4">
@@ -111,7 +133,7 @@ export default function Registro() {
                 </Button>
               </div>
             )}
-
+          
             {step === 2 && (
               <div>
                 <h2 className="text-xl font-semibold mb-4 text-center">
