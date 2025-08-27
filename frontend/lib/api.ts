@@ -1,72 +1,38 @@
+// lib/api.ts
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "/api/b";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://mi-back-en-render.com"; 
-
-export async function apiGet<T>(
-  endpoint: string,
-  params?: Record<string, string | number>
-): Promise<T> {
-  const query = params
-    ? "?" + new URLSearchParams(params as Record<string, string>).toString()
-    : "";
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}${query}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include", 
-    cache: "no-store", 
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Error al obtener datos");
-  }
-
-  return response.json();
+function withSlash(path: string) {
+  // leaves /foo/bar/ as is; adds / if missing; doesn’t touch ?query
+  const [p, q = ""] = path.split("?");
+  if (/\.[a-z0-9]+$/i.test(p)) return path;         // keep files like .json, .png
+  const fixed = p.endsWith("/") ? p : p + "/";
+  return q ? `${fixed}?${q}` : fixed;
 }
 
-
-
-export async function apiPost<T>(endpoint: string, body?: any): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include", 
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Error al enviar datos");
-  }
-
-  return response.json();
+export async function apiGet<T>(endpoint: string, params?: Record<string, string | number>) {
+  const query = params ? `?${new URLSearchParams(params as any)}` : "";
+  const url = `${API_BASE_URL}${withSlash(endpoint)}${query}`;
+  const r = await fetch(url, { method: "GET", credentials: "include", headers: { "Content-Type": "application/json" }, cache: "no-store" });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json() as Promise<T>;
 }
 
-export async function apiPut<T>(endpoint: string, body?: any): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include", 
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Error al enviar datos");
-  }
-
-  return response.json();
+export async function apiPost<T>(endpoint: string, body?: any) {
+  const url = `${API_BASE_URL}${withSlash(endpoint)}`;
+  const r = await fetch(url, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json() as Promise<T>;
 }
 
-export async function apiDelete(endpoint: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include", 
-  });
+export async function apiPut<T>(endpoint: string, body?: any) {
+  const url = `${API_BASE_URL}${withSlash(endpoint)}`;
+  const r = await fetch(url, { method: "PUT", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json() as Promise<T>;
+}
 
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Error al eliminar datos");
-  }
+export async function apiDelete(endpoint: string) {
+  const url = `${API_BASE_URL}${withSlash(endpoint)}`;
+  const r = await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" }});
+  if (!r.ok) throw new Error(await r.text());
 }

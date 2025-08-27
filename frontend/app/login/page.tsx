@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,56 +9,72 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Heart, ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { apiPost } from "@/lib/api";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
+  // mantenemos los mismos dos campos del formulario
+  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  // mostramos errores sin cambiar el diseño
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (field: string, value: string) => {
+  const router = useRouter();
+  const next = useSearchParams().get("next") || "/";
+
+  const handleInputChange = (field: "email" | "password", value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (error) setError("");
+    if (error) setError(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    if (process.env.NODE_ENV === "development") {
-      await new Promise((res) => setTimeout(res, 1000));
-      if (
-        formData.email === "cliente@test.com" &&
-        formData.password === "cliente"
-      ) {
-        window.location.href = "cliente/dashboard";
-      } else {
-        setError("Email o contraseña incorrectos");
-      }
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    // ⚠️ Enviamos lo que realmente se escribe en los inputs
+    // Si tu backend acepta identifier/username/email, usamos identifier:
+    const payload = { username: formData.email, password: formData.password };
+    // Si usás SimpleJWT por defecto (username/password), cambia a:
+    // const payload = { username: formData.email, password: formData.password };
+
+    const r = await fetch("/api/auth/login/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    setLoading(false);
+
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({} as any));
+      // extrae mensaje amigable sin cambiar el Alert del UI
+      const msg =
+        j.detail ||
+        j.non_field_errors?.[0] ||
+        j.identifier?.[0] ||
+        j.username?.[0] ||
+        j.email?.[0] ||
+        j.password?.[0] ||
+        "Error de autenticación";
+      setError(msg);
       return;
     }
-    e.preventDefault();
-    setLoading(true);
-    setError("");
 
-    try {
-      const data = await apiPost<{ rol: string }>("/auth/login/", formData);
+    const j = await r.json();
+    localStorage.setItem("token", j.token);
 
-      if (data.rol === "admin") {
-        window.location.href = "/admin";
-      } else if (data.rol === "cliente") {
-        window.location.href = "/cliente-dashboard";
-      } else if (data.rol === "cuidador") {
-        window.location.href = "/cuidador-dashboard";
-      } else {
-        window.location.href = "/";
-      }
-    } catch (err: any) {
-      setError(err.message || "Error del sistema. Intenta nuevamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    console.log("Usuario logueado:", j.user);
+    console.log(j.user.es_cuidador)
+    console.log(j.user.es_cliente)
+
+    let redirect = "/dashboard";
+    if (j.user.es_cuidador) redirect = "cuidador/dashboard";
+    else if (j.user.es_cliente) redirect = "cliente/dashboard";
+    else redirect = "admin/dashboard";
+
+    router.push(redirect);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-8">
@@ -75,9 +90,7 @@ export default function Login() {
           </Link>
           <div className="flex items-center justify-center mb-4">
             <Heart className="h-8 w-8 text-blue-600 mr-2" />
-            <span className="text-2xl font-bold text-gray-900">
-              FindCare
-            </span>
+            <span className="text-2xl font-bold text-gray-900">FindCare</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Iniciar Sesión</h1>
         </div>
@@ -97,12 +110,13 @@ export default function Login() {
               </Alert>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="email">Email</Label>
+                {/* etiqueta visual igual; solo corregimos id/for para accesibilidad */}
+                <Label htmlFor="identifier">Email</Label>
                 <Input
-                  id="email"
-                  type="email"
+                  id="identifier"
+                  type="text"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   required

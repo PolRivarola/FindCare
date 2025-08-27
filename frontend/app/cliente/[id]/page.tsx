@@ -113,7 +113,7 @@ useEffect(() => {
     const fetchPerfil = async () => {
       try {
         setLoading(true)
-        const data = await apiGet<PerfilCliente>(`/cliente/${params.id}`)
+        const data = await apiGet<PerfilCliente>(`/cliente/${params.id}/`)
         setPerfil(data)
       } catch (error) {
         console.error("Error fetching client profile:", error)

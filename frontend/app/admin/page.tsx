@@ -49,10 +49,10 @@ export default function AdminDashboard() {
       try {
         setLoading(true)
 
-        const statsData = await apiGet<AdminStats>("/api/admin/stats")
+        const statsData = await apiGet<AdminStats>("/api/admin/stats/")
         setStats(statsData)
 
-        const ratingsData = await apiGet<FlaggedRating[]>("/api/admin/flagged-ratings")
+        const ratingsData = await apiGet<FlaggedRating[]>("/api/admin/flagged-ratings/")
         setFlaggedRatings(ratingsData)
       } catch (error) {
         console.error("Error fetching admin data:", error)

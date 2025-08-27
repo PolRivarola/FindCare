@@ -20,6 +20,7 @@ import {
   CircleUserRound,
 } from "lucide-react";
 import Link from "next/link";
+import { Review } from "@/lib/types";
 
 interface PerfilPublico {
   id: number;
@@ -36,15 +37,20 @@ interface PerfilPublico {
   categorias: string[];
   provincia: string;
   ciudad: string;
-  rating?: number;
-  reviews?: number;
+  rating?: number | null;
+  reviews: Review[]; // ⬅️ ahora es array
+  reviews_count?: number; // ⬅️ opcional, total
   experiencia?: number;
   especialidad?: string;
   precio?: number;
   disponible?: boolean;
   tipo_usuario: "cliente" | "cuidador";
-  certificados?: { file: string; name: string }[]
-  experiencias?: { descripcion: string; fecha_inicio: string; fecha_fin: string }[]
+  certificados?: { file: string; name: string }[];
+  experiencias?: {
+    descripcion: string;
+    fecha_inicio: string;
+    fecha_fin: string;
+  }[];
 }
 
 export default function PerfilPublicoPage() {
@@ -155,7 +161,7 @@ export default function PerfilPublicoPage() {
           provincia: "Buenos Aires",
           ciudad: "La Plata",
           rating: 4.8,
-          reviews: 42,
+          reviews: [],
           experiencia: 8,
           precio: 25,
           disponible: true,
@@ -163,7 +169,10 @@ export default function PerfilPublicoPage() {
           certificados: [
             { file: "/placeholder.pdf", name: "Certificado en Geriatría" },
             { file: "/placeholder.pdf", name: "Curso de Primeros Auxilios" },
-            { file: "/placeholder.pdf", name: "Certificación en Cuidado de Alzheimer" },
+            {
+              file: "/placeholder.pdf",
+              name: "Certificación en Cuidado de Alzheimer",
+            },
           ],
           experiencias: [
             {
@@ -288,7 +297,7 @@ export default function PerfilPublicoPage() {
               <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
               <span className="font-semibold">{perfil.rating}</span>
               <span className="text-gray-600 ml-1">
-                ({perfil.reviews} reseñas)
+                ({perfil.reviews_count} reseñas)
               </span>
             </div>
           )}
@@ -316,7 +325,6 @@ export default function PerfilPublicoPage() {
                 <span className="text-gray-700">{perfil.direccion}</span>
               </div>
             </CardContent>
-            
           </Card>
           {/* Categories/Specializations */}
           <Card>
@@ -353,11 +361,10 @@ export default function PerfilPublicoPage() {
             </CardContent>
           </Card>
 
-          
-
-          
           {/* Certificates Section */}
-            {perfil.tipo_usuario === "cuidador" && perfil.certificados && perfil.certificados.length > 0 && (
+          {perfil.tipo_usuario === "cuidador" &&
+            perfil.certificados &&
+            perfil.certificados.length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle>Certificados</CardTitle>
@@ -365,7 +372,10 @@ export default function PerfilPublicoPage() {
                 <CardContent>
                   <div className="space-y-3">
                     {perfil.certificados.map((certificado, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      >
                         <div className="flex items-center">
                           <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                             <svg
@@ -382,10 +392,20 @@ export default function PerfilPublicoPage() {
                               />
                             </svg>
                           </div>
-                          <span className="font-medium text-gray-900">{certificado.name}</span>
+                          <span className="font-medium text-gray-900">
+                            {certificado.name}
+                          </span>
                         </div>
-                        <Button size="sm" variant="outline">
-                          Ver
+
+                        {/* Botón para descargar el certificado */}
+                        <Button asChild size="sm" variant="outline">
+                          <a
+                            href={certificado.file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Ver
+                          </a>
                         </Button>
                       </div>
                     ))}
@@ -394,8 +414,10 @@ export default function PerfilPublicoPage() {
               </Card>
             )}
 
-            {/* Experience Section */}
-            {perfil.tipo_usuario === "cuidador" && perfil.experiencias && perfil.experiencias.length > 0 && (
+          {/* Experience Section */}
+          {perfil.tipo_usuario === "cuidador" &&
+            perfil.experiencias &&
+            perfil.experiencias.length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle>Experiencia Laboral</CardTitle>
@@ -403,22 +425,33 @@ export default function PerfilPublicoPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {perfil.experiencias.map((exp, index) => (
-                      <div key={index} className="border-l-4 border-blue-500 pl-4 pb-4 last:pb-0">
+                      <div
+                        key={index}
+                        className="border-l-4 border-blue-500 pl-4 pb-4 last:pb-0"
+                      >
                         <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
                           <Calendar className="h-4 w-4" />
                           <span>
-                            {new Date(exp.fecha_inicio).toLocaleDateString("es-ES", {
-                              month: "long",
-                              year: "numeric",
-                            })}{" "}
+                            {new Date(exp.fecha_inicio).toLocaleDateString(
+                              "es-ES",
+                              {
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}{" "}
                             -{" "}
-                            {new Date(exp.fecha_fin).toLocaleDateString("es-ES", {
-                              month: "long",
-                              year: "numeric",
-                            })}
+                            {new Date(exp.fecha_fin).toLocaleDateString(
+                              "es-ES",
+                              {
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
                           </span>
                         </div>
-                        <p className="text-gray-700 leading-relaxed">{exp.descripcion}</p>
+                        <p className="text-gray-700 leading-relaxed">
+                          {exp.descripcion}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -429,15 +462,15 @@ export default function PerfilPublicoPage() {
           {/* Reviews Section (placeholder) */}
           {/* Reviews Section with Scrollable Content */}
           {perfil.tipo_usuario === "cuidador" &&
-            perfil.reviews &&
-            perfil.reviews > 0 && (
+            perfil.reviews_count &&
+            perfil.reviews_count > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Reseñas ({perfil.reviews})</CardTitle>
+                  <CardTitle>Reseñas ({perfil.reviews_count})</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="max-h-96 overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                    {sampleReviews.map((review) => (
+                    {perfil.reviews.map((review) => (
                       <div
                         key={review.id}
                         className="border-b border-gray-200 pb-4 last:border-b-0"
@@ -470,11 +503,11 @@ export default function PerfilPublicoPage() {
                       </div>
                     ))}
                   </div>
-                  {sampleReviews.length > 5 && (
+                  {perfil.reviews.length > 5 && (
                     <div className="mt-4 text-center">
                       <p className="text-sm text-gray-500">
-                        Mostrando {sampleReviews.length} de {perfil.reviews}{" "}
-                        reseñas
+                        Mostrando {perfil.reviews.length} de{" "}
+                        {perfil.reviews_count} reseñas
                       </p>
                     </div>
                   )}

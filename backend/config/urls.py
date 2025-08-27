@@ -17,14 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from users.views import RegistroClienteView, RegistroCuidadorView, UsuarioViewSet,ClienteViewSet, CuidadorViewSet, TipoClienteViewSet
+from users.views_public import PerfilPublicoView
+from users.views import MeView, RegistroClienteView, RegistroCuidadorView, UsuarioViewSet,ClienteViewSet, CuidadorViewSet, TipoClienteViewSet
 from location.views import CiudadViewSet, DireccionViewSet, ProvinciaViewSet
 from chat.views import ConversacionViewSet, MensajeViewSet
+from rest_framework_simplejwt.views import TokenRefreshView
+from users.views_auth import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 from services.views import (
+    CalificacionViewSet,
+    CuidadorPerfilView,
     ServicioViewSet,
-    ClasificacionViewSet,
     ExperienciaViewSet,
     CertificacionViewSet,
     DiaSemanalViewSet,
@@ -32,8 +36,8 @@ from services.views import (
 )
 
 router = DefaultRouter()
-router.register(r'conversaciones', ConversacionViewSet)
-router.register(r'mensajes', MensajeViewSet)
+router.register(r'conversaciones', ConversacionViewSet, basename='conversacion')
+router.register(r'mensajes', MensajeViewSet, basename='mensaje')
 router.register(r'provincias', ProvinciaViewSet)
 router.register(r'ciudades', CiudadViewSet)
 router.register(r'direcciones', DireccionViewSet)
@@ -42,7 +46,7 @@ router.register(r'clientes', ClienteViewSet)
 router.register(r'cuidadores', CuidadorViewSet)
 router.register(r'tipos-cliente', TipoClienteViewSet)
 router.register(r'servicios', ServicioViewSet)
-router.register(r'clasificaciones', ClasificacionViewSet)
+router.register(r'calificaciones', CalificacionViewSet)
 router.register(r'experiencias', ExperienciaViewSet)
 router.register(r'certificaciones', CertificacionViewSet)
 router.register(r'dias-semanales', DiaSemanalViewSet)
@@ -53,6 +57,13 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/registro/cliente/', RegistroClienteView.as_view(), name='registro-cliente'),
     path('api/registro/cuidador/', RegistroCuidadorView.as_view(), name='registro-cuidador'),
+    path("api/auth/login/", LoginView.as_view(), name="auth_login"),
+    path("api/auth/refresh/", TokenRefreshView.as_view(), name="auth_refresh"),
+    path("api/auth/logout/", LogoutView.as_view(), name="auth_logout"),
+    path("api/users/me/", MeView.as_view(), name="users_me"),
+    path("api/perfil/<int:pk>/",  PerfilPublicoView.as_view(), name="perfil_publico"),  
+    path("api/cuidador/perfil/", CuidadorPerfilView.as_view(), name="cuidador_perfil"),
+
 ]
 
 if settings.DEBUG:

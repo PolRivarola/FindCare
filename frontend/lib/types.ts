@@ -1,20 +1,19 @@
-export interface Conversation {
-  id: number
-  nombre: string
-  tipo: string
-  ultimoMensaje: string
-  hora: string
-  noLeidos: number
-  online: boolean
-}
+export type Conversation = {
+  id: number;
+  nombre: string;    
+  tipo: string;      
+  ultimoMensaje: string;
+  hora: string;      
+  noLeidos: number;
+};
 
-export interface Message {
-  id: number
-  sender: string
-  content: string
-  time: string
-  isOwn: boolean
-}
+export type Message = {
+  id: number;
+  sender: string;    
+  content: string;
+  time: string;      
+  isOwn: boolean;
+};
 
 export interface Solicitud {
   id: number;
@@ -47,3 +46,23 @@ export interface PerfilCliente {
   password: string,
   confirmPassword: string,
 }
+
+export type ServicioDTO = {
+  id: number;
+  cliente: number | { id: number; username: string; first_name?: string; last_name?: string };
+  receptor: number | { id: number; username: string; first_name?: string; last_name?: string };
+  fecha_inicio: string;   // ISO string
+  fecha_fin: string;      // ISO string
+  descripcion: string;
+  horas_dia: string;
+  dias_semanales: Array<number | { id: number; nombre?: string }>;
+  aceptado: boolean;
+};
+
+export type Review = {
+  id: number;
+  rating: number;
+  author: string;
+  date: string;      // ISO string
+  comment: string;
+};

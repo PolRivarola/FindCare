@@ -1,10 +1,12 @@
-"use client";
 
 import Link from "next/link";
 import { Heart, Search, History, User, MessageCircle } from "lucide-react";
 import React from "react";
+import { requireRole } from "@/lib/auth-server";
 
-export default function ClienteLayout({ children }: { children: React.ReactNode }) {
+
+export default async function ClienteLayout({ children }: { children: React.ReactNode }) {
+  await requireRole("cliente");
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

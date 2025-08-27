@@ -1,23 +1,60 @@
 "use client";
 
-import React from "react";
+import type React from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
-import SingleImageInput  from "@/components/ui/inputPic";
+import SingleImageInput from "@/components/ui/inputPic";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  CalendarDays,
+  MapPin,
+  User,
+  FileText,
+  Award,
+  Briefcase,
+  Upload,
+  X,
+  Download,
+} from "lucide-react";
 
-export interface CuidadorFormProps {
-  perfil: any;
-  setPerfil: (perfil: any) => void;
+type Exp = { descripcion: string; fecha_inicio: string; fecha_fin: string };
+type CertLocal = { file: File; name?: string; url: string };
+
+export type PerfilCuidador = {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telefono: string;
+  fecha_nacimiento: string | null;
+  descripcion: string;
+  foto_perfil: string | null;
+  provincia: string;
+  ciudad: string;
+  direccion: string;
+  tipo_usuario: "cuidador";
+  categorias: string[]; // nombres
+  categorias_ids?: number[]; // para edición
+  experiencias: Exp[];
+  certificados: { nombre: string; archivo: string }[];
+};
+
+type Props = {
+  perfil: PerfilCuidador | null;
+  setPerfil: (p: PerfilCuidador) => void;
   provincias: string[];
   ciudadesPorProvincia: Record<string, string[]>;
-  categoriasDisponibles: string[];
+  categoriasDisponibles: { id: number; nombre: string }[];
   loading: boolean;
-  onSubmit: () => void;
+  onSubmit: (fd: FormData) => Promise<void>;
   title?: string;
-}
+};
 
 export default function CuidadorForm({
   perfil,
@@ -28,90 +65,287 @@ export default function CuidadorForm({
   loading,
   onSubmit,
   title,
-}: CuidadorFormProps) {
+}: Props) {
+  const [fotoFile, setFotoFile] = useState<File | null>(null);
+  const [certLocal, setCertLocal] = useState<CertLocal[]>([]);
+
   const addExperiencia = () => {
+    if (!perfil) return;
     setPerfil({
       ...perfil,
-      experiencia: [...(perfil.experiencia || []), { descripcion: "", inicio: "", fin: "" }],
+      experiencias: [
+        ...perfil.experiencias,
+        { descripcion: "", fecha_inicio: "", fecha_fin: "" },
+      ],
     });
   };
 
-  const updateExperiencia = (index: number, key: string, value: string) => {
-    const nuevas = [...(perfil.experiencia || [])];
-    nuevas[index][key] = value;
-    setPerfil({ ...perfil, experiencia: nuevas });
+  const updateExperiencia = (i: number, key: keyof Exp, value: string) => {
+    if (!perfil) return;
+    const arr = [...perfil.experiencias];
+    (arr[i] as any)[key] = value;
+    setPerfil({ ...perfil, experiencias: arr });
   };
 
-  const removeExperiencia = (index: number) => {
-    const nuevas = [...(perfil.experiencia || [])];
-    nuevas.splice(index, 1);
-    setPerfil({ ...perfil, experiencia: nuevas });
+  const removeExperiencia = (i: number) => {
+    if (!perfil) return;
+    const arr = [...perfil.experiencias];
+    arr.splice(i, 1);
+    setPerfil({ ...perfil, experiencias: arr });
   };
 
   const handleCertificados = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    const previews = files.map((file) => ({ file, url: URL.createObjectURL(file) }));
-    setPerfil({ ...perfil, certificados: [...(perfil.certificados || []), ...previews] });
+    const previews = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setCertLocal((prev) => [...prev, ...previews]);
     e.target.value = "";
   };
 
-  const removeCertificado = (index: number) => {
-    const nuevos = [...(perfil.certificados || [])];
-    nuevos.splice(index, 1);
-    setPerfil({ ...perfil, certificados: nuevos });
+  const removeCertificado = (i: number) => {
+    const arr = [...certLocal];
+    arr.splice(i, 1);
+    setCertLocal(arr);
   };
 
-  return (
-    <div className="space-y-4">
-      {loading || !perfil ? (
-        <div className="space-y-4">
-          {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="h-10 w-full rounded" />
-          ))}
+  const submit = async () => {
+    if (!perfil) return;
+    const fd = new FormData();
+
+    // 1) Campos simples (solo si tienen valor)
+    const put = (k: string, v: any) => {
+      if (v !== undefined && v !== null && v !== "") fd.append(k, String(v));
+    };
+    put("first_name", perfil.first_name);
+    put("last_name", perfil.last_name);
+    put("email", perfil.email);
+    put("telefono", perfil.telefono);
+    put("fecha_nacimiento", perfil.fecha_nacimiento); // 'YYYY-MM-DD'
+    put("descripcion", perfil.descripcion);
+    put("provincia", perfil.provincia);
+    put("ciudad", perfil.ciudad);
+    put("direccion", perfil.direccion);
+
+    // 2) Foto de perfil
+    if (fotoFile) fd.append("foto_perfil", fotoFile);
+
+    // 3) Categorías -> ids
+    // categoriasDisponibles: [{ id, nombre }, ...]
+    // perfil.categorias: array de nombres seleccionados en tu UI
+    const selectedNames = new Set((perfil.categorias || []) as string[]);
+    const categoriasIds = categoriasDisponibles
+      .filter((c) => selectedNames.has(c.nombre))
+      .map((c) => c.id);
+
+    // puedes repetir la key 'categorias_ids' varias veces:
+    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
+
+    // 4) Experiencias -> JSON string
+    // Tu UI guarda { descripcion, fecha_inicio, fecha_fin }
+    const exps = (perfil.experiencias || [])
+      .filter((e: any) => e.descripcion && e.fecha_inicio && e.fecha_fin)
+      .map((e: any) => ({
+        descripcion: e.descripcion,
+        // acepta 'YYYY-MM-DD' (el backend lo parsea)
+        fecha_inicio: e.fecha_inicio,
+        fecha_fin: e.fecha_fin,
+      }));
+
+    if (exps.length) {
+      fd.append("experiencias", JSON.stringify(exps));
+    }
+
+    // 5) Certificados nuevos
+    // Si estás usando un estado local: const [certLocal, setCertLocal] = useState<{file: File, name?: string}[]>([])
+    // Tu UI muestra 'certLocal' —> aquí los enviamos:
+    (certLocal || []).forEach((c) => {
+      fd.append("certificados", c.file);
+      // Nombre visible opcional para cada archivo
+      fd.append("certificados_nombres", c.name || c.file.name);
+    });
+    await onSubmit(fd);
+  };
+
+  if (loading || !perfil) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="space-y-6">
+          <Skeleton className="h-8 w-64" />
+          <div className="grid gap-6">
+            {[...Array(6)].map((_, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <Skeleton className="h-6 w-48" />
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="flex items-center gap-4">
-            
-<SingleImageInput
-  url={perfil.foto_perfil}
-  onChange={(file) => setPerfil({ ...perfil, fotoFile: file })}
-/>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-purple-600 bg-clip-text text-transparent">
+          {title || "Perfil de Cuidador"}
+        </h1>
+        <p className="text-gray-600 text-lg">
+          Completa tu información para ofrecer los mejores servicios de cuidado
+        </p>
+      </div>
+
+      {/* Profile Photo Section */}
+      <Card className="border-none shadow-lg bg-gradient-to-br from-blue-50 to-purple-50">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="flex items-center justify-center gap-2 text-xl">
+            <User className="h-5 w-5 text-blue-600" />
+            Foto de Perfil
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center">
+          <div className="relative">
+            <SingleImageInput
+              url={perfil.foto_perfil || ""}
+              onChange={(file) => setFotoFile(file)}
+            />
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+              <Upload className="h-4 w-4 text-white" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Personal Information */}
+      <Card className="border-none shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
+            <User className="h-5 w-5 text-green-600" />
+            Información Personal
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                Nombre
+              </label>
+              <Input
+                value={perfil.first_name}
+                onChange={(e) =>
+                  setPerfil({ ...perfil, first_name: e.target.value })
+                }
+                placeholder="Ingresa tu nombre"
+                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">
+                Apellido
+              </label>
+              <Input
+                value={perfil.last_name}
+                onChange={(e) =>
+                  setPerfil({ ...perfil, last_name: e.target.value })
+                }
+                placeholder="Ingresa tu apellido"
+                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
+              />
+            </div>
           </div>
 
-          <Input
-            value={perfil.first_name}
-            onChange={(e) => setPerfil({ ...perfil, first_name: e.target.value })}
-            placeholder="Nombre"
-          />
-          <Input
-            value={perfil.last_name}
-            onChange={(e) => setPerfil({ ...perfil, last_name: e.target.value })}
-            placeholder="Apellido"
-          />
-          <Input
-            value={perfil.email}
-            onChange={(e) => setPerfil({ ...perfil, email: e.target.value })}
-            placeholder="Email"
-          />
-          <Input
-            value={perfil.telefono}
-            onChange={(e) => setPerfil({ ...perfil, telefono: e.target.value })}
-            placeholder="Teléfono"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">
+                Email
+              </label>
+              <Input
+                value={perfil.email}
+                onChange={(e) =>
+                  setPerfil({ ...perfil, email: e.target.value })
+                }
+                placeholder="tu@email.com"
+                type="email"
+                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">
+                Teléfono
+              </label>
+              <Input
+                value={perfil.telefono}
+                onChange={(e) =>
+                  setPerfil({ ...perfil, telefono: e.target.value })
+                }
+                placeholder="+34 600 123 456"
+                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
+              />
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-medium mb-1">Provincia</label>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+              <CalendarDays className="h-4 w-4 text-green-600" />
+              Fecha de Nacimiento
+            </label>
+            <Input
+              type="date"
+              value={perfil.fecha_nacimiento || ""}
+              onChange={(e) =>
+                setPerfil({ ...perfil, fecha_nacimiento: e.target.value })
+              }
+              className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Descripción Personal
+            </label>
+            <Textarea
+              className="min-h-32 border-2 border-gray-200 focus:border-green-500 transition-colors resize-none"
+              value={perfil.descripcion}
+              onChange={(e) =>
+                setPerfil({ ...perfil, descripcion: e.target.value })
+              }
+              placeholder="Cuéntanos sobre ti, tu experiencia y tu enfoque en el cuidado..."
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Location Information */}
+      <Card className="border-none shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
+            <MapPin className="h-5 w-5 text-blue-600" />
+            Ubicación
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">
+                Provincia
+              </label>
               <select
-                className="w-full border rounded px-3 py-2"
+                className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
                 value={perfil.provincia}
                 onChange={(e) => {
-                  const nuevaProvincia = e.target.value;
+                  const p = e.target.value;
                   setPerfil({
                     ...perfil,
-                    provincia: nuevaProvincia,
-                    ciudad: ciudadesPorProvincia[nuevaProvincia][0],
+                    provincia: p,
+                    ciudad: (ciudadesPorProvincia[p] || [])[0] || "",
                   });
                 }}
               >
@@ -122,14 +356,18 @@ export default function CuidadorForm({
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block font-medium mb-1">Ciudad</label>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">
+                Ciudad
+              </label>
               <select
-                className="w-full border rounded px-3 py-2"
+                className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
                 value={perfil.ciudad}
-                onChange={(e) => setPerfil({ ...perfil, ciudad: e.target.value })}
+                onChange={(e) =>
+                  setPerfil({ ...perfil, ciudad: e.target.value })
+                }
               >
-                {ciudadesPorProvincia[perfil.provincia]?.map((c) => (
+                {(ciudadesPorProvincia[perfil.provincia] || []).map((c) => (
                   <option key={c} value={c}>
                     {c}
                   </option>
@@ -138,101 +376,166 @@ export default function CuidadorForm({
             </div>
           </div>
 
-          <Input
-            value={perfil.direccion}
-            onChange={(e) => setPerfil({ ...perfil, direccion: e.target.value })}
-            placeholder="Dirección"
-          />
-          <Input
-            type="date"
-            value={perfil.fecha_nacimiento}
-            onChange={(e) => setPerfil({ ...perfil, fecha_nacimiento: e.target.value })}
-            placeholder="Fecha de nacimiento"
-          />
-          <Textarea
-            className="h-32"
-            value={perfil.descripcion}
-            onChange={(e) => setPerfil({ ...perfil, descripcion: e.target.value })}
-            placeholder="Descripción personal"
-          />
-
-          <div>
-            <label className="block font-medium mb-2">Categorías</label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {categoriasDisponibles.map((categoria) => (
-                <Button
-                  key={categoria}
-                  variant={perfil.categorias.includes(categoria) ? "default" : "outline"}
-                  onClick={() => {
-                    const nuevas =
-                      perfil.categorias.includes(categoria)
-                        ? perfil.categorias.filter((c: string) => c !== categoria)
-                        : [...perfil.categorias, categoria];
-                    setPerfil({ ...perfil, categorias: nuevas });
-                  }}
-                >
-                  {categoria}
-                </Button>
-              ))}
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Dirección
+            </label>
             <Input
-              value={perfil.otros}
-              onChange={(e) => setPerfil({ ...perfil, otros: e.target.value })}
-              placeholder="Otros..."
+              value={perfil.direccion}
+              onChange={(e) =>
+                setPerfil({ ...perfil, direccion: e.target.value })
+              }
+              placeholder="Calle, número, piso..."
+              className="h-12 border-2 border-gray-200 focus:border-blue-500 transition-colors"
             />
           </div>
+        </CardContent>
+      </Card>
 
-          <div>
-            <label className="block font-medium mb-2">Experiencia</label>
-            {(perfil.experiencia || []).map((exp: any, i: number) => (
-              <div
-                key={i}
-                className="grid grid-cols-1 grid-rows-2  gap-2 mb-2 items-end"
-              >
-                <div><Textarea
-                  className="md:col-span-2"
-                  value={exp.descripcion}
-                  placeholder="Descripción de la experiencia"
-                  onChange={(e) => updateExperiencia(i, "descripcion", e.target.value)}
-                /></div>
-                <div className="grid grid-cols-2 grid-rows-1  gap-2 mb-2 items-end">
-                  <div><Input
-                  type="date"
-                  value={exp.inicio}
-                  className="mt-1 w-1/2"
-                  onChange={(e) => updateExperiencia(i, "inicio", e.target.value)}
-                />
-                <Input
-                className="mt-1 w-1/2"
-                  type="date"
-                  value={exp.fin}
-                  onChange={(e) => updateExperiencia(i, "fin", e.target.value)}
-                /></div>
-                <div className="flex justify-end"><Button
-                  variant="destructive"
-                  className="mt-1 w-1/2 "
-                  onClick={() => removeExperiencia(i)}
+      {/* Categories */}
+      <Card className="border-none shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
+            <Award className="h-5 w-5 text-purple-600" />
+            Especialidades
+          </CardTitle>
+          <p className="text-sm text-gray-600 mt-2">
+            Selecciona las áreas en las que tienes experiencia
+          </p>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="flex flex-wrap gap-3">
+            {categoriasDisponibles.map((cat) => {
+              const active = (perfil.categorias || []).includes(cat.nombre);
+              return (
+                <Badge
+                  key={cat.id}
+                  variant={active ? "default" : "outline"}
+                  className={`cursor-pointer px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                    active
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                      : "border-2 border-purple-200 text-purple-700 hover:border-purple-400 hover:bg-purple-50"
+                  }`}
+                  onClick={() => {
+                    const cur = new Set(perfil.categorias || []);
+                    if (active) cur.delete(cat.nombre);
+                    else cur.add(cat.nombre);
+                    setPerfil({ ...perfil, categorias: Array.from(cur) });
+                  }}
                 >
-                  Eliminar
-                </Button></div>
-                  
-                
-                </div>
-                
-                
-              </div>
-            ))}
-            <Button variant="secondary" onClick={addExperiencia}>
-              Agregar experiencia
-            </Button>
+                  {cat.nombre}
+                </Badge>
+              );
+            })}
           </div>
+        </CardContent>
+      </Card>
 
-          <div>
-            <label className="block font-medium mb-2">Certificados</label>
+      {/* Experience */}
+      <Card className="border-none shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
+            <Briefcase className="h-5 w-5 text-orange-600" />
+            Experiencia Profesional
+          </CardTitle>
+          <p className="text-sm text-gray-600 mt-2">
+            Añade tu experiencia laboral relevante
+          </p>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          {(perfil.experiencias || []).map((exp, i) => (
+            <div
+              key={i}
+              className="relative bg-gray-50 rounded-lg p-6 border-2 border-gray-200"
+            >
+              <div className="absolute top-4 right-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeExperiencia(i)}
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="space-y-4 pr-12">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    Descripción de la experiencia
+                  </label>
+                  <Textarea
+                    value={exp.descripcion}
+                    placeholder="Describe tu experiencia, responsabilidades y logros..."
+                    onChange={(e) =>
+                      updateExperiencia(i, "descripcion", e.target.value)
+                    }
+                    className="border-2 border-gray-200 focus:border-orange-500 transition-colors resize-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700">
+                      Fecha de inicio
+                    </label>
+                    <Input
+                      type="date"
+                      value={exp.fecha_inicio?.slice(0, 10) || ""}
+                      onChange={(e) =>
+                        updateExperiencia(i, "fecha_inicio", e.target.value)
+                      }
+                      className="h-12 border-2 border-gray-200 focus:border-orange-500 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700">
+                      Fecha de fin
+                    </label>
+                    <Input
+                      type="date"
+                      value={exp.fecha_fin?.slice(0, 10) || ""}
+                      onChange={(e) =>
+                        updateExperiencia(i, "fecha_fin", e.target.value)
+                      }
+                      className="h-12 border-2 border-gray-200 focus:border-orange-500 transition-colors"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <Button
+            variant="outline"
+            onClick={addExperiencia}
+            className="w-full h-12 border-2 border-dashed border-orange-300 text-orange-600 hover:border-orange-500 hover:bg-orange-50 transition-all duration-200 bg-transparent"
+          >
+            <Briefcase className="h-4 w-4 mr-2" />
+            Agregar experiencia
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Certificates */}
+      <Card className="border-none shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
+            <FileText className="h-5 w-5 text-teal-600" />
+            Certificados y Documentos
+          </CardTitle>
+          <p className="text-sm text-gray-600 mt-2">
+            Sube tus certificaciones y documentos relevantes
+          </p>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          <div className="border-2 border-dashed border-teal-300 rounded-lg p-8 text-center bg-teal-50/50">
+            <Upload className="h-12 w-12 text-teal-500 mx-auto mb-4" />
             <label
               htmlFor="cert-upload"
-              className="cursor-pointer bg-white text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white border-2 px-4 py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 "
+              className="cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-6 py-3 rounded-lg font-medium hover:from-teal-600 hover:to-cyan-600 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
+              <Upload className="h-4 w-4" />
               Subir certificados
             </label>
             <input
@@ -241,49 +544,84 @@ export default function CuidadorForm({
               multiple
               onChange={handleCertificados}
               className="hidden"
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
             />
-            <div className="mt-2 grid grid-cols-2 gap-4">
-              {(perfil.certificados || []).map((c: any, i: number) => (
-                <div
-                  key={i}
-                  className="bg-gray-100 p-2 rounded text-sm truncate flex justify-between items-center"
-                >
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    {c.file?.name || c.url.split("/").pop()}
-                  </a>
-                  <Button variant="ghost" size="sm" onClick={() => removeCertificado(i)}>
-                    Eliminar
-                  </Button>
-                </div>
-              ))}
-            </div>
+            <p className="text-sm text-gray-500 mt-2">
+              Formatos soportados: PDF, JPG, PNG, DOC, DOCX
+            </p>
           </div>
 
-            {/* Campos de contraseña */}
-  <Input
-    type="password"
-    value={perfil.password || ""}
-    onChange={(e) => setPerfil({ ...perfil, password: e.target.value })}
-    placeholder="Contraseña"
-  />
-  <Input
-    type="password"
-    value={perfil.confirmPassword || ""}
-    onChange={(e) => setPerfil({ ...perfil, confirmPassword: e.target.value })}
-    placeholder="Repetir contraseña"
-  />
+          {/* New certificates */}
+          {certLocal.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-semibold text-gray-700">
+                Certificados nuevos:
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {certLocal.map((c, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between bg-white border-2 border-teal-200 rounded-lg p-4 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-teal-600" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-800 truncate max-w-40">
+                        {c.file.name}
+                      </span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeCertificado(i)}
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-          <Button className="mt-4" onClick={onSubmit}>
-            {title ? 'Guardar cambios' : 'Continuar'}
-          </Button>
-        </>
-      )}
+          {/* Existing certificates */}
+          {perfil.certificados?.length ? (
+            <div className="space-y-3">
+              <Separator />
+              <h4 className="font-semibold text-gray-700">
+                Certificados existentes:
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {perfil.certificados.map((c, i) => (
+                  <a
+                    key={i}
+                    href={c.archivo} // ahora absoluto: http://127.0.0.1:8000/media/...
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+
+                    <span className="text-sm font-medium text-gray-800 truncate flex-1">
+                      {c.nombre}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </CardContent>
+      </Card>
+
+      {/* Submit Button */}
+      <div className="flex justify-center pt-6">
+        <Button
+          onClick={submit}
+          className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600  text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+        >
+          {title ? "Guardar cambios" : "Continuar"}
+        </Button>
+      </div>
     </div>
   );
 }
-

@@ -1,15 +1,39 @@
+# chat/models.py
+from django.conf import settings
 from django.db import models
-from django.contrib.auth import get_user_model
+
+User = settings.AUTH_USER_MODEL
 
 class Conversacion(models.Model):
-    remitente = models.ForeignKey(get_user_model(), related_name='conversaciones_enviadas', on_delete=models.DO_NOTHING)
-    receptor = models.ForeignKey(get_user_model(), related_name='conversaciones_recibidas', on_delete=models.DO_NOTHING)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    cliente = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="conversaciones_como_cliente",
+        null=True, blank=True  # temporal
+    )
+    cuidador = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="conversaciones_como_cuidador",
+        null=True, blank=True  # temporal
+    )
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["cliente", "cuidador"],
+                name="uniq_conv_cliente_cuidador"
+            )
+        ]
 
 class Mensaje(models.Model):
-    conversacion = models.ForeignKey(Conversacion, related_name='mensajes', on_delete=models.CASCADE)
-    remitente = models.ForeignKey(get_user_model(), related_name='mensajes_enviados', on_delete=models.DO_NOTHING)
-    receptor = models.ForeignKey(get_user_model(), related_name='mensajes_recibidos', on_delete=models.DO_NOTHING)
+    conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE, related_name="mensajes")
+    emisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mensajes_enviados")
     contenido = models.TextField()
-    fecha_envio = models.DateTimeField(auto_now_add=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    leido_por = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="mensajes_leidos")
 
+    class Meta:
+        ordering = ["creado_en"]
+    
+    

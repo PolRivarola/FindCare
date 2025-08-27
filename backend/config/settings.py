@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework_simplejwt.token_blacklist",
     'chat',          
     'users',          
     'services',
     'location',
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -145,6 +147,24 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
 }
 
 AUTH_USER_MODEL = 'users.Usuario'
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,          # opcional: rota refresh en cada refresh
+    "BLACKLIST_AFTER_ROTATION": True,        # necesario si usás blacklist
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,               # o mejor, variable de entorno
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+APPEND_SLASH = False

@@ -29,7 +29,7 @@ export default function RecuperarPassword() {
       setLoading(false)
     } else {
       try {
-        await apiPost("/api/auth/recover-password", { email })
+        await apiPost("/api/auth/recover-password/", { email })
         setStep("success")
       } catch (err) {
         console.error("Error sending recovery email:", err)

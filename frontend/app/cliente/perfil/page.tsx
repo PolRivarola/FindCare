@@ -24,8 +24,8 @@ export default function PerfilClientePage() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      apiGet<PerfilCliente>("/cliente/perfil"),
-      apiGet<Record<string, string[]>>("/ubicaciones"),
+      apiGet<PerfilCliente>("/cliente/perfil/"),
+      apiGet<Record<string, string[]>>("/ubicaciones/"),
     ])
       .then(([perfilData, ubicaciones]) => {
         setPerfil(perfilData);

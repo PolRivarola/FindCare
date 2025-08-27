@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Solicitud } from "@/lib/types";
+import { ServicioDTO, Solicitud } from "@/lib/types";
 
 import {
   Heart,
@@ -29,62 +29,65 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
+import { useUser } from "@/context/UserContext";
+import { mapServiciosToUI } from "@/lib/mappers/servicios";
 
 
 export default function CuidadorDashboard() {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpenId, setModalOpenId] = useState<number | null>(null);
+  const user = useUser();
+  const [stats, setStats] = useState({
+  serviciosCompletados: 0,
+  calificacionPromedio: 0,
+  solicitudesPendientes: 0,
+});
 
-  useEffect(() => {
-    apiGet<Solicitud[]>("/cuidador/solicitudes")
-      .then((data) => setSolicitudes(data))
-      .catch(() => {
+
+useEffect(() => {
+  console.log("Cargando solicitudes para el cuidador...");
+  if (!user) return;                
+  const uid = user.id;              
+  console.log(uid)
+  const ac = new AbortController();
+  (async function load() {
+
+    
+    try {
+
+      const s = await apiGet<{ pendientes: number; completados: number; calificacion_promedio: number }>(
+        "/servicios/stats/cuidador/",
+        { receptor_id: user.id }
+      );
+      if (!ac.signal.aborted) {
+        setStats({
+          serviciosCompletados: s.completados,
+          calificacionPromedio: s.calificacion_promedio,
+          solicitudesPendientes: s.pendientes,
+        });
+      }
+      
+      const data = await apiGet<ServicioDTO[]>("/servicios/", {
+        receptor_id: uid,           
+        aceptado: "false",          
+        ordering: "-fecha_inicio",
+      });
+      console.log("Solicitudes cargadas:", data);
+
+      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data));
+    } catch {
+      if (!ac.signal.aborted) {
         toast.error("No se pudieron cargar las solicitudes");
-        setSolicitudes([
-    {
-      id: 1,
-      id_cliente: 1,
-      id_cuidador: 1,
-      foto: "/placeholder.jpg",
-      cliente: "Mario Perez",
-      servicio: ["Edad avanzada, Discapacidad motriz"],
-      fecha_inicio: "2024-01-22",
-      fecha_fin: "2024-01-22",
-      hora: "Todo el día",
-      ubicacion: "Centro, Montevideo",
-      rangos_horarios: [
-        "08:00 - 12:00" ,
-        "05:00 - 6:00",
-      ],
-    },
-    {
-      id: 2,
-      id_cliente: 1,
-      id_cuidador: 1,
-      foto: "/placeholder.jpg",
-      cliente: "María López",
-      servicio: ["Discapacidad intelectual"],
-      fecha_inicio: "2024-01-22",
-      fecha_fin: "2024-01-22",
-      hora: "Todo el día",
-      ubicacion: "Centro, Montevideo",
-      rangos_horarios: [
-        "08:00 - 12:00" ,
-        "05:00 - 6:00",
-      ],
-    },
-        ]);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+      }
+    } finally {
+      if (!ac.signal.aborted) setLoading(false);
+    }
+  })();
 
-  const stats = {
-    serviciosCompletados: 45,
-    calificacionPromedio: 4.8,
-    ingresosMes: "$12,500",
-    solicitudesPendientes: solicitudes.length,
-  };
+  return () => ac.abort();
+}, [user]);                      
+
 
   const aceptarSolicitud = (id: number) => {
     apiPost(`/cuidador/solicitudes/${id}/aceptar`, {})
@@ -147,7 +150,9 @@ export default function CuidadorDashboard() {
                     Calificación
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {stats.calificacionPromedio}
+                    {stats.calificacionPromedio === 0? "N/A"
+                    :
+                    stats.calificacionPromedio}
                   </p>
                 </div>
               </div>

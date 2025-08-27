@@ -82,8 +82,8 @@ export default function BuscarCuidadoresPage() {
     const fetchData = async () => {
       try {
         const [cuidadoresData, servicios] = await Promise.all([
-          apiGet<any[]>("/api/cuidadores"),
-          apiGet<string[]>("/api/servicios"),
+          apiGet<any[]>("/api/cuidadores/"),
+          apiGet<string[]>("/api/servicios/"),
         ]);
         setCuidadores(cuidadoresData);
         setServiciosDisponibles(servicios);
@@ -123,7 +123,7 @@ export default function BuscarCuidadoresPage() {
         foto: formData.foto,
       };
 
-      await apiPost("/api/solicitudes", solicitudData);
+      await apiPost("/api/solicitudes/", solicitudData);
 
       toast.success("Solicitud enviada correctamente");
       setSolicitudEnviada((prev) => ({ ...prev, [selectedCuidador.id]: true }));

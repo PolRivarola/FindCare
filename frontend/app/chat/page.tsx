@@ -40,7 +40,6 @@ export default function Chat() {
             ultimoMensaje: "Perfecto, estaré allí a las 8:00 AM",
             hora: "10:30",
             noLeidos: 0,
-            online: true,
           },
           {
             id: 2,
@@ -49,7 +48,6 @@ export default function Chat() {
             ultimoMensaje: "¿Necesita algún medicamento específico?",
             hora: "09:15",
             noLeidos: 2,
-            online: false,
           },
         ]);
         setSelectedChat(1);
@@ -87,7 +85,7 @@ export default function Chat() {
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedChat !== null) {
-      fetch(`/api/conversaciones/${selectedChat}/mensajes/`, {
+      fetch(`/api/conversaciones/${selectedChat}/mensajes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: newMessage }),
@@ -148,9 +146,7 @@ export default function Chat() {
                           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
                             {conversation.nombre.charAt(0)}
                           </div>
-                          {conversation.online && (
-                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
-                          )}
+                          
                         </div>
                         <div className="ml-3">
                           <h4 className="font-medium text-gray-900">
@@ -165,9 +161,11 @@ export default function Chat() {
                         <p className="text-xs text-gray-500">
                           {conversation.hora}
                         </p>
-                        {conversation.noLeidos > 0 && (
+                        <p>{selectedChat !== conversation.id}</p>
+                        {(conversation.noLeidos > 0 || selectedChat !== conversation.id)  && (
                           <Badge className="bg-red-500 text-white text-xs mt-1">
                             {conversation.noLeidos}
+                            
                           </Badge>
                         )}
                       </div>

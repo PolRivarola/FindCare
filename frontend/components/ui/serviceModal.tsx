@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   Dialog,
@@ -10,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
-import { apiDelete, apiPost, apiGet } from "@/lib/api";
+import { apiDelete, apiPost } from "@/lib/api";
 import { Solicitud } from "@/lib/types";
 
 type Props = {
@@ -31,22 +33,13 @@ export function DetalleSolicitudModal({
   const aceptarSolicitud = async () => {
     setLoading(true);
     try {
-      await apiPost(`/cuidador/solicitudes/${solicitud.id}/aceptar`, {});
+      // Acción custom en DRF: POST /api/servicios/{id}/aceptar/
+      await apiPost(`/servicios/${solicitud.id}/aceptar/`, {});
       toast.success("Solicitud aceptada");
-
-      if (actualizarSolicitudes) {
-        const data = await apiGet<Solicitud[]>("/cuidador/solicitudes");
-        actualizarSolicitudes((prev) =>
-          prev.filter((s) => s.id !== solicitud.id)
-        );
-      }
+      // Remover del listado local (ya no es pendiente)
+      actualizarSolicitudes((prev) => prev.filter((s) => s.id !== solicitud.id));
     } catch (err) {
       toast.error("Error al aceptar solicitud");
-      if (actualizarSolicitudes) {
-        actualizarSolicitudes((prev) =>
-          prev.filter((s) => s.id !== solicitud.id)
-        );
-      }
     } finally {
       setLoading(false);
       onOpenChange(false);
@@ -56,22 +49,13 @@ export function DetalleSolicitudModal({
   const rechazarSolicitud = async () => {
     setLoading(true);
     try {
-      await apiDelete(`/cuidador/solicitudes/${solicitud.id}`);
+      // Eliminar la solicitud pendiente
+      await apiDelete(`/servicios/${solicitud.id}/`);
       toast.success("Solicitud rechazada");
-
-      if (actualizarSolicitudes) {
-        const data = await apiGet<Solicitud[]>("/cuidador/solicitudes");
-        actualizarSolicitudes((prev) =>
-          prev.filter((s) => s.id !== solicitud.id)
-        );
-      }
+      // Remover del listado local
+      actualizarSolicitudes((prev) => prev.filter((s) => s.id !== solicitud.id));
     } catch (err) {
       toast.error("Error al rechazar solicitud");
-      if (actualizarSolicitudes) {
-        actualizarSolicitudes((prev) =>
-          prev.filter((s) => s.id !== solicitud.id)
-        );
-      }
     } finally {
       setLoading(false);
       onOpenChange(false);
@@ -80,7 +64,7 @@ export function DetalleSolicitudModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="ml-4 flex-shrink-0 self-center">
         <Button size="sm" variant="default">
           Detalles
         </Button>
@@ -89,7 +73,9 @@ export function DetalleSolicitudModal({
       <DialogContent className="rounded-2xl p-6 shadow-xl bg-white border border-gray-200 max-w-md w-full ">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-xl font-semibold text-gray-800">
-            {solicitud.servicio}
+            {Array.isArray(solicitud.servicio)
+              ? solicitud.servicio.join(", ")
+              : String(solicitud.servicio ?? "")}
           </DialogTitle>
         </DialogHeader>
 
@@ -106,7 +92,8 @@ export function DetalleSolicitudModal({
             {solicitud.fecha_fin}
           </p>
           <p>
-            <span className="font-medium">Tipo de horario:</span> {solicitud.hora}
+            <span className="font-medium">Tipo de horario:</span>{" "}
+            {solicitud.hora}
           </p>
           <p>
             <span className="font-medium">Horas:</span>
@@ -124,7 +111,7 @@ export function DetalleSolicitudModal({
           </p>
         </div>
 
-        <Link href={`/carer/${solicitud.id}`}>
+        <Link href={`/cliente/${solicitud.id_cliente}`}>
           <Button variant="secondary" className="w-full mt-4">
             Ver perfil del cliente
           </Button>
