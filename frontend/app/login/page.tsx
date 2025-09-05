@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,17 +10,36 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Heart, ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useUserContext } from "@/context/UserContext";
+
 
 export default function Login() {
   // mantenemos los mismos dos campos del formulario
   const [formData, setFormData] = useState({ email: "", password: "" });
-
+  const { refreshUser } = useUserContext();
   // mostramos errores sin cambiar el diseño
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const next = useSearchParams().get("next") || "/";
+
+  useEffect(() => {
+    const logout = async () => {
+      try {
+        await fetch("/api/auth/logout/", {
+          method: "POST",
+        });
+        // Refresh user context to clear the user
+        await refreshUser();
+      } catch (error) {
+        // Ignore logout errors - user might not be logged in
+        console.log("Logout error (ignored):", error);
+      }
+    };
+    logout();
+  }, []);
+
 
   const handleInputChange = (field: "email" | "password", value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -62,7 +81,8 @@ export default function Login() {
     }
 
     const j = await r.json();
-    localStorage.setItem("token", j.token);
+    localStorage.removeItem("token");
+    await refreshUser();
 
     console.log("Usuario logueado:", j.user);
     console.log(j.user.es_cuidador)

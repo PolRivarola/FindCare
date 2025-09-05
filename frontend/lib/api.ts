@@ -19,10 +19,16 @@ export async function apiGet<T>(endpoint: string, params?: Record<string, string
 
 export async function apiPost<T>(endpoint: string, body?: any) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const r = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body ?? {}),
+  });
   if (!r.ok) throw new Error(await r.text());
   return r.json() as Promise<T>;
 }
+
 
 export async function apiPut<T>(endpoint: string, body?: any) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
@@ -35,4 +41,16 @@ export async function apiDelete(endpoint: string) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
   const r = await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" }});
   if (!r.ok) throw new Error(await r.text());
+}
+
+export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
+  const url = `${API_BASE_URL}${withSlash(endpoint)}`;
+  const r = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    // Don't set Content-Type - let browser set it with boundary for multipart/form-data
+    body: formData,
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json() as Promise<T>;
 }

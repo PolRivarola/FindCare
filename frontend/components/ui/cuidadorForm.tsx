@@ -21,6 +21,7 @@ import {
   X,
   Download,
 } from "lucide-react";
+import { toast } from "sonner";
 
 type Exp = { descripcion: string; fecha_inicio: string; fecha_fin: string };
 type CertLocal = { file: File; name?: string; url: string };
@@ -52,6 +53,7 @@ type Props = {
   ciudadesPorProvincia: Record<string, string[]>;
   categoriasDisponibles: { id: number; nombre: string }[];
   loading: boolean;
+  mode: "create" | "edit"; // 👈 nuevo
   onSubmit: (fd: FormData) => Promise<void>;
   title?: string;
 };
@@ -64,10 +66,16 @@ export default function CuidadorForm({
   categoriasDisponibles,
   loading,
   onSubmit,
+  mode,
   title,
 }: Props) {
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [certLocal, setCertLocal] = useState<CertLocal[]>([]);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const addExperiencia = () => {
     if (!perfil) return;
@@ -112,37 +120,110 @@ export default function CuidadorForm({
 
   const submit = async () => {
     if (!perfil) return;
+    
+    // Validación frontend de campos obligatorios
+    if (!perfil.first_name?.trim()) {
+      toast.error("El nombre es obligatorio");
+      return;
+    }
+    if (!perfil.last_name?.trim()) {
+      toast.error("El apellido es obligatorio");
+      return;
+    }
+    if (!perfil.email?.trim()) {
+      toast.error("El email es obligatorio");
+      return;
+    }
+    if (!perfil.telefono?.trim()) {
+      toast.error("El teléfono es obligatorio");
+      return;
+    }
+    if (!perfil.fecha_nacimiento?.trim()) {
+      toast.error("La fecha de nacimiento es obligatoria");
+      return;
+    }
+    if (!perfil.provincia?.trim()) {
+      toast.error("La provincia es obligatoria");
+      return;
+    }
+    if (!perfil.ciudad?.trim()) {
+      toast.error("La ciudad es obligatoria");
+      return;
+    }
+    if (!perfil.descripcion?.trim()) {
+      toast.error("La descripción personal es obligatoria");
+      return;
+    }
+    if (mode === "create" && (!password || !confirmPassword)) {
+      toast.error("Completa la contraseña y su confirmación");
+      return;
+    }
+  
+    
     const fd = new FormData();
-
-    // 1) Campos simples (solo si tienen valor)
-    const put = (k: string, v: any) => {
-      if (v !== undefined && v !== null && v !== "") fd.append(k, String(v));
+    // 1) Campos obligatorios - siempre se envían (ya validados arriba)
+    fd.append("first_name", perfil.first_name);
+    fd.append("last_name", perfil.last_name);
+    fd.append("email", perfil.email);
+    fd.append("telefono", perfil.telefono);
+    fd.append("fecha_nacimiento", perfil.fecha_nacimiento);
+    fd.append("descripcion", perfil.descripcion);
+    fd.append("provincia", perfil.provincia);
+    fd.append("ciudad", perfil.ciudad);
+    
+    // 2) Campos opcionales - solo si tienen valor
+    const putOptional = (k: string, v: any) => {
+      if (v !== undefined && v !== null && v !== "") {
+        fd.append(k, String(v));
+      }
     };
-    put("first_name", perfil.first_name);
-    put("last_name", perfil.last_name);
-    put("email", perfil.email);
-    put("telefono", perfil.telefono);
-    put("fecha_nacimiento", perfil.fecha_nacimiento); // 'YYYY-MM-DD'
-    put("descripcion", perfil.descripcion);
-    put("provincia", perfil.provincia);
-    put("ciudad", perfil.ciudad);
-    put("direccion", perfil.direccion);
+    putOptional("direccion", perfil.direccion);
 
-    // 2) Foto de perfil
+    // 3) Foto de perfil
     if (fotoFile) fd.append("foto_perfil", fotoFile);
 
-    // 3) Categorías -> ids
-    // categoriasDisponibles: [{ id, nombre }, ...]
-    // perfil.categorias: array de nombres seleccionados en tu UI
-    const selectedNames = new Set((perfil.categorias || []) as string[]);
     const categoriasIds = categoriasDisponibles
-      .filter((c) => selectedNames.has(c.nombre))
+      .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
       .map((c) => c.id);
 
-    // puedes repetir la key 'categorias_ids' varias veces:
-    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
+    if (categoriasIds.length) {
+      fd.append("categorias_ids", JSON.stringify(categoriasIds));
+    }
 
-    // 4) Experiencias -> JSON string
+    if (mode === "create") {
+      // Validación básica en front
+      if (!password || !confirmPassword) {
+        alert("Completa la contraseña y su confirmación");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("Las contraseñas no coinciden");
+        return;
+      }
+      fd.append("password", password);
+      fd.append("confirm_password", confirmPassword);
+    }
+
+    if (mode === "edit") {
+      // Cambio de contraseña opcional
+      const quiereCambiar =
+        currentPassword || newPassword || confirmNewPassword;
+      if (quiereCambiar) {
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+          alert("Para cambiar la contraseña completa los tres campos.");
+          return;
+        }
+        if (newPassword !== confirmNewPassword) {
+          alert("Las nuevas contraseñas no coinciden");
+          return;
+        }
+        fd.append("current_password", currentPassword);
+        fd.append("new_password", newPassword);
+        fd.append("confirm_password", confirmNewPassword);
+      }
+    }
+
+    // 5) Experiencias -> JSON string
     // Tu UI guarda { descripcion, fecha_inicio, fecha_fin }
     const exps = (perfil.experiencias || [])
       .filter((e: any) => e.descripcion && e.fecha_inicio && e.fecha_fin)
@@ -157,7 +238,7 @@ export default function CuidadorForm({
       fd.append("experiencias", JSON.stringify(exps));
     }
 
-    // 5) Certificados nuevos
+    // 6) Certificados nuevos
     // Si estás usando un estado local: const [certLocal, setCertLocal] = useState<{file: File, name?: string}[]>([])
     // Tu UI muestra 'certLocal' —> aquí los enviamos:
     (certLocal || []).forEach((c) => {
@@ -165,6 +246,8 @@ export default function CuidadorForm({
       // Nombre visible opcional para cada archivo
       fd.append("certificados_nombres", c.name || c.file.name);
     });
+
+    
     await onSubmit(fd);
   };
 
@@ -201,6 +284,9 @@ export default function CuidadorForm({
         <p className="text-gray-600 text-lg">
           Completa tu información para ofrecer los mejores servicios de cuidado
         </p>
+        <p className="text-sm text-gray-500">
+          Los campos marcados con <span className="text-red-500">*</span> son obligatorios
+        </p>
       </div>
 
       {/* Profile Photo Section */}
@@ -236,7 +322,7 @@ export default function CuidadorForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                Nombre
+                Nombre <span className="text-red-500">*</span>
               </label>
               <Input
                 value={perfil.first_name}
@@ -249,7 +335,7 @@ export default function CuidadorForm({
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700">
-                Apellido
+                Apellido <span className="text-red-500">*</span>
               </label>
               <Input
                 value={perfil.last_name}
@@ -265,7 +351,7 @@ export default function CuidadorForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700">
-                Email
+                Email <span className="text-red-500">*</span>
               </label>
               <Input
                 value={perfil.email}
@@ -279,7 +365,7 @@ export default function CuidadorForm({
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700">
-                Teléfono
+                Teléfono <span className="text-red-500">*</span>
               </label>
               <Input
                 value={perfil.telefono}
@@ -295,7 +381,7 @@ export default function CuidadorForm({
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
               <CalendarDays className="h-4 w-4 text-green-600" />
-              Fecha de Nacimiento
+              Fecha de Nacimiento <span className="text-red-500">*</span>
             </label>
             <Input
               type="date"
@@ -309,7 +395,7 @@ export default function CuidadorForm({
 
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
-              Descripción Personal
+              Descripción Personal <span className="text-red-500">*</span>
             </label>
             <Textarea
               className="min-h-32 border-2 border-gray-200 focus:border-green-500 transition-colors resize-none"
@@ -320,6 +406,49 @@ export default function CuidadorForm({
               placeholder="Cuéntanos sobre ti, tu experiencia y tu enfoque en el cuidado..."
             />
           </div>
+          {mode === "create" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="Repetir contraseña"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+          )}
+          {mode === "edit" && (
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600">
+                Cambiar contraseña (opcional)
+              </p>
+              <Input
+                type="password"
+                placeholder="Contraseña actual"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  type="password"
+                  placeholder="Nueva contraseña"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <Input
+                  type="password"
+                  placeholder="Repetir nueva contraseña"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -335,7 +464,7 @@ export default function CuidadorForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700">
-                Provincia
+                Provincia <span className="text-red-500">*</span>
               </label>
               <select
                 className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
@@ -358,7 +487,7 @@ export default function CuidadorForm({
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700">
-                Ciudad
+                Ciudad <span className="text-red-500">*</span>
               </label>
               <select
                 className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
@@ -601,7 +730,6 @@ export default function CuidadorForm({
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
-
                     <span className="text-sm font-medium text-gray-800 truncate flex-1">
                       {c.nombre}
                     </span>

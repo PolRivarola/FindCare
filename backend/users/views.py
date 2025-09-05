@@ -18,7 +18,6 @@ from .serializers import UsuarioReadSerializer  # el que ya usás
 User = get_user_model()
 
 class MeView(RetrieveUpdateAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = UsuarioReadSerializer
 
     def get_object(self):
@@ -40,6 +39,8 @@ class CuidadorViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 class TipoClienteViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [AllowAny]
+
     queryset = TipoCliente.objects.all()
     serializer_class = TipoClienteSerializer
 

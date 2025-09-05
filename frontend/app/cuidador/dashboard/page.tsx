@@ -47,7 +47,8 @@ export default function CuidadorDashboard() {
 
 useEffect(() => {
   console.log("Cargando solicitudes para el cuidador...");
-  if (!user) return;                
+  if (!user) return;   
+  console.log(user)             
   const uid = user.id;              
   console.log(uid)
   const ac = new AbortController();

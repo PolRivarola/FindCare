@@ -3,12 +3,16 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Provincia, Ciudad, Direccion
 from .serializers import ProvinciaSerializer, CiudadSerializer, DireccionSerializer
+from rest_framework.permissions import AllowAny
+
 
 class ProvinciaViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
     queryset = Provincia.objects.all().order_by('nombre')
     serializer_class = ProvinciaSerializer
 
 class CiudadViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
     serializer_class = CiudadSerializer
     queryset = Ciudad.objects.select_related('provincia').all().order_by('nombre')
     def get_queryset(self):

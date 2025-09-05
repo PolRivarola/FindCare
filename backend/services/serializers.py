@@ -202,6 +202,9 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
     fecha_nacimiento = serializers.DateField(required=False, allow_null=True)
     descripcion = serializers.CharField(required=False, allow_blank=True)
     foto_perfil = serializers.ImageField(required=False, allow_empty_file=False)
+    current_password = serializers.CharField(required=False, write_only=True, allow_blank=False, trim_whitespace=False)
+    new_password = serializers.CharField(required=False, write_only=True, allow_blank=False, trim_whitespace=False)
+    confirm_password = serializers.CharField(required=False, write_only=True, allow_blank=False, trim_whitespace=False)
 
     # dirección
     provincia = serializers.CharField(required=False)
@@ -223,6 +226,24 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
         names = data.get("certificados_nombres") or []
         if names and len(names) != len(files):
             raise serializers.ValidationError("certificados y certificados_nombres deben tener la misma longitud.")
+        
+        files = data.get("certificados") or []
+        names = data.get("certificados_nombres") or []
+        if names and len(names) != len(files):
+            raise serializers.ValidationError("certificados y certificados_nombres deben tener la misma longitud.")
+
+        # validación de cambio de contraseña (si vienen campos)
+        cp = data.get("current_password")
+        np = data.get("new_password")
+        rp = data.get("confirm_password")
+        if any([cp, np, rp]):
+            # todos deben venir
+            if not (cp and np and rp):
+                raise serializers.ValidationError("Debe enviar current_password, new_password y confirm_password.")
+            if np != rp:
+                raise serializers.ValidationError("La nueva contraseña y su confirmación no coinciden.")
+            if len(np) < 8:
+                raise serializers.ValidationError("La nueva contraseña debe tener al menos 8 caracteres.")
         return data
 
     def validate_experiencias(self, value):

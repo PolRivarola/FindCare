@@ -73,6 +73,7 @@ export default function CuidadorPerfilPage() {
         provincias={provincias}
         ciudadesPorProvincia={ciudadesPorProvincia}
         categoriasDisponibles={categorias}
+        mode="edit"
         loading={loading}
         onSubmit={onSubmit}
         title="Editar Perfil"

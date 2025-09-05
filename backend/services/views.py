@@ -7,12 +7,18 @@ from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from django.utils.text import slugify
+import json
+from django.contrib.auth import get_user_model
+
+
 
 from .models import (
     Servicio,
@@ -37,7 +43,7 @@ from .serializers import (
 from .filters import ServicioFilter
 
 from location.models import Provincia, Ciudad, Direccion
-from users.models import TipoCliente
+from users.models import Cuidador, TipoCliente
 
 
 # --------------------------
@@ -225,13 +231,51 @@ class CuidadorPerfilView(APIView):
        - certificados_nombres: nombres paralelos (key repetida)
     """
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
-    # --- Utilidades internas ---
 
     def _ensure_cuidador(self, user):
-        # Debe tener relación users.Cuidador (OneToOne) creada
         return hasattr(user, "cuidador")
+    
+    def get_permissions(self):
+        # Permite registrar (POST) sin autenticación, el resto requiere login
+        if self.request.method == "POST":
+            return [AllowAny()]
+        return super().get_permissions()
+    
+
+    def _gen_username(self, first_name: str, last_name: str, fecha_nac):
+        """first.last.yyyymmdd (único)"""
+        if isinstance(fecha_nac, str):
+            try:
+                fecha_nac = datetime.fromisoformat(fecha_nac).date()
+            except Exception:
+                fecha_nac = None
+        ymd = fecha_nac.strftime("%Y%m%d") if fecha_nac else "00000000"
+        base = slugify(f"{first_name}.{last_name}.{ymd}") or "user"
+        candidate = base
+        i = 1
+        User = get_user_model()
+        while User.objects.filter(username=candidate).exists():
+            candidate = f"{base}-{i}"
+            i += 1
+        return candidate
+
+    def _parse_dt(self, s: str):
+        """Acepta 'YYYY-MM-DD' o ISO8601; devuelve timezone-aware."""
+        if not s:
+            raise ValueError("fecha requerida")
+        try:
+            if len(s) == 10:
+                # solo fecha
+                dt = datetime.strptime(s, "%Y-%m-%d")
+            else:
+                dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+        except Exception:
+            raise ValueError(f"fecha inválida: {s}")
+        if timezone.is_naive(dt):
+            dt = timezone.make_aware(dt, timezone.get_current_timezone())
+        return dt
 
     def _build_read_payload(self,request,user):
         u = user
@@ -284,6 +328,17 @@ class CuidadorPerfilView(APIView):
         ser = CuidadorPerfilUpdateSerializer(data=request.data, partial=True)
         ser.is_valid(raise_exception=True)
         data = ser.validated_data
+        cp = data.get("current_password")
+        np = data.get("new_password")
+        rp = data.get("confirm_password")
+
+        if cp and np and rp:
+            # Verificamos la actual
+            if not user.check_password(cp):
+                return Response({"detail": "La contraseña actual no es correcta."}, status=400)
+            # Seteamos la nueva
+            user.set_password(np)
+            user.save(update_fields=["password"])
 
         # --- usuario básico ---
         for field in ["first_name", "last_name", "email", "telefono", "fecha_nacimiento", "descripcion"]:
@@ -345,3 +400,162 @@ class CuidadorPerfilView(APIView):
 
         payload = self._build_read_payload(request, user)
         return Response(payload, status=200)
+    
+    @transaction.atomic
+    def post(self, request):
+        """
+        Registro de cuidador (público):
+        multipart/form-data o JSON.
+        Campos principales:
+          - first_name, last_name, email, telefono, fecha_nacimiento (YYYY-MM-DD), descripcion (opc.)
+          - password, confirm_password
+          - provincia, ciudad, direccion (para crear Direccion)
+          - categorias_ids: array (o JSON string) de IDs de TipoCliente
+          - experiencias: JSON string array [{descripcion, fecha_inicio, fecha_fin}]
+          - certificados: múltiples files (key repetida 'certificados')
+            certificados_nombres: múltiples strings (key repetida paralela)
+          - foto_perfil: file (opcional)
+        """
+        User = get_user_model()
+
+        # 1) tomar datos básicos
+        first_name = request.data.get("first_name", "").strip()
+        last_name  = request.data.get("last_name", "").strip()
+        email      = request.data.get("email", "").strip().lower()
+        telefono   = request.data.get("telefono", "").strip()
+        fecha_nac  = request.data.get("fecha_nacimiento")  # 'YYYY-MM-DD'
+        descripcion = request.data.get("descripcion", "")
+
+        password   = request.data.get("password")
+        confirm    = request.data.get("confirm_password")
+
+        if not first_name or not last_name:
+            return Response({"detail": "Nombre y apellido son obligatorios."}, status=400)
+        if not email:
+            return Response({"detail": "Email es obligatorio."}, status=400)
+        if not telefono:
+            return Response({"detail": "El teléfono es obligatorio."}, status=400)
+        if not fecha_nac:
+            return Response({"detail": "La fecha de nacimiento es obligatoria."}, status=400)
+        if not descripcion:
+            return Response({"detail": "La descripción personal es obligatoria."}, status=400)
+        
+        # Validar ubicación
+        provincia = request.data.get("provincia")
+        ciudad = request.data.get("ciudad")
+        if not provincia:
+            return Response({"detail": "La provincia es obligatoria."}, status=400)
+        if not ciudad:
+            return Response({"detail": "La ciudad es obligatoria."}, status=400)
+            
+        if not password or not confirm:
+            return Response({"detail": "password y confirm_password son obligatorios."}, status=400)
+        if password != confirm:
+            return Response({"detail": "Las contraseñas no coinciden."}, status=400)
+        if User.objects.filter(email=email).exists():
+            return Response({"detail": "Ya existe un usuario con ese email."}, status=400)
+
+        # parse fecha nacimiento a date
+        fecha_nac_date = None
+        if fecha_nac:
+            try:
+                fecha_nac_date = datetime.fromisoformat(fecha_nac).date()
+            except Exception:
+                return Response({"detail": "fecha_nacimiento inválida (use YYYY-MM-DD)."}, status=400)
+
+        # 2) dirección
+        direccion = request.data.get("direccion")
+        direccion_obj = None
+        if provincia and ciudad and direccion:
+            prov, _ = Provincia.objects.get_or_create(nombre=provincia)
+            ciu,  _ = Ciudad.objects.get_or_create(nombre=ciudad, provincia=prov)
+            direccion_obj, _ = Direccion.objects.get_or_create(direccion=direccion, ciudad=ciu)
+
+        # 3) username único autogenerado
+        username = self._gen_username(first_name, last_name, fecha_nac_date)
+
+        # 4) crear usuario
+        user = User(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            telefono=telefono,
+            fecha_nacimiento=fecha_nac_date,
+            descripcion=descripcion,
+            direccion=direccion_obj,
+        )
+
+        # foto de perfil (opcional)
+        foto = request.FILES.get("foto_perfil")
+        if foto:
+            user.foto_perfil = foto
+
+        user.set_password(password)
+        user.save()
+
+        # 5) crear perfil cuidador
+        anios_experiencia = int(request.data.get("anios_experiencia", 0) or 0)
+        # si tu modelo exige >0 podrías forzar mínimo 0 o 1
+        Cuidador.objects.create(usuario=user, anios_experiencia=max(0, anios_experiencia))
+
+        # 6) categorías (TipoCliente) por ids
+        raw_cats = request.data.get("categorias_ids")
+        cats_list = []
+        if isinstance(raw_cats, list):
+            cats_list = [int(x) for x in raw_cats]
+        elif isinstance(raw_cats, str) and raw_cats.strip():
+            # podría venir como JSON string "[]"
+            try:
+                parsed = json.loads(raw_cats)
+                if isinstance(parsed, list):
+                    cats_list = [int(x) for x in parsed]
+            except Exception:
+                # también podría venir "1,2,3"
+                try:
+                    cats_list = [int(x) for x in raw_cats.split(",") if x.strip()]
+                except Exception:
+                    cats_list = []
+
+        if cats_list:
+            qs = TipoCliente.objects.filter(id__in=cats_list)
+            user.cuidador.tipos_cliente.set(qs)
+
+        # 7) experiencias (JSON string)
+        raw_exps = request.data.get("experiencias")
+        if raw_exps:
+            try:
+                exps = json.loads(raw_exps)
+                if not isinstance(exps, list):
+                    raise ValueError
+            except Exception:
+                return Response({"detail": "experiencias debe ser un JSON array."}, status=400)
+
+            to_create = []
+            for e in exps:
+                desc = (e.get("descripcion") or "").strip()
+                fi_s = e.get("fecha_inicio")
+                ff_s = e.get("fecha_fin")
+                if not desc or not fi_s or not ff_s:
+                    return Response({"detail": "cada experiencia requiere descripcion, fecha_inicio y fecha_fin."}, status=400)
+                try:
+                    fi = self._parse_dt(fi_s)
+                    ff = self._parse_dt(ff_s)
+                except ValueError as ex:
+                    return Response({"detail": str(ex)}, status=400)
+                to_create.append(Experiencia(cuidador=user, descripcion=desc, fecha_inicio=fi, fecha_fin=ff))
+            if to_create:
+                Experiencia.objects.bulk_create(to_create)
+
+        # 8) certificados (archivos)
+        files = request.FILES.getlist("certificados")
+        names = request.data.getlist("certificados_nombres")
+        for idx, f in enumerate(files):
+            label = names[idx] if idx < len(names) and names[idx] else f.name
+            Certificacion.objects.create(cuidador=user, nombre=label, archivo=f)
+        
+        print("Usuario cuidador creado:", user.username, user.email, user.id)
+
+    
+        payload = self._build_read_payload(request, user)
+        return Response(payload, status=201)
