@@ -18,20 +18,13 @@ import PageTitle from "@/components/ui/title";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { SolicitarServicioModal } from "@/components/ui/SolicitarServicioModal";
 import { toast } from "sonner";
 import { apiGet, apiPost } from "@/lib/api";
-import { Solicitud } from "@/lib/types";
 
 export default function BuscarCuidadoresPage() {
   const [filters, setFilters] = useState({
-    especialidad: [] as string[],
+    especialidad: [] as number[],
     disponibilidad: "",
     experiencia: "",
   });
@@ -44,29 +37,24 @@ export default function BuscarCuidadoresPage() {
   const [solicitudEnviada, setSolicitudEnviada] = useState<
     Record<number, boolean>
   >({});
-  const [formData, setFormData] = useState({
-    servicio: [] as string[],
-    fecha_inicio: "",
-    fecha_fin: "",
-    hora: "",
-    rangos_horarios: [] as string[],
-    ubicacion: "",
-    foto: "",
-    descripcion: "",
-  });
-  const [serviciosDisponibles, setServiciosDisponibles] = useState<string[]>(
-    []
-  );
+  const [modalLoading, setModalLoading] = useState(false);
+  const [serviciosDisponibles, setServiciosDisponibles] = useState<any[]>([]);
+  const [provincias, setProvincias] = useState<any[]>([]);
+  const [ciudades, setCiudades] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const ubicaciones: Record<string, string[]> = {
-    "Buenos Aires": ["La Plata", "Mar del Plata", "Bahía Blanca"],
-    Córdoba: ["Córdoba Capital", "Villa María", "Río Cuarto"],
-    "Santa Fe": ["Rosario", "Santa Fe Capital", "Rafaela"],
-    Mendoza: ["Mendoza Capital", "San Rafael"],
-  };
 
   const handleFilterChange = (field: string, value: string) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleEspecialidadChange = (especialidadId: number, checked: boolean) => {
+    setFilters((prev) => {
+      const nuevaEspecialidad = checked
+        ? [...prev.especialidad, especialidadId]
+        : prev.especialidad.filter((id) => id !== especialidadId);
+      return { ...prev, especialidad: nuevaEspecialidad };
+    });
   };
 
   const handleProvinciaChange = (value: string) => {
@@ -81,67 +69,112 @@ export default function BuscarCuidadoresPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [cuidadoresData, servicios] = await Promise.all([
-          apiGet<any[]>("/api/cuidadores/"),
-          apiGet<string[]>("/api/servicios/"),
+        setLoading(true);
+        const [cuidadoresData, servicios, provinciasData] = await Promise.all([
+          apiGet<any[]>("/search/"),
+          apiGet<any[]>("/tipos-cliente/"),
+          apiGet<any[]>("/provincias/"),
         ]);
         setCuidadores(cuidadoresData);
         setServiciosDisponibles(servicios);
+        setProvincias(provinciasData);
       } catch (error) {
         console.error("Error al cargar datos:", error);
-        toast.error("Error al cargar los datos. Usando valores de ejemplo.");
-
-        setCuidadores(cuidadores_ex);
-        setServiciosDisponibles([
-          "Discapacidad Intelectual",
-          "Edad Avanzada",
-          "Discapacidad Motriz",
-          "Cuidado Postoperatorio",
-          "Acompanamiento Médico",
-        ]);
+        toast.error("Error al cargar los datos.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const handleSolicitud = async () => {
+  // Fetch ciudades when provincia changes
+  useEffect(() => {
+    if (provincia) {
+      const fetchCiudades = async () => {
+        try {
+          const ciudadesData = await apiGet<any[]>(`/ciudades/?provincia=${provincia}`);
+          setCiudades(ciudadesData);
+        } catch (error) {
+          console.error("Error al cargar ciudades:", error);
+          toast.error("Error al cargar las ciudades.");
+        }
+      };
+      fetchCiudades();
+    } else {
+      setCiudades([]);
+    }
+  }, [provincia]);
+
+  // Search cuidadores with filters
+  const searchCuidadores = async () => {
+    try {
+      setLoading(true);
+      const searchParams: any = {};
+      
+      if (provincia) searchParams.provincia = provincia;
+      if (ciudad) searchParams.ciudad = ciudad;
+      if (filters.experiencia) searchParams.min_experiencia = filters.experiencia;
+      if (filters.especialidad.length > 0) searchParams.especialidad = filters.especialidad;
+      if (orden) searchParams.ordering = orden;
+
+      const cuidadoresData = await apiGet<any[]>("/search/", searchParams);
+      console.log(cuidadoresData);
+      setCuidadores(cuidadoresData);
+    } catch (error) {
+      console.error("Error al buscar cuidadores:", error);
+      toast.error("Error al buscar cuidadores.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      searchCuidadores();
+    }
+  }, [provincia, ciudad, filters, orden]);
+
+  const handleSolicitud = async (formData: any) => {
     if (!selectedCuidador) return;
 
     try {
-      const solicitudData: Solicitud = {
-        id_cliente: 1,
-        id_cuidador: 1, 
-        id: Date.now(), 
-        cliente: "Usuario Actual",
-        servicio: formData.servicio,
+      setModalLoading(true);
+      
+      // Convert service types to description text
+      const serviceTypesText = formData.servicio.map((service: string) => 
+        service.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+      ).join(', ');
+      
+      // Build description with service types and additional details
+      let descripcion = `Tipos de servicio solicitados: ${serviceTypesText}`;
+      if (formData.descripcion) {
+        descripcion += `\n\nDescripción adicional: ${formData.descripcion}`;
+      }
+      if (formData.ubicacion) {
+        descripcion += `\n\nUbicación: ${formData.ubicacion}`;
+      }
+
+      const servicioData = {
+        receptor_id: selectedCuidador.cuidador_id || selectedCuidador.id,
         fecha_inicio: formData.fecha_inicio,
         fecha_fin: formData.fecha_fin,
-        hora: formData.hora,
-        rangos_horarios: formData.rangos_horarios,
-        ubicacion: formData.ubicacion,
-        foto: formData.foto,
+        descripcion: descripcion,
+        horas_dia: formData.hora,
+        dias_semanales_ids: formData.dias_semanales,
       };
 
-      await apiPost("/api/solicitudes/", solicitudData);
+      await apiPost("/api/servicios/", servicioData);
 
-      toast.success("Solicitud enviada correctamente");
+      toast.success("Solicitud de servicio enviada correctamente");
       setSolicitudEnviada((prev) => ({ ...prev, [selectedCuidador.id]: true }));
       setModalOpen(false);
-
-      setFormData({
-        servicio: [],
-        fecha_inicio: "",
-        fecha_fin: "",
-        hora: "",
-        rangos_horarios: [],
-        ubicacion: "",
-        foto: "",
-        descripcion: "",
-      });
     } catch (error) {
       console.error("Error sending solicitud:", error);
       toast.error("Error al enviar la solicitud. Inténtalo de nuevo.");
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -150,95 +183,6 @@ export default function BuscarCuidadoresPage() {
     setModalOpen(true);
   };
 
-  const cuidadores_ex = [
-    {
-      id: 1,
-      nombre: "María González",
-      especialidad: ["Geriatría"],
-      experiencia: 5,
-      provincia: "Buenos Aires",
-      ciudad: "La Plata",
-      rating: 4.9,
-      reviews: 45,
-      precio: 25,
-      disponible: true,
-      descripcion:
-        "Especialista en cuidado de adultos mayores con experiencia en demencia y Alzheimer.",
-      imagen: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 2,
-      nombre: "Carlos Rodríguez",
-      especialidad: ["Edad Avanzada"],
-      experiencia: 8,
-      provincia: "Buenos Aires",
-      ciudad: "Mar del Plata",
-      rating: 4.8,
-      reviews: 32,
-      precio: 30,
-      disponible: true,
-      descripcion:
-        "Enfermero registrado con experiencia en cuidados post-operatorios y medicación.",
-      imagen: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 3,
-      nombre: "Ana Martínez",
-      especialidad: ["Discapacidad Intelectual"],
-      experiencia: 3,
-      provincia: "Córdoba",
-      ciudad: "Villa María",
-      rating: 4.7,
-      reviews: 28,
-      precio: 22,
-      disponible: false,
-      descripcion:
-        "Especializada en cuidado de personas con discapacidades físicas y cognitivas.",
-      imagen: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: 4,
-      nombre: "Luis Fernández",
-      especialidad: ["Discapacidad Motriz", "Acompanamiento Médico"], 
-      experiencia: 6,
-      provincia: "Mendoza",
-      ciudad: "San Rafael",
-      rating: 4.9,
-      reviews: 51,
-      precio: 35,
-      disponible: true,
-      descripcion:
-        "Fisioterapeuta con especialización en rehabilitación geriátrica.",
-      imagen: "/placeholder.svg?height=100&width=100",
-    },
-  ];
-
-  const cuidadoresFiltrados = cuidadores.filter((c) => {
-    const listado = Array.isArray(c.especialidad)
-      ? c.especialidad.map((e: string) => e.toLowerCase())
-      : typeof c.especialidad === "string"
-      ? [c.especialidad.toLowerCase()]
-      : [];
-
-    const coincide =
-      filters.especialidad.length === 0 ||
-      filters.especialidad.some((f) => listado.includes(f.toLowerCase()));
-    return (
-      coincide &&
-      (!filters.experiencia ||
-        c.experiencia >= parseInt(filters.experiencia)) &&
-      (!provincia || c.provincia.toLowerCase() === provincia.toLowerCase()) &&
-      (!ciudad || c.ciudad.toLowerCase() === ciudad.toLowerCase())
-    );
-  });
-
-  const cuidadoresOrdenados = [...cuidadoresFiltrados].sort((a, b) => {
-    if (orden === "rating") return b.rating - a.rating;
-    if (orden === "experiencia") return b.experiencia - a.experiencia;
-    if (orden === "precio-asc") return a.precio - b.precio;
-    if (orden === "precio-desc") return b.precio - a.precio;
-    return 0;
-  });
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -264,21 +208,14 @@ export default function BuscarCuidadoresPage() {
                 <Label>Especialidades</Label>
                 <div className="space-y-2 mt-2">
                   {serviciosDisponibles.map((servicio) => (
-                    <div key={servicio} className="flex items-center space-x-2">
+                    <div key={servicio.id} className="flex items-center space-x-2">
                       <Checkbox
-                        id={servicio}
-                        checked={filters.especialidad.includes(servicio)}
-                        onCheckedChange={(checked) => {
-                          setFilters((prev) => {
-                            const nuevaEspecialidad = checked
-                              ? [...prev.especialidad, servicio]
-                              : prev.especialidad.filter((s) => s !== servicio);
-                            return { ...prev, especialidad: nuevaEspecialidad };
-                          });
-                        }}
+                        id={servicio.id.toString()}
+                        checked={filters.especialidad.includes(servicio.id)}
+                        onCheckedChange={(checked) => handleEspecialidadChange(servicio.id, !!checked)}
                       />
-                      <label htmlFor={servicio}>
-                        {servicio.replace(/-/g, " ")}
+                      <label htmlFor={servicio.id.toString()}>
+                        {servicio.nombre}
                       </label>
                     </div>
                   ))}
@@ -292,9 +229,9 @@ export default function BuscarCuidadoresPage() {
                     <SelectValue placeholder="Seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(ubicaciones).map((prov) => (
-                      <SelectItem key={prov} value={prov}>
-                        {prov}
+                    {provincias.map((prov) => (
+                      <SelectItem key={prov.id} value={prov.id.toString()}>
+                        {prov.nombre}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -318,12 +255,11 @@ export default function BuscarCuidadoresPage() {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    {provincia &&
-                      ubicaciones[provincia].map((city) => (
-                        <SelectItem key={city} value={city}>
-                          {city}
-                        </SelectItem>
-                      ))}
+                    {ciudades.map((city) => (
+                      <SelectItem key={city.id} value={city.id.toString()}>
+                        {city.nombre}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -351,7 +287,7 @@ export default function BuscarCuidadoresPage() {
                   setFilters({
                     especialidad: [],
                     disponibilidad: "",
-                    experiencia: "1",
+                    experiencia: "",
                   });
                   setProvincia("");
                   setCiudad("");
@@ -367,25 +303,53 @@ export default function BuscarCuidadoresPage() {
         <div className="md:col-span-3 space-y-6">
           <div className="flex justify-between items-center mb-4">
             <p className="text-gray-600">
-              Mostrando {cuidadoresFiltrados.length} cuidadores
+              Mostrando {cuidadores.length} cuidadores
             </p>
             <Select onValueChange={(v) => setOrden(v)}>
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Ordenar por" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="rating">Mejor calificados</SelectItem>
-                <SelectItem value="experiencia">Más experiencia</SelectItem>
+                <SelectItem value="-rating">Mejor calificados</SelectItem>
+                <SelectItem value="-anios_experiencia">Más experiencia</SelectItem>
+                <SelectItem value="anios_experiencia">Menos experiencia</SelectItem>
+                <SelectItem value="usuario__first_name">Nombre A-Z</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {cuidadoresOrdenados.map((c) => (
+          {loading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-lg border p-6 animate-pulse">
+                  <div className="flex gap-6">
+                    <div className="w-24 h-24 bg-gray-300 rounded-full"></div>
+                    <div className="flex-1">
+                      <div className="h-6 bg-gray-300 rounded w-1/3 mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
+                      <div className="flex gap-3">
+                        <div className="h-10 bg-gray-300 rounded w-24"></div>
+                        <div className="h-10 bg-gray-300 rounded w-32"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : cuidadores.length === 0 ? (
+            <div className="text-center py-12">
+              <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron cuidadores</h3>
+              <p className="text-gray-500">Intenta ajustar los filtros de búsqueda</p>
+            </div>
+          ) : (
+            cuidadores.map((c) => (
             <Card key={c.id}>
               <CardContent className="p-6">
                 <div className="flex gap-6">
                   <img
-                    src={c.imagen}
+                    src={c.foto_perfil || "/placeholder-user.jpg"}
                     alt={c.nombre}
                     className="w-24 h-24 rounded-full object-cover"
                   />
@@ -404,213 +368,45 @@ export default function BuscarCuidadoresPage() {
                       </div>
                       <div>{c.experiencia} años de experiencia</div>
                     </div>
+                    <div className="mb-2">
+                      <div className="flex flex-wrap gap-2">
+                        {c.especialidad.map((esp: string, index: number) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {esp}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
                     <p className="text-gray-600 mb-4">{c.descripcion}</p>
                     <div className="flex gap-3">
                       <Link href={`/cuidador/${c.id}`}>
                         <Button variant="outline">Ver Perfil</Button>
                       </Link>
-                      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-                        <DialogTrigger asChild>
-                          <Button
-                            disabled={solicitudEnviada[c.id]}
-                            onClick={() => openModal(c)}
-                          >
-                            {solicitudEnviada[c.id]
-                              ? "Solicitud enviada"
-                              : "Solicitar Servicio"}
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-md">
-                          <DialogHeader>
-                            <DialogTitle className="text-blue-600">
-                              Solicitar Servicio - {selectedCuidador?.nombre}
-                            </DialogTitle>
-                          </DialogHeader>
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="servicio">Tipo de Servicio</Label>
-                              <div className="space-y-2 mt-2">
-                                {[
-                                  "discapacidad-intelectual",
-                                  "edad-avanzada",
-                                  "discapacidad-motriz",
-                                  "cuidado-postoperatorio",
-                                  "acompanamiento-medico",
-                                ].map((item) => (
-                                  <div
-                                    key={item}
-                                    className="flex items-center gap-2"
-                                  >
-                                    <Checkbox
-                                      id={item}
-                                      checked={formData.servicio.includes(item)}
-                                      onCheckedChange={(checked) => {
-                                        setFormData((prev) => {
-                                          const servicio = checked
-                                            ? [...prev.servicio, item]
-                                            : prev.servicio.filter(
-                                                (s) => s !== item
-                                              );
-                                          return { ...prev, servicio };
-                                        });
-                                      }}
-                                    />
-                                    <label
-                                      htmlFor={item}
-                                      className="text-sm text-gray-700 capitalize"
-                                    >
-                                      {item.replace(/-/g, " ")}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <Label htmlFor="fecha_inicio">
-                                  Fecha Inicio
-                                </Label>
-                                <Input
-                                  id="fecha_inicio"
-                                  type="date"
-                                  value={formData.fecha_inicio}
-                                  onChange={(e) =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      fecha_inicio: e.target.value,
-                                    }))
-                                  }
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor="fecha_fin">Fecha Fin</Label>
-                                <Input
-                                  id="fecha_fin"
-                                  type="date"
-                                  value={formData.fecha_fin}
-                                  onChange={(e) =>
-                                    setFormData((prev) => ({
-                                      ...prev,
-                                      fecha_fin: e.target.value,
-                                    }))
-                                  }
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <Label htmlFor="hora">Horario</Label>
-                              <Select
-                                value={formData.hora}
-                                onValueChange={(value) =>
-                                  setFormData((prev) => ({
-                                    ...prev,
-                                    hora: value,
-                                  }))
-                                }
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Seleccionar horario" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="morning">
-                                    Mañana (8:00 - 14:00)
-                                  </SelectItem>
-                                  <SelectItem value="night">
-                                    Noche (18:00 - 8:00)
-                                  </SelectItem>
-                                  <SelectItem value="whole-day">
-                                    Todo el día (24 horas)
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-
-                            <div>
-                              <Label htmlFor="ubicacion">Ubicación</Label>
-                              <Input
-                                id="ubicacion"
-                                value={formData.ubicacion}
-                                onChange={(e) =>
-                                  setFormData((prev) => ({
-                                    ...prev,
-                                    ubicacion: e.target.value,
-                                  }))
-                                }
-                                placeholder="Dirección donde se prestará el servicio"
-                              />
-                            </div>
-
-                            <div>
-                              <Label htmlFor="descripcion">
-                                Descripción del servicio
-                              </Label>
-                              <Textarea
-                                id="descripcion"
-                                value={formData.descripcion || ""}
-                                onChange={(e) =>
-                                  setFormData((prev) => ({
-                                    ...prev,
-                                    descripcion: e.target.value,
-                                  }))
-                                }
-                                placeholder="Describe las necesidades específicas del cuidado..."
-                                rows={3}
-                              />
-                            </div>
-
-                            <div>
-                              <Label htmlFor="rangos_horarios">
-                                Horarios de Servicio
-                              </Label>
-                              <Textarea
-                                id="rangos_horarios"
-                                value={formData.rangos_horarios.join(", ")}
-                                onChange={(e) =>
-                                  setFormData((prev) => ({
-                                    ...prev,
-                                    rangos_horarios: e.target.value
-                                      .split(",")
-                                      .map((s) => s.trim()),
-                                  }))
-                                }
-                                placeholder="Ej: 8:00-12:00, 14:00-18:00"
-                              />
-                            </div>
-
-                            <div className="flex gap-2 pt-4">
-                              <Button
-                                variant="outline"
-                                onClick={() => setModalOpen(false)}
-                                className="flex-1"
-                              >
-                                Cancelar
-                              </Button>
-                              <Button
-                                onClick={handleSolicitud}
-                                className="flex-1"
-                              >
-                                Enviar Solicitud
-                              </Button>
-                            </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
+                      <Button
+                        disabled={solicitudEnviada[c.id]}
+                        onClick={() => openModal(c)}
+                      >
+                        {solicitudEnviada[c.id]
+                          ? "Solicitud enviada"
+                          : "Solicitar Servicio"}
+                      </Button>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
+          ))
+          )}
         </div>
       </div>
+
+      <SolicitarServicioModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        cuidador={selectedCuidador}
+        onSubmit={handleSolicitud}
+        loading={modalLoading}
+      />
     </div>
   );
-}
-function setLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
-function setServiciosDisponibles(especialidad: string[]) {
-  throw new Error("Function not implemented.");
 }

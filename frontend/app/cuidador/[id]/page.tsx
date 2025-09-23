@@ -1,130 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Heart,
-  MapPin,
-  Calendar,
-  Phone,
-  Mail,
-  Star,
-  MessageCircle,
-  ArrowLeft,
-  CircleUserRound,
-} from "lucide-react";
+import { Calendar, Phone, Mail, Star, CircleUserRound, MessageCircle, MapPin } from "lucide-react";
 import Link from "next/link";
-import { Review } from "@/lib/types";
-
-interface PerfilPublico {
-  id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  telefono: string;
-  direccion: string;
-  fecha_nacimiento: string;
-  descripcion: string;
-  foto_perfil: string;
-  fotos: string[];
-  categorias: string[];
-  provincia: string;
-  ciudad: string;
-  rating?: number | null;
-  reviews: Review[]; // ⬅️ ahora es array
-  reviews_count?: number; // ⬅️ opcional, total
-  experiencia?: number;
-  especialidad?: string;
-  precio?: number;
-  disponible?: boolean;
-  tipo_usuario: "cliente" | "cuidador";
-  certificados?: { file: string; name: string }[];
-  experiencias?: {
-    descripcion: string;
-    fecha_inicio: string;
-    fecha_fin: string;
-  }[];
-}
+import { PerfilPublico } from "@/lib/types";
+import { useUser } from "@/context/UserContext";
+import { ReviewCard } from "@/components/ui/ReviewCard";
 
 export default function PerfilPublicoPage() {
   const params = useParams();
+  const router = useRouter();
+  const currentUser = useUser();
   const [perfil, setPerfil] = useState<PerfilPublico | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const sampleReviews = [
-    {
-      id: 1,
-      rating: 5,
-      author: "Ana López",
-      date: "Hace 2 semanas",
-      comment:
-        "Excelente cuidadora, muy profesional y cariñosa con mi madre. La recomiendo completamente. Siempre llegaba puntual y se notaba su experiencia en el trato con personas mayores.",
-    },
-    {
-      id: 2,
-      rating: 4,
-      author: "Carlos Mendez",
-      date: "Hace 1 mes",
-      comment:
-        "Muy responsable y puntual. Mi padre se sintió muy cómodo con su cuidado. Nos mantenía informados constantemente sobre el estado de papá.",
-    },
-    {
-      id: 3,
-      rating: 5,
-      author: "María Fernández",
-      date: "Hace 1 mes",
-      comment:
-        "Una persona excepcional. Cuidó a mi abuela durante 3 meses y siempre fue muy atenta y cariñosa. Tiene mucha paciencia y conocimiento sobre medicamentos.",
-    },
-    {
-      id: 4,
-      rating: 5,
-      author: "Roberto Silva",
-      date: "Hace 2 meses",
-      comment:
-        "Profesional de primera. Mi esposa tiene Alzheimer y María supo manejar la situación con mucha delicadeza y profesionalismo. Altamente recomendada.",
-    },
-    {
-      id: 5,
-      rating: 4,
-      author: "Laura Martínez",
-      date: "Hace 2 meses",
-      comment:
-        "Muy buena experiencia. Cuidó a mi madre durante su recuperación post-operatoria. Siempre atenta a los detalles y muy comunicativa con la familia.",
-    },
-    {
-      id: 6,
-      rating: 5,
-      author: "Diego Ramírez",
-      date: "Hace 3 meses",
-      comment:
-        "Excelente servicio. María es una persona muy confiable y profesional. Mi padre quedó muy contento con su atención y cuidado diario.",
-    },
-    {
-      id: 7,
-      rating: 5,
-      author: "Carmen Ruiz",
-      date: "Hace 3 meses",
-      comment:
-        "Una cuidadora excepcional. Tiene mucha experiencia y se nota en cada detalle. Mi madre la quiere mucho y siempre pregunta por ella.",
-    },
-    {
-      id: 8,
-      rating: 4,
-      author: "Fernando Torres",
-      date: "Hace 4 meses",
-      comment:
-        "Muy profesional y dedicada. Cuidó a mi suegra durante un período difícil y siempre mostró mucha empatía y comprensión.",
-    },
-  ];
 
   useEffect(() => {
     const fetchPerfil = async () => {
@@ -132,69 +28,11 @@ export default function PerfilPublicoPage() {
         setLoading(true);
         const data = await apiGet<PerfilPublico>(`/perfil/${params.id}`);
         setPerfil(data);
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        toast.error("Error al cargar el perfil. Mostrando datos de ejemplo.");
 
-        setPerfil({
-          id: Number(params.id),
-          username: "mariagarcia",
-          first_name: "María",
-          last_name: "García",
-          email: "maria.garcia@example.com",
-          telefono: "+54 11 1234-5678",
-          direccion: "Av. Corrientes 1234",
-          fecha_nacimiento: "1985-03-15",
-          descripcion:
-            "Cuidadora profesional con más de 8 años de experiencia en el cuidado de adultos mayores. Especializada en pacientes con demencia y Alzheimer. Me caracterizo por mi paciencia, dedicación y trato cariñoso hacia las personas que cuido.",
-          foto_perfil: "",
-          fotos: [
-            "/placeholder.svg?height=300&width=400",
-            "/placeholder.svg?height=300&width=400",
-            "/placeholder.svg?height=300&width=400",
-          ],
-          categorias: [
-            "Edad avanzada",
-            "Discapacidad motriz",
-            "Enfermedades crónicas",
-          ],
-          provincia: "Buenos Aires",
-          ciudad: "La Plata",
-          rating: 4.8,
-          reviews: [],
-          experiencia: 8,
-          precio: 25,
-          disponible: true,
-          tipo_usuario: "cuidador",
-          certificados: [
-            { file: "/placeholder.pdf", name: "Certificado en Geriatría" },
-            { file: "/placeholder.pdf", name: "Curso de Primeros Auxilios" },
-            {
-              file: "/placeholder.pdf",
-              name: "Certificación en Cuidado de Alzheimer",
-            },
-          ],
-          experiencias: [
-            {
-              descripcion:
-                "Cuidadora en Residencia Geriátrica San José - Responsable del cuidado integral de 15 residentes con diferentes grados de dependencia.",
-              fecha_inicio: "2020-01-15",
-              fecha_fin: "2023-12-31",
-            },
-            {
-              descripcion:
-                "Cuidadora domiciliaria independiente - Atención personalizada a pacientes con demencia y Alzheimer en sus hogares.",
-              fecha_inicio: "2018-03-01",
-              fecha_fin: "2019-12-31",
-            },
-            {
-              descripcion:
-                "Auxiliar de enfermería en Hospital Municipal - Apoyo en el área de geriatría y cuidados paliativos.",
-              fecha_inicio: "2016-06-01",
-              fecha_fin: "2018-02-28",
-            },
-          ],
-        });
+      } catch (error) {
+        
+        toast.error("Error al cargar el perfil");
+        setPerfil(null);
       } finally {
         setLoading(false);
       }
@@ -204,6 +42,8 @@ export default function PerfilPublicoPage() {
       fetchPerfil();
     }
   }, [params.id]);
+
+  const notOwner = Boolean(currentUser && perfil && currentUser.id !== perfil.id);
 
   const calcularEdad = (fechaNacimiento: string) => {
     const hoy = new Date();
@@ -237,7 +77,7 @@ export default function PerfilPublicoPage() {
     );
   }
 
-  if (!perfil) {
+  if (!perfil || perfil.tipo_usuario !== "cuidador") {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -247,13 +87,30 @@ export default function PerfilPublicoPage() {
           <p className="text-gray-600 mb-6">
             El perfil que buscas no existe o no está disponible.
           </p>
-          <Link href="/buscar">
-            <Button>Volver a la búsqueda</Button>
+          <Link href="/cuidador/dashboard">
+            <Button>Volver a Dashboard</Button>
           </Link>
         </div>
       </div>
     );
   }
+
+  const crearChat = async () => {
+    if (!perfil) return;
+    try {
+      const res = await fetch("/api/b/conversaciones/ensure/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: perfil.id }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const chatPath = currentUser?.es_cliente ? "/cliente/chat" : "/cuidador/chat";
+      router.push(`${chatPath}?c=${data.id}`);
+    } catch {
+      toast.error("No se pudo abrir el chat");
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -287,6 +144,14 @@ export default function PerfilPublicoPage() {
                 <div>{perfil.experiencia} años de experiencia</div>
               )}
             </div>
+            {notOwner && (
+              <div className="mt-3">
+                <Button onClick={crearChat} className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4" />
+                  Chatear
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -459,61 +324,45 @@ export default function PerfilPublicoPage() {
               </Card>
             )}
 
-          {/* Reviews Section (placeholder) */}
-          {/* Reviews Section with Scrollable Content */}
-          {perfil.tipo_usuario === "cuidador" &&
-            perfil.reviews_count &&
-            perfil.reviews_count > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Reseñas ({perfil.reviews_count})</CardTitle>
-                </CardHeader>
-                <CardContent>
+          {/* Reviews Section */}
+          {perfil.tipo_usuario === "cuidador" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Reseñas ({perfil.reviews_count || 0})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {perfil.reviews && perfil.reviews.length > 0 ? (
                   <div className="max-h-96 overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {perfil.reviews.map((review) => (
-                      <div
+                      <ReviewCard
                         key={review.id}
-                        className="border-b border-gray-200 pb-4 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center">
-                            <div className="flex mr-2">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`h-4 w-4 ${
-                                    i < review.rating
-                                      ? "text-yellow-400 fill-current"
-                                      : "text-gray-300"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <span className="font-medium text-gray-900">
-                              {review.author}
-                            </span>
-                          </div>
-                          <span className="text-sm text-gray-500">
-                            {review.date}
-                          </span>
-                        </div>
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                          {review.comment}
+                        id={review.id}
+                        rating={review.rating}
+                        comment={review.comment}
+                        date={review.date}
+                        author={review.author}
+                        variant="compact"
+                        className="border-b border-gray-200 pb-4 last:border-b-0 bg-transparent p-0"
+                      />
+                    ))}
+                    {perfil.reviews.length > 5 && (
+                      <div className="mt-4 text-center">
+                        <p className="text-sm text-gray-500">
+                          Mostrando {perfil.reviews.length} de{" "}
+                          {perfil.reviews_count} reseñas
                         </p>
                       </div>
-                    ))}
+                    )}
                   </div>
-                  {perfil.reviews.length > 5 && (
-                    <div className="mt-4 text-center">
-                      <p className="text-sm text-gray-500">
-                        Mostrando {perfil.reviews.length} de{" "}
-                        {perfil.reviews_count} reseñas
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+                ) : (
+                  <div className="text-center py-8">
+                    <Star className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500">Aún no recibió calificaciones.</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

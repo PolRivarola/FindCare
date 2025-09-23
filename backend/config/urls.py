@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from users.views_public import PerfilPublicoView
-from users.views import MeView, RegistroClienteView, RegistroCuidadorView, UsuarioViewSet,ClienteViewSet, CuidadorViewSet, TipoClienteViewSet
+from users.views import MeView, RegistroClienteView, RegistroCuidadorView, UsuarioViewSet,ClienteViewSet, CuidadorViewSet, TipoClienteViewSet, CuidadorSearchView
+from users.admin_views import AdminStatsView, AdminFlaggedRatingsView, AdminRatingActionView
 from location.views import CiudadViewSet, DireccionViewSet, ProvinciaViewSet
 from chat.views import ConversacionViewSet, MensajeViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -28,6 +29,7 @@ from django.conf.urls.static import static
 from services.views import (
     CalificacionViewSet,
     CuidadorPerfilView,
+    ClientePerfilView,
     ServicioViewSet,
     ExperienciaViewSet,
     CertificacionViewSet,
@@ -63,6 +65,13 @@ urlpatterns = [
     path("api/users/me/", MeView.as_view(), name="users_me"),
     path("api/perfil/<int:pk>/",  PerfilPublicoView.as_view(), name="perfil_publico"),  
     path("api/cuidador/perfil/", CuidadorPerfilView.as_view(), name="cuidador_perfil"),
+    path("api/cliente/perfil/", ClientePerfilView.as_view(), name="cliente_perfil"),
+    path("api/search/", CuidadorSearchView.as_view(), name="cuidadores_search"),
+    
+    # Admin endpoints
+    path("api/admin/stats/", AdminStatsView.as_view(), name="admin_stats"),
+    path("api/admin/flagged-ratings/", AdminFlaggedRatingsView.as_view(), name="admin_flagged_ratings"),
+    path("api/admin/rating-action/", AdminRatingActionView.as_view(), name="admin_rating_action"),
 
 ]
 

@@ -43,7 +43,7 @@ from .serializers import (
 from .filters import ServicioFilter
 
 from location.models import Provincia, Ciudad, Direccion
-from users.models import Cuidador, TipoCliente
+from users.models import Cuidador, Cliente, TipoCliente, FotoCliente
 
 
 # --------------------------
@@ -96,6 +96,23 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # el cliente autenticado crea la solicitud
+        # Handle dias_semanales_ids - convert day names to DiaSemanal objects
+        dias_semanales_names = serializer.validated_data.get('dias_semanales_ids', [])
+        if dias_semanales_names:
+            # Convert day names to DiaSemanal objects
+            dias_objects = []
+            for dia_name in dias_semanales_names:
+                dia, created = DiaSemanal.objects.get_or_create(
+                    nombre=dia_name,
+                    defaults={'nombre': dia_name}
+                )
+                dias_objects.append(dia)
+            serializer.validated_data['dias_semanales'] = dias_objects
+        else:
+            # If no days provided, return error
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({"dias_semanales_ids": "Debe seleccionar al menos un día de la semana."})
+        
         serializer.save(cliente=self.request.user)
 
     @action(detail=False, methods=["get"], url_path="stats/cuidador")
@@ -194,8 +211,39 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
 
 class CalificacionViewSet(viewsets.ModelViewSet):
-    queryset = Calificacion.objects.all()
+    queryset = Calificacion.objects.select_related("autor", "receptor").all()
     serializer_class = CalificacionSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Permite filtrar por receptor_id (quien recibió la calificación)
+        rid = self.request.query_params.get("receptor_id")
+        if rid:
+            try:
+                qs = qs.filter(receptor_id=int(rid))
+            except ValueError:
+                pass
+        return qs.order_by("-creado_en")
+
+    @action(detail=True, methods=["post"], url_path="reportar")
+    def reportar(self, request, pk=None):
+        cal = self.get_object()
+        # Solo el receptor o admin puede reportar
+        if request.user != cal.receptor and not request.user.is_staff:
+            return Response({"detail": "No autorizado"}, status=403)
+        cal.reportada = True
+        cal.save(update_fields=["reportada"])
+        return Response({"detail": "ok", "reportada": True})
+
+    @action(detail=True, methods=["post"], url_path="desreportar")
+    def desreportar(self, request, pk=None):
+        cal = self.get_object()
+        # Solo el receptor o admin puede revertir
+        if request.user != cal.receptor and not request.user.is_staff:
+            return Response({"detail": "No autorizado"}, status=403)
+        cal.reportada = False
+        cal.save(update_fields=["reportada"])
+        return Response({"detail": "ok", "reportada": False})
 
 
 class ExperienciaViewSet(viewsets.ModelViewSet):
@@ -559,3 +607,170 @@ class CuidadorPerfilView(APIView):
     
         payload = self._build_read_payload(request, user)
         return Response(payload, status=201)
+
+
+# --------------------------
+# Perfil de Cliente (GET/PATCH/POST)
+# --------------------------
+
+class ClientePerfilView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def _ensure_cliente(self, user):
+        return hasattr(user, "cliente")
+
+    def _build_read_payload(self, request, user):
+        u = user
+        dir_str = u.direccion.direccion if u.direccion else ""
+        prov = u.direccion.ciudad.provincia.nombre if u.direccion else ""
+        ciu = u.direccion.ciudad.nombre if u.direccion else ""
+
+        cl = u.cliente
+        cats = list(cl.tipos_cliente.values_list("nombre", flat=True))
+        fotos = list(FotoCliente.objects.filter(cliente=cl).values_list("imagen", flat=True))
+        fotos_abs = []
+        for path in fotos:
+            url = f"{request.build_absolute_uri('/')[:-1]}{path.url if hasattr(path,'url') else path}"
+            fotos_abs.append(url)
+
+        return {
+            "username": u.username,
+            "first_name": u.first_name,
+            "last_name": u.last_name,
+            "email": u.email,
+            "telefono": u.telefono or "",
+            "direccion": dir_str,
+            "fecha_nacimiento": u.fecha_nacimiento,
+            "descripcion": u.descripcion or "",
+            "foto_perfil": request.build_absolute_uri(u.foto_perfil.url) if u.foto_perfil else "",
+            "fotos": fotos_abs,
+            "categorias": cats,
+            "provincia": prov,
+            "ciudad": ciu,
+        }
+
+    def get(self, request):
+        user = request.user
+        if not self._ensure_cliente(user):
+            return Response({"detail": "No es cliente."}, status=403)
+        return Response(self._build_read_payload(request, user), status=200)
+
+    @transaction.atomic
+    def patch(self, request):
+        user = request.user
+        if not self._ensure_cliente(user):
+            return Response({"detail": "No es cliente."}, status=403)
+
+        # básicos
+        for field in ["first_name", "last_name", "email", "telefono", "fecha_nacimiento", "descripcion"]:
+            if field in request.data and request.data.get(field) not in (None, ""):
+                setattr(user, field, request.data.get(field))
+
+        if request.FILES.get("foto_perfil"):
+            user.foto_perfil = request.FILES["foto_perfil"]
+
+        # dirección
+        prov_name = request.data.get("provincia")
+        city_name = request.data.get("ciudad")
+        addr_str = request.data.get("direccion")
+        if prov_name and city_name and addr_str:
+            prov, _ = Provincia.objects.get_or_create(nombre=prov_name)
+            ciu, _ = Ciudad.objects.get_or_create(nombre=city_name, provincia=prov)
+            dir_obj, _ = Direccion.objects.get_or_create(direccion=addr_str, ciudad=ciu)
+            user.direccion = dir_obj
+
+        user.save()
+
+        # categorías (por nombres en JSON string)
+        raw_cats = request.data.get("categorias")
+        cats = []
+        if isinstance(raw_cats, str) and raw_cats.strip():
+            try:
+                parsed = json.loads(raw_cats)
+                if isinstance(parsed, list):
+                    cats = list(TipoCliente.objects.filter(nombre__in=parsed))
+            except Exception:
+                cats = []
+        if cats:
+            user.cliente.tipos_cliente.set(cats)
+
+        # fotos nuevas (append)
+        for f in request.FILES.getlist("fotos"):
+            FotoCliente.objects.create(cliente=user.cliente, imagen=f)
+
+        return Response(self._build_read_payload(request, user), status=200)
+
+    @transaction.atomic
+    def post(self, request):
+        """Registro de cliente (similar a cuidador)."""
+        User = get_user_model()
+        first_name = request.data.get("first_name", "").strip()
+        last_name = request.data.get("last_name", "").strip()
+        email = request.data.get("email", "").strip().lower()
+        telefono = request.data.get("telefono", "").strip()
+        fecha_nac = request.data.get("fecha_nacimiento")
+        descripcion = request.data.get("descripcion", "")
+        password = request.data.get("password")
+        confirm = request.data.get("confirm_password")
+        if not all([first_name, last_name, email, telefono, fecha_nac, descripcion, password, confirm]):
+            return Response({"detail": "Campos obligatorios faltantes."}, status=400)
+        if password != confirm:
+            return Response({"detail": "Las contraseñas no coinciden."}, status=400)
+        if User.objects.filter(email=email).exists():
+            return Response({"detail": "Ya existe un usuario con ese email."}, status=400)
+
+        # direccion
+        provincia = request.data.get("provincia")
+        ciudad = request.data.get("ciudad")
+        direccion = request.data.get("direccion")
+        dir_obj = None
+        if provincia and ciudad and direccion:
+            prov, _ = Provincia.objects.get_or_create(nombre=provincia)
+            ciu, _ = Ciudad.objects.get_or_create(nombre=ciudad, provincia=prov)
+            dir_obj, _ = Direccion.objects.get_or_create(direccion=direccion, ciudad=ciu)
+
+        username = (first_name or "user").lower() + "." + (last_name or "user").lower()
+        i = 1
+        base = username
+        while User.objects.filter(username=username).exists():
+            username = f"{base}-{i}"
+            i += 1
+
+        user = User(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            telefono=telefono,
+            descripcion=descripcion,
+            direccion=dir_obj,
+        )
+        if fecha_nac:
+            try:
+                user.fecha_nacimiento = datetime.fromisoformat(fecha_nac).date()
+            except Exception:
+                pass
+        foto = request.FILES.get("foto_perfil")
+        if foto:
+            user.foto_perfil = foto
+        user.set_password(password)
+        user.save()
+
+        # crear cliente y setear categorias
+        Cliente.objects.create(usuario=user)
+        raw_cats = request.data.get("categorias")
+        if raw_cats:
+            try:
+                parsed = json.loads(raw_cats)
+                if isinstance(parsed, list):
+                    qs = TipoCliente.objects.filter(nombre__in=parsed)
+                    user.cliente.tipos_cliente.set(qs)
+            except Exception:
+                pass
+
+        # fotos
+        for f in request.FILES.getlist("fotos"):
+            FotoCliente.objects.create(cliente=user.cliente, imagen=f)
+
+        return Response(self._build_read_payload(request, user), status=201)

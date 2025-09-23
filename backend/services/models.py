@@ -11,6 +11,9 @@ class Servicio(models.Model):
     dias_semanales = models.ManyToManyField('DiaSemanal', related_name='servicios')
     aceptado = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.cliente} - {self.receptor} - {self.fecha_inicio} - {self.fecha_fin}"
+
 class Calificacion(models.Model):
     servicio = models.ForeignKey("Servicio", on_delete=models.CASCADE, related_name="calificaciones")
     autor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)  # cliente o cuidador
@@ -18,6 +21,7 @@ class Calificacion(models.Model):
     puntuacion = models.PositiveSmallIntegerField()
     comentario = models.TextField(blank=True, null=True)
     creado_en = models.DateTimeField(auto_now_add=True)
+    reportada = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("servicio", "autor")

@@ -10,18 +10,9 @@ import SingleImageInput from "@/components/ui/inputPic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  CalendarDays,
-  MapPin,
-  User,
-  FileText,
-  Award,
-  Briefcase,
-  Upload,
-  X,
-  Download,
-} from "lucide-react";
+import { CalendarDays, MapPin, User, FileText, Award, Briefcase, Upload, X, Download } from "lucide-react";
 import { toast } from "sonner";
+import ProfileInfoLocationCards from "@/components/ui/ProfileInfoLocationCards";
 
 type Exp = { descripcion: string; fecha_inicio: string; fecha_fin: string };
 type CertLocal = { file: File; name?: string; url: string };
@@ -186,9 +177,8 @@ export default function CuidadorForm({
       .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
       .map((c) => c.id);
 
-    if (categoriasIds.length) {
-      fd.append("categorias_ids", JSON.stringify(categoriasIds));
-    }
+    // Enviar como claves repetidas para multipart/form-data
+    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
 
     if (mode === "create") {
       // Validación básica en front
@@ -285,7 +275,7 @@ export default function CuidadorForm({
           Completa tu información para ofrecer los mejores servicios de cuidado
         </p>
         <p className="text-sm text-gray-500">
-          Los campos marcados con <span className="text-red-500">*</span> son obligatorios
+          Los campos marcados con <span className="text-red-500 font-bold">*</span> son obligatorios
         </p>
       </div>
 
@@ -310,216 +300,9 @@ export default function CuidadorForm({
         </CardContent>
       </Card>
 
-      {/* Personal Information */}
-      <Card className="border-none shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg">
-          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
-            <User className="h-5 w-5 text-green-600" />
-            Información Personal
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                Nombre <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={perfil.first_name}
-                onChange={(e) =>
-                  setPerfil({ ...perfil, first_name: e.target.value })
-                }
-                placeholder="Ingresa tu nombre"
-                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">
-                Apellido <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={perfil.last_name}
-                onChange={(e) =>
-                  setPerfil({ ...perfil, last_name: e.target.value })
-                }
-                placeholder="Ingresa tu apellido"
-                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
-              />
-            </div>
-          </div>
+      <ProfileInfoLocationCards perfil={perfil as any} setPerfil={setPerfil as any} provincias={provincias} ciudadesPorProvincia={ciudadesPorProvincia} showRequired={true} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={perfil.email}
-                onChange={(e) =>
-                  setPerfil({ ...perfil, email: e.target.value })
-                }
-                placeholder="tu@email.com"
-                type="email"
-                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">
-                Teléfono <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={perfil.telefono}
-                onChange={(e) =>
-                  setPerfil({ ...perfil, telefono: e.target.value })
-                }
-                placeholder="+34 600 123 456"
-                className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              <CalendarDays className="h-4 w-4 text-green-600" />
-              Fecha de Nacimiento <span className="text-red-500">*</span>
-            </label>
-            <Input
-              type="date"
-              value={perfil.fecha_nacimiento || ""}
-              onChange={(e) =>
-                setPerfil({ ...perfil, fecha_nacimiento: e.target.value })
-              }
-              className="h-12 border-2 border-gray-200 focus:border-green-500 transition-colors"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
-              Descripción Personal <span className="text-red-500">*</span>
-            </label>
-            <Textarea
-              className="min-h-32 border-2 border-gray-200 focus:border-green-500 transition-colors resize-none"
-              value={perfil.descripcion}
-              onChange={(e) =>
-                setPerfil({ ...perfil, descripcion: e.target.value })
-              }
-              placeholder="Cuéntanos sobre ti, tu experiencia y tu enfoque en el cuidado..."
-            />
-          </div>
-          {mode === "create" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Input
-                type="password"
-                placeholder="Repetir contraseña"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-          )}
-          {mode === "edit" && (
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">
-                Cambiar contraseña (opcional)
-              </p>
-              <Input
-                type="password"
-                placeholder="Contraseña actual"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  type="password"
-                  placeholder="Nueva contraseña"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <Input
-                  type="password"
-                  placeholder="Repetir nueva contraseña"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Location Information */}
-      <Card className="border-none shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-t-lg">
-          <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
-            <MapPin className="h-5 w-5 text-blue-600" />
-            Ubicación
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">
-                Provincia <span className="text-red-500">*</span>
-              </label>
-              <select
-                className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
-                value={perfil.provincia}
-                onChange={(e) => {
-                  const p = e.target.value;
-                  setPerfil({
-                    ...perfil,
-                    provincia: p,
-                    ciudad: (ciudadesPorProvincia[p] || [])[0] || "",
-                  });
-                }}
-              >
-                {provincias.map((prov) => (
-                  <option key={prov} value={prov}>
-                    {prov}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">
-                Ciudad <span className="text-red-500">*</span>
-              </label>
-              <select
-                className="w-full h-12 border-2 border-gray-200 rounded-md px-4 py-2 focus:border-blue-500 focus:outline-none transition-colors bg-white"
-                value={perfil.ciudad}
-                onChange={(e) =>
-                  setPerfil({ ...perfil, ciudad: e.target.value })
-                }
-              >
-                {(ciudadesPorProvincia[perfil.provincia] || []).map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
-              Dirección
-            </label>
-            <Input
-              value={perfil.direccion}
-              onChange={(e) =>
-                setPerfil({ ...perfil, direccion: e.target.value })
-              }
-              placeholder="Calle, número, piso..."
-              className="h-12 border-2 border-gray-200 focus:border-blue-500 transition-colors"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Categories */}
       <Card className="border-none shadow-lg">
@@ -590,8 +373,9 @@ export default function CuidadorForm({
 
               <div className="space-y-4 pr-12">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                     Descripción de la experiencia
+                    <span className="text-red-500 font-bold">*</span>
                   </label>
                   <Textarea
                     value={exp.descripcion}
@@ -605,8 +389,9 @@ export default function CuidadorForm({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-700">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                       Fecha de inicio
+                      <span className="text-red-500 font-bold">*</span>
                     </label>
                     <Input
                       type="date"
@@ -618,8 +403,9 @@ export default function CuidadorForm({
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-700">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                       Fecha de fin
+                      <span className="text-red-500 font-bold">*</span>
                     </label>
                     <Input
                       type="date"
@@ -740,6 +526,32 @@ export default function CuidadorForm({
           ) : null}
         </CardContent>
       </Card>
+
+      {/* Passwords */}
+      {mode === "create" ? (
+        <Card className="border-none shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+            <CardTitle className="text-xl text-gray-800">Crear contraseña</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input type="password" placeholder="Repetir contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="border-none shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+            <CardTitle className="text-xl text-gray-800">Cambiar contraseña (opcional)</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Input type="password" placeholder="Contraseña actual" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+              <Input type="password" placeholder="Nueva contraseña" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <Input type="password" placeholder="Repetir nueva contraseña" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Submit Button */}
       <div className="flex justify-center pt-6">

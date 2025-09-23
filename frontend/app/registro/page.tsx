@@ -11,8 +11,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Heart, ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
-import CuidadorForm, { type PerfilCuidador } from "@/components/ui/cuidadorForm";
-import ClienteForm, { type ClienteFormPerfil } from "@/components/ui/clienteForm";
+import CuidadorForm, {
+  type PerfilCuidador,
+} from "@/components/ui/cuidadorForm";
+import ClienteForm, {
+  type ClienteFormPerfil,
+} from "@/components/ui/clienteForm";
 import { apiGet, apiPost, apiPostFormData } from "@/lib/api";
 
 type Categoria = { id: number; nombre: string };
@@ -25,8 +29,12 @@ export default function Registro() {
 
   // ======= catálogos =======
   const [provincias, setProvincias] = useState<string[]>([]);
-  const [ciudadesPorProvincia, setCiudadesPorProvincia] = useState<Record<string, string[]>>({});
-  const [categoriasDisponibles, setCategoriasDisponibles] = useState<Categoria[]>([]);
+  const [ciudadesPorProvincia, setCiudadesPorProvincia] = useState<
+    Record<string, string[]>
+  >({});
+  const [categoriasDisponibles, setCategoriasDisponibles] = useState<
+    Categoria[]
+  >([]);
   const [loadingCatalogos, setLoadingCatalogos] = useState(true);
 
   useEffect(() => {
@@ -35,13 +43,19 @@ export default function Registro() {
         setLoadingCatalogos(true);
 
         // Provincias
-        const provs = await apiGet<{ id: number; nombre: string }[]>("/provincias");
+        const provs = await apiGet<{ id: number; nombre: string }[]>(
+          "/provincias"
+        );
         setProvincias(provs.map((p) => p.nombre));
 
         // Ciudades
-        const ciudades = await apiGet<{ id: number; nombre: string; provincia: { id: number; nombre: string } }[]>(
-          "/ciudades"
-        );
+        const ciudades = await apiGet<
+          {
+            id: number;
+            nombre: string;
+            provincia: { id: number; nombre: string };
+          }[]
+        >("/ciudades");
         const map: Record<string, string[]> = {};
         ciudades.forEach((c) => {
           const provName = c.provincia?.nombre ?? "";
@@ -107,15 +121,13 @@ export default function Registro() {
   // CuidadorForm nos llama con un FormData ya armado (foto, experiencias JSON, certificados, categorias_ids, etc.)
   const handleRegistroCuidador = async (fd: FormData) => {
     try {
-      await apiPostFormData('/cuidador/perfil/', fd);
+      await apiPostFormData("/cuidador/perfil/", fd);
 
       toast.success("Registro exitoso. ¡Ya puedes iniciar sesión!");
       router.push("/login");
     } catch (e: any) {
       toast.error(e.message || "Error registrando cuidador.");
     }
-
-
   };
 
   // Ajusta esto a tu endpoint de registro de cliente (en tu backend tenías rutas /api/registro/cliente)
@@ -127,7 +139,8 @@ export default function Registro() {
       fd.append("last_name", clienteData.last_name || "");
       fd.append("email", clienteData.email || "");
       fd.append("telefono", clienteData.telefono || "");
-      if (clienteData.fecha_nacimiento) fd.append("fecha_nacimiento", clienteData.fecha_nacimiento);
+      if (clienteData.fecha_nacimiento)
+        fd.append("fecha_nacimiento", clienteData.fecha_nacimiento);
       fd.append("descripcion", clienteData.descripcion || "");
       if (clienteData.fotoFile) fd.append("foto_perfil", clienteData.fotoFile);
 
@@ -152,7 +165,10 @@ export default function Registro() {
       // (aquí las dejo como nombres por si tu endpoint las acepta como tal)
       clienteData.categorias.forEach((n) => fd.append("categorias", n));
 
-      const res = await fetch("/api/b/registro/cliente", { method: "POST", body: fd });
+      const res = await fetch("/api/b/registro/cliente", {
+        method: "POST",
+        body: fd,
+      });
       if (!res.ok) {
         const msg = await res.json().catch(() => ({}));
         throw new Error(msg?.detail || "No se pudo registrar el cliente.");
@@ -194,7 +210,11 @@ export default function Registro() {
                 <h2 className="text-xl font-semibold text-center">
                   ¿Cómo quieres usar la plataforma?
                 </h2>
-                <RadioGroup value={userType} onValueChange={(v) => setUserType(v as any)} className="space-y-3">
+                <RadioGroup
+                  value={userType}
+                  onValueChange={(v) => setUserType(v as any)}
+                  className="space-y-3"
+                >
                   <Label
                     htmlFor="cliente"
                     className={`p-4 border rounded cursor-pointer flex items-center gap-2 ${
@@ -214,7 +234,11 @@ export default function Registro() {
                     Cuidador
                   </Label>
                 </RadioGroup>
-                <Button onClick={() => setStep(2)} disabled={!userType} className="w-full mt-4">
+                <Button
+                  onClick={() => setStep(2)}
+                  disabled={!userType}
+                  className="w-full mt-4"
+                >
                   Continuar <ArrowRight className="inline ml-2" />
                 </Button>
               </div>
@@ -232,15 +256,12 @@ export default function Registro() {
                     setPerfil={setClienteData}
                     provincias={provincias}
                     ciudadesPorProvincia={ciudadesPorProvincia}
-                    categoriasDisponibles={
-                      // si tu ClienteForm espera string[], convierto:
-                      categoriasDisponibles.map((c) => c.nombre)
-                    }
+                    categoriasDisponibles={categoriasDisponibles}
                     loading={loadingCatalogos}
                     onSubmit={handleRegistroCliente}
                     title="Registro Cliente"
                   />
-                ) : (
+                ) : ( 
                   <CuidadorForm
                     perfil={cuidadorData}
                     setPerfil={(p) => setCuidadorData(p)}

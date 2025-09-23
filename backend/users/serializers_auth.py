@@ -46,6 +46,8 @@ class LoginSerializer(TokenObtainPairSerializer):
             "last_name": user.last_name,
             "es_cliente": hasattr(user, "cliente"),
             "es_cuidador": hasattr(user, "cuidador"),
+            "is_staff": user.is_staff,
+            "is_superuser": user.is_superuser,
         }
 
         return data
@@ -58,4 +60,6 @@ class LoginSerializer(TokenObtainPairSerializer):
         token["email"] = user.email
         token["es_cliente"] = hasattr(user, "cliente")
         token["es_cuidador"] = hasattr(user, "cuidador")
+        token["is_staff"] = user.is_staff
+        token["is_superuser"] = user.is_superuser
         return token

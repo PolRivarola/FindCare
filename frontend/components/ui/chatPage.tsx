@@ -6,10 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Send } from "lucide-react";
+import { Send, MessageSquare } from "lucide-react";
 import { apiGet, apiPost } from "@/lib/api";
 import { Conversation, Message } from "@/lib/types";
 import { toast } from "sonner";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useUserContext } from "@/context/UserContext";
 import PageTitle from "./title";
 
 export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cuidador" }) {
@@ -19,6 +21,9 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const search = useSearchParams();
+  const router = useRouter();
+  const { refreshUnreadStatus } = useUserContext();
 
   // CARGAR CONVERSACIONES
   useEffect(() => {
@@ -29,7 +34,15 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
       .then((data) => {
         if (abort) return;
         setConversations(data);
-        setSelectedChat((prev) => prev ?? data[0]?.id ?? null);
+        const desired = search.get("c");
+        if (desired) {
+          const id = Number(desired);
+          setSelectedChat((prev) => prev ?? (data.find(c => c.id === id)?.id ?? data[0]?.id ?? null));
+          // clean param
+          router.replace(location.pathname);
+        } else {
+          setSelectedChat((prev) => prev ?? data[0]?.id ?? null);
+        }
       })
       .catch(() => {
         toast.error("No se pudieron cargar las conversaciones.");
@@ -46,7 +59,7 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
     setLoadingMessages(true);
 
     apiGet<Message[]>(`/conversaciones/${selectedChat}/mensajes/`)
-      .then((data) => {
+      .then(async (data) => {
         if (abort) return;
         setMessages(data);
         let currentConvo = conversations.find(c => c.id === selectedChat)
@@ -54,6 +67,8 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
           currentConvo.noLeidos = 0;
           setConversations([...conversations]);
         }
+        // Refresh navbar unread status since messages were marked as read on the backend
+        await refreshUnreadStatus();
       })
       .catch(() => {
         toast.error("No se pudieron cargar los mensajes.");
@@ -97,6 +112,14 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
             {loadingConversations ? (
               <div className="space-y-4 p-4">
                 {[1,2,3].map(i => <Skeleton key={i} className="h-16 w-full bg-gray-300" />)}
+              </div>
+            ) : conversations.length === 0 ? (
+              <div className="p-8">
+                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-white py-10 text-center">
+                  <MessageSquare className="h-10 w-10 text-blue-500 mb-3" />
+                  <p className="text-sm font-medium text-gray-700">Aún no tienes conversaciones</p>
+                  <p className="text-xs text-gray-500 mt-1">Inicia una desde historial de servicios o el perfil del usuario.</p>
+                </div>
               </div>
             ) : (
               conversations.map((conversation) => (
@@ -154,16 +177,26 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
               </CardHeader>
 
               <CardContent className="flex-1 overflow-y-auto p-4">
-                <div className="space-y-4">
-                  {messages.map((m) => (
-                    <div key={m.id} className={`flex ${m.isOwn ? "justify-end" : "justify-start"}`}>
-                      <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${m.isOwn ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900"}`}>
-                        <p className="text-sm">{m.content}</p>
-                        <p className={`text-xs mt-1 ${m.isOwn ? "text-blue-100" : "text-gray-500"}`}>{m.time}</p>
-                      </div>
+                {messages.length === 0 ? (
+                  <div className="h-full w-full flex items-center justify-center">
+                    <div className="text-center">
+                      <MessageSquare className="h-10 w-10 text-blue-500 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-700">Esta conversación no tiene mensajes</p>
+                      <p className="text-xs text-gray-500 mt-1">Envía el primero para empezar a chatear.</p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {messages.map((m) => (
+                      <div key={m.id} className={`flex ${m.isOwn ? "justify-end" : "justify-start"}`}>
+                        <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${m.isOwn ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900"}`}>
+                          <p className="text-sm">{m.content}</p>
+                          <p className={`text-xs mt-1 ${m.isOwn ? "text-blue-100" : "text-gray-500"}`}>{m.time}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
 
               <div className="border-t p-4">

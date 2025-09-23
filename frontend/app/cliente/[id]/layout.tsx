@@ -1,11 +1,14 @@
-import React from "react";
+import type React from "react"
 
-export default async function ClienteLayout({ children }: { children: React.ReactNode }) {
+export default function PublicClienteProfileLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
     </div>
-  );
+  )
 }
+
+
+

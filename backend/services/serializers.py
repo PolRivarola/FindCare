@@ -6,9 +6,19 @@ from django.contrib.auth import get_user_model
 Usuario = get_user_model()
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    foto_perfil = serializers.SerializerMethodField()
+    
     class Meta:
         model = Usuario
-        fields = ['id', 'first_name', 'last_name', 'email']
+        fields = ['id', 'first_name', 'last_name', 'email', 'foto_perfil']
+    
+    def get_foto_perfil(self, obj):
+        if not obj.foto_perfil:
+            return None
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.foto_perfil.url)
+        return obj.foto_perfil.url
 
 class DiaSemanalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,7 +74,11 @@ class ServicioSerializer(serializers.ModelSerializer):
     
     def get_en_curso(self, obj):
         now = timezone.now()
-        return obj.aceptado and (obj.fecha_inicio <= now <= obj.fecha_fin)
+        en_curso = obj.aceptado and (obj.fecha_inicio <= now <= obj.fecha_fin)
+        
+        print("en_curso");
+        print(en_curso);
+        return en_curso;
 
     def _get_calif(self, obj, who):
         if who == "cliente":
@@ -136,7 +150,7 @@ class CalificacionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calificacion
-        fields = ["id", "puntuacion", "comentario", "creado_en", "autor", "receptor"]
+        fields = ["id", "puntuacion", "comentario", "creado_en", "autor", "receptor", "reportada"]
 
 class CertMiniSerializer(serializers.ModelSerializer):
     archivo = serializers.SerializerMethodField()
@@ -150,7 +164,7 @@ class CertMiniSerializer(serializers.ModelSerializer):
         if not obj.archivo:
             return None
         request = self.context.get("request")
-        url = obj.archivo.url  # '/media/...'
+        url = obj.archivo.url
         return request.build_absolute_uri(url) if request else url
 
 

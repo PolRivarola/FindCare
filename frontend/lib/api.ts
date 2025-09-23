@@ -9,8 +9,21 @@ function withSlash(path: string) {
   return q ? `${fixed}?${q}` : fixed;
 }
 
-export async function apiGet<T>(endpoint: string, params?: Record<string, string | number>) {
-  const query = params ? `?${new URLSearchParams(params as any)}` : "";
+export async function apiGet<T>(endpoint: string, params?: Record<string, any>) {
+  let query = "";
+  if (params) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
+        if (Array.isArray(value)) {
+          value.forEach(v => searchParams.append(key, v.toString()));
+        } else {
+          searchParams.append(key, value.toString());
+        }
+      }
+    });
+    query = `?${searchParams.toString()}`;
+  }
   const url = `${API_BASE_URL}${withSlash(endpoint)}${query}`;
   const r = await fetch(url, { method: "GET", credentials: "include", headers: { "Content-Type": "application/json" }, cache: "no-store" });
   if (!r.ok) throw new Error(await r.text());
@@ -49,6 +62,18 @@ export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
     method: "POST",
     credentials: "include",
     // Don't set Content-Type - let browser set it with boundary for multipart/form-data
+    body: formData,
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json() as Promise<T>;
+}
+
+export async function apiPatchFormData<T>(endpoint: string, formData: FormData) {
+  const url = `${API_BASE_URL}${withSlash(endpoint)}`;
+  const r = await fetch(url, {
+    method: "PATCH",
+    credentials: "include",
+    // Let the browser set multipart boundary automatically
     body: formData,
   });
   if (!r.ok) throw new Error(await r.text());

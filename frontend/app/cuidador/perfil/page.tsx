@@ -25,16 +25,25 @@ export default function CuidadorPerfilPage() {
       }
 
       try {
-        const provs = await apiGet<{ id: number; nombre: string }[]>("/provincias");
-        const provNames = provs.map((x) => x.nombre);
-        setProvincias(provNames);
+        const provs = await apiGet<{ id: number; nombre: string }[]>(
+          "/provincias"
+        );
+        setProvincias(provs.map((p) => p.nombre));
 
-        // muy simple: armar ciudades por provincia
+        // Ciudades
+        const ciudades = await apiGet<
+          {
+            id: number;
+            nombre: string;
+            provincia: { id: number; nombre: string };
+          }[]
+        >("/ciudades");
         const map: Record<string, string[]> = {};
-        for (const pr of provs) {
-          const cs = await apiGet<{ id: number; nombre: string }[]>(`/ciudades?provincia=${pr.id}`);
-          map[pr.nombre] = cs.map((c) => c.nombre);
-        }
+        ciudades.forEach((c) => {
+          const provName = c.provincia?.nombre ?? "";
+          if (!map[provName]) map[provName] = [];
+          map[provName].push(c.nombre);
+        });
         setCPP(map);
       } catch {
         // fallback mínimo si falla

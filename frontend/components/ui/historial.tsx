@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CircleUserRound, Star } from "lucide-react";
+import { CircleUserRound, Star, MessageCircle } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import PageTitle from "@/components/ui/title";
 import { CalificarModal } from "@/components/ui/CalificarModal";
+import { StarRating } from "@/components/ui/StarRating";
 
 import { apiGet, apiPost } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import {
   Tooltip,
@@ -22,8 +24,18 @@ import {
 } from "@/components/ui/tooltip";
 
 /** ====== Tipos que devuelve el backend (ServicioReadSerializer) ====== */
-type UsuarioMini = { id: number; username: string; first_name?: string; last_name?: string };
-type CalificacionMini = { puntuacion: number; comentario?: string | null; creado_en: string } | null;
+type UsuarioMini = {
+  foto_perfil: string | undefined;
+  id: number;
+  username: string;
+  first_name?: string;
+  last_name?: string;
+};
+type CalificacionMini = {
+  puntuacion: number;
+  comentario?: string | null;
+  creado_en: string;
+} | null;
 
 type ServicioRead = {
   id: number;
@@ -35,9 +47,9 @@ type ServicioRead = {
   horas_dia: string;
   aceptado: boolean;
   en_curso: boolean;
-  calificacion_cliente: CalificacionMini;   // hecha por el cliente
-  calificacion_cuidador: CalificacionMini;  // hecha por el cuidador
-  puede_calificar: boolean;                 // para el usuario actual
+  calificacion_cliente: CalificacionMini; // hecha por el cliente
+  calificacion_cuidador: CalificacionMini; // hecha por el cuidador
+  puede_calificar: boolean; // para el usuario actual
 };
 
 type Props = { tipoUsuario: "cliente" | "cuidador" };
@@ -46,10 +58,14 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   const user = useUser();
   const [rows, setRows] = useState<ServicioRead[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   // modal de calificación
   const [modalOpen, setModalOpen] = useState(false);
-  const [seleccion, setSeleccion] = useState<{ servicioId: number; contraparteNombre: string } | null>(null);
+  const [seleccion, setSeleccion] = useState<{
+    servicioId: number;
+    contraparteNombre: string;
+  } | null>(null);
 
   const nowISO = useMemo(() => new Date().toISOString(), []);
 
@@ -63,23 +79,22 @@ export function HistorialServicios({ tipoUsuario }: Props) {
           tipoUsuario === "cuidador"
             ? { receptor_id: user.id }
             : { cliente_id: user.id };
-      
-            const params: Record<string, string | number> = {
-  aceptado: "true", // string en lugar de boolean
-  fecha_inicio_before: nowISO,
-  ordering: "-fecha_inicio",
-  ...(tipoUsuario === "cuidador"
-    ? { receptor_id: user.id }
-    : { cliente_id: user.id }),
-};
+
+        const params: Record<string, string | number> = {
+          aceptado: "true", // string en lugar de boolean
+          ordering: "-fecha_inicio",
+          ...(tipoUsuario === "cuidador"
+            ? { receptor_id: user.id }
+            : { cliente_id: user.id }),
+        };
 
         // Historico = aceptados y no-futuros (excluye futura agenda)
         const data = await apiGet<ServicioRead[]>("/servicios", params);
 
-
         if (!ac.signal.aborted) setRows(data);
       } catch {
-        if (!ac.signal.aborted) toast.error("No se pudieron cargar los servicios.");
+        if (!ac.signal.aborted)
+          toast.error("No se pudieron cargar los servicios.");
       } finally {
         if (!ac.signal.aborted) setLoading(false);
       }
@@ -94,10 +109,30 @@ export function HistorialServicios({ tipoUsuario }: Props) {
 
   const getMiCalificacion = (s: ServicioRead) => {
     // cuál calificación mostrar como "mía" depende del rol del viewer
-    return tipoUsuario === "cliente" ? s.calificacion_cliente : s.calificacion_cuidador;
+    return tipoUsuario === "cliente"
+      ? s.calificacion_cliente
+      : s.calificacion_cuidador;
   };
 
-  const getContraparte = (s: ServicioRead) => (tipoUsuario === "cuidador" ? s.cliente : s.receptor);
+  const getContraparte = (s: ServicioRead) =>
+    tipoUsuario === "cuidador" ? s.cliente : s.receptor;
+  const abrirChat = async (s: ServicioRead) => {
+    const contraparte = getContraparte(s);
+    try {
+      const res = await fetch("/api/b/conversaciones/ensure/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: contraparte.id }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const convId = data.id;
+      const chatPath = tipoUsuario === "cliente" ? "/cliente/chat" : "/cuidador/chat";
+      router.push(`${chatPath}?c=${convId}`);
+    } catch {
+      toast.error("No se pudo abrir el chat");
+    }
+  };
 
   const abrirModal = (servicioId: number, contraparteNombre: string) => {
     setSeleccion({ servicioId, contraparteNombre });
@@ -107,7 +142,10 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   const enviarCalificacion = async (puntuacion: number, comentario: string) => {
     if (!seleccion) return;
     try {
-      await apiPost(`/servicios/${seleccion.servicioId}/calificar/`, { puntuacion, comentario });
+      await apiPost(`/servicios/${seleccion.servicioId}/calificar/`, {
+        puntuacion,
+        comentario,
+      });
       toast.success("Calificación enviada");
 
       // Refrescar localmente la fila calificada
@@ -119,8 +157,22 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                 ...r,
                 // el backend ya decide quién es el autor; reflejamos en el campo correcto
                 ...(tipoUsuario === "cliente"
-                  ? { calificacion_cliente: { puntuacion, comentario, creado_en: new Date().toISOString() }, puede_calificar: false }
-                  : { calificacion_cuidador: { puntuacion, comentario, creado_en: new Date().toISOString() }, puede_calificar: false }),
+                  ? {
+                      calificacion_cliente: {
+                        puntuacion,
+                        comentario,
+                        creado_en: new Date().toISOString(),
+                      },
+                      puede_calificar: false,
+                    }
+                  : {
+                      calificacion_cuidador: {
+                        puntuacion,
+                        comentario,
+                        creado_en: new Date().toISOString(),
+                      },
+                      puede_calificar: false,
+                    }),
               }
         )
       );
@@ -147,47 +199,81 @@ export function HistorialServicios({ tipoUsuario }: Props) {
             const contraparte = getContraparte(s);
             const miCalif = getMiCalificacion(s);
             const perfilHref =
-              tipoUsuario === "cuidador" ? `/cliente/${contraparte.id}` : `/cuidador/${contraparte.id}`;
+              tipoUsuario === "cuidador"
+                ? `/cliente/${contraparte.id}`
+                : `/cuidador/${contraparte.id}`;
 
             return (
-              <Card key={s.id} className="p-6 flex justify-between items-center">
+              <Card
+                key={s.id}
+                className="p-6 flex justify-between items-center"
+              >
                 <div className="flex items-center gap-6">
-                  <CircleUserRound className="h-12 w-12 text-blue-600 mx-auto" />
+                  {contraparte.foto_perfil ? (
+                  <img src={contraparte.foto_perfil} alt={`Foto de ${nombre(contraparte)}`} className="h-12 w-12 rounded-full mx-auto mb-4 object-cover border-2 border-blue-200" />
+                  ) : (
+                    <CircleUserRound className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                  )}
                   <div>
-                    <p className="text-xl font-semibold">{nombre(contraparte)}</p>
+                    <p className="text-xl font-semibold">
+                      {nombre(contraparte)}
+                    </p>
                     <p className="text-l text-gray-500">
                       {s.fecha_inicio.slice(0, 10)} - {s.fecha_fin.slice(0, 10)}
+                      {s.en_curso && (
+                        <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-green-100 text-green-700">
+                          EN CURSO
+                        </Badge>
+                      )}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-6 text-base">
+                <div className="flex items-center gap-3 text-base w-60 justify-between">
                   <Link href={perfilHref}>
                     <Button variant="secondary">Ver perfil</Button>
                   </Link>
-
+                  
                   {s.en_curso ? (
-                    <Badge className="text-base px-3 py-1 bg-green-100 text-green-700">EN CURSO</Badge>
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => abrirChat(s)}
+                            
+                            
+                            className="text-blue-600 hover:text-green-600 w-full"
+                          >
+                            <MessageCircle className="!h-8 !w-8" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Abrir chat</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   ) : miCalif ? (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <div className="flex items-center text-yellow-500 cursor-default">
-          {Array(miCalif.puntuacion)
-            .fill(0)
-            .map((_, i) => (
-              <Star key={i} className="h-6 w-6 fill-yellow-500 stroke-yellow-500" />
-            ))}
-        </div>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p className="max-w-xs">
-          {miCalif.comentario?.trim() ? miCalif.comentario : "Sin comentario"}
-        </p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-) : s.puede_calificar ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center text-yellow-500 cursor-default">
+                            <StarRating 
+                              rating={miCalif.puntuacion} 
+                              size="lg"
+                              className="text-yellow-500"
+                            />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="max-w-xs">
+                            {miCalif.comentario?.trim()
+                              ? miCalif.comentario
+                              : "Sin comentario"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : s.puede_calificar ? (
                     <Button
                       className="text-base px-4 py-2"
                       onClick={() => abrirModal(s.id, nombre(contraparte))}
@@ -206,7 +292,9 @@ export function HistorialServicios({ tipoUsuario }: Props) {
         <CalificarModal
           open={modalOpen}
           onClose={() => setModalOpen(false)}
-          cuidadorId={getContraparte(rows.find((r) => r.id === seleccion.servicioId)!).id} // mantiene tu API del modal
+          cuidadorId={
+            getContraparte(rows.find((r) => r.id === seleccion.servicioId)!).id
+          } // mantiene tu API del modal
           cuidadorNombre={seleccion.contraparteNombre}
           onSubmit={enviarCalificacion}
         />

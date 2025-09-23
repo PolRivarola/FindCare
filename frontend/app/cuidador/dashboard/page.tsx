@@ -6,16 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ServicioDTO, Solicitud } from "@/lib/types";
 
-import {
-  Heart,
-  Bell,
-  History,
-  User,
-  MessageCircle,
-  Calendar,
-  DollarSign,
-  Star,
-} from "lucide-react";
+import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { apiGet, apiPost, apiDelete } from "@/lib/api";
@@ -29,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
+import { ReviewCard } from "@/components/ui/ReviewCard";
 import { useUser } from "@/context/UserContext";
 import { mapServiciosToUI } from "@/lib/mappers/servicios";
 
@@ -38,6 +30,7 @@ export default function CuidadorDashboard() {
   const [loading, setLoading] = useState(true);
   const [modalOpenId, setModalOpenId] = useState<number | null>(null);
   const user = useUser();
+  const [reviews, setReviews] = useState<any[]>([]);
   const [stats, setStats] = useState({
   serviciosCompletados: 0,
   calificacionPromedio: 0,
@@ -77,9 +70,13 @@ useEffect(() => {
       console.log("Solicitudes cargadas:", data);
 
       if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data));
+
+      // cargar calificaciones recibidas por el cuidador
+      const califs = await apiGet<any[]>("/calificaciones", { receptor_id: uid });
+      if (!ac.signal.aborted) setReviews(califs);
     } catch {
       if (!ac.signal.aborted) {
-        toast.error("No se pudieron cargar las solicitudes");
+        toast.error("Error al cargar datos");
       }
     } finally {
       if (!ac.signal.aborted) setLoading(false);
@@ -110,12 +107,22 @@ useEffect(() => {
       .catch(() => toast.error("Error al rechazar solicitud"));
   };
 
+  const toggleReport = async (id: number, current: boolean) => {
+    try {
+      await apiPost(`/calificaciones/${id}/${current ? 'desreportar' : 'reportar'}/`, {});
+      setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, reportada: !current } : r)));
+      toast.success(current ? 'Reporte quitado' : 'Calificación reportada');
+    } catch {
+      toast.error('No se pudo actualizar el reporte');
+    }
+  };
+
   return (
     <div className="flex-1">
       <main className="p-6 ">
         <div className="mb-8 border-2 border-blue-100 bg-blue-50 p-6 rounded-lg shadow-sm">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            ¡Bienvenida, Ana!
+            ¡Hola, {user?.username}!
           </h1>
           <p className="text-gray-600">
             Gestiona tus servicios y solicitudes de cuidado
@@ -193,6 +200,7 @@ useEffect(() => {
                 ))}
               </div>
             ) : (
+              solicitudes.length > 0 ? (
               <>
                 <div className="space-y-4">
                   {solicitudes.map((req) => (
@@ -242,7 +250,11 @@ useEffect(() => {
                   </Link>
                 </div>
               </>
-            )}
+            ) : (
+              <div className="text-center text-gray-600 text-lg font-semibold my-3">
+                No hay solicitudes pendientes
+              </div>
+            ))}
           </CardContent>
         </Card>
 
@@ -280,6 +292,37 @@ useEffect(() => {
           </Card>
         </div>
       </main>
+      {/* Calificaciones recibidas */}
+      <div className="p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Star className="h-5 w-5 mr-2" />
+              Calificaciones Recibidas
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {reviews.length === 0 ? (
+              <div className="text-gray-600">Aún no recibiste calificaciones.</div>
+            ) : (
+              <div className="space-y-3">
+                {reviews.map((r) => (
+                  <ReviewCard
+                    key={r.id}
+                    id={r.id}
+                    rating={r.puntuacion}
+                    comment={r.comentario}
+                    date={r.creado_en}
+                    showReportButton={true}
+                    isReported={r.reportada}
+                    onReport={toggleReport}
+                  />
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

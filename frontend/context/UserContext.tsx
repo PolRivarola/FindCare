@@ -8,11 +8,15 @@ interface User {
   username: string;
   es_cuidador: boolean;
   es_cliente: boolean;
+  is_staff?: boolean;
+  is_superuser?: boolean;
 }
 
 interface UserContextType {
   user: User | null;
   refreshUser: () => Promise<void>;
+  refreshUnreadStatus: () => Promise<void>;
+  isAdmin: () => boolean;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -29,12 +33,20 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshUnreadStatus = async () => {
+    window.dispatchEvent(new CustomEvent('refreshUnreadStatus'));
+  };
+
+  const isAdmin = (): boolean => {
+    return user ? Boolean(user.is_staff || user.is_superuser) : false;
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, refreshUser: fetchUser }}>
+    <UserContext.Provider value={{ user, refreshUser: fetchUser, refreshUnreadStatus, isAdmin }}>
       {children}
     </UserContext.Provider>
   );

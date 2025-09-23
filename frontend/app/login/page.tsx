@@ -16,7 +16,7 @@ import { useUserContext } from "@/context/UserContext";
 export default function Login() {
   // mantenemos los mismos dos campos del formulario
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { refreshUser } = useUserContext();
+  const { refreshUser, isAdmin } = useUserContext();
   // mostramos errores sin cambiar el diseño
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -85,13 +85,22 @@ export default function Login() {
     await refreshUser();
 
     console.log("Usuario logueado:", j.user);
-    console.log(j.user.es_cuidador)
-    console.log(j.user.es_cliente)
+    console.log("es_cuidador:", j.user.es_cuidador);
+    console.log("es_cliente:", j.user.es_cliente);
+    console.log("is_staff:", j.user.is_staff);
+    console.log("is_superuser:", j.user.is_superuser);
 
     let redirect = "/dashboard";
-    if (j.user.es_cuidador) redirect = "cuidador/dashboard";
-    else if (j.user.es_cliente) redirect = "cliente/dashboard";
-    else redirect = "admin/dashboard";
+    if (j.user.es_cuidador) {
+      redirect = "cuidador/dashboard";
+    } else if (j.user.es_cliente) {
+      redirect = "cliente/dashboard";
+    } else if (j.user.is_staff || j.user.is_superuser) {
+      redirect = "admin/";
+    } else {
+      // Fallback for users with no specific role
+      redirect = "/";
+    }
 
     router.push(redirect);
   }
@@ -133,7 +142,7 @@ export default function Login() {
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
                 {/* etiqueta visual igual; solo corregimos id/for para accesibilidad */}
-                <Label htmlFor="identifier">Email</Label>
+                <Label htmlFor="identifier">Email o Username</Label>
                 <Input
                   id="identifier"
                   type="text"

@@ -66,3 +66,35 @@ export type Review = {
   date: string;      // ISO string
   comment: string;
 };
+
+// Public profile payload returned by backend PerfilPublicoView
+export interface PerfilPublico {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telefono: string;
+  direccion: string;
+  fecha_nacimiento: string;
+  descripcion: string;
+  foto_perfil: string;
+  fotos: string[];
+  categorias: string[];
+  provincia: string;
+  ciudad: string;
+  rating?: number | null;
+  reviews: Review[];
+  reviews_count?: number;
+  experiencia?: number;
+  especialidad?: string;
+  precio?: number;
+  disponible?: boolean;
+  tipo_usuario: "cliente" | "cuidador";
+  certificados?: { file: string; name: string }[];
+  experiencias?: {
+    descripcion: string;
+    fecha_inicio: string;
+    fecha_fin: string;
+  }[];
+}
