@@ -132,9 +132,10 @@ export default function ClienteDashboard() {
     }
   };
 
-  const toggleReport = async (id: number, current: boolean) => {
+  const toggleReport = async (id: number, current: boolean, reason?: string) => {
     try {
-      await apiPost(`/calificaciones/${id}/${current ? 'desreportar' : 'reportar'}/`, {});
+      const payload = current ? {} : { motivo: reason || "" };
+      await apiPost(`/calificaciones/${id}/${current ? 'desreportar' : 'reportar'}/`, payload);
       setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, reportada: !current } : r)));
       toast.success(current ? 'Reporte quitado' : 'Calificación reportada');
     } catch {
@@ -205,10 +206,10 @@ export default function ClienteDashboard() {
                 </div>
                 <div className="flex flex-col gap-2 justify-center">
                 <Link className="w-full" href="/cliente/chat">
-                  <Button className="w-full ">Enviar mensaje</Button>
+                  <Button className="w-full " variant="gradient"  >Enviar mensaje</Button>
                 </Link>
                 <Link className="w-full" href={currentService ? `/cuidador/${currentService.receptor.id}` : "/cliente/buscar"}>
-                  <Button className="w-full  ">Ver perfil</Button>
+                  <Button className="w-full" variant="gradient">Ver perfil</Button>
                 </Link>
                 </div>
                 
@@ -225,7 +226,7 @@ export default function ClienteDashboard() {
                 Comunícate con tus cuidadores
               </p>
               <Link href="/cliente/chat">
-                <Button className="w-full  bg-purple-600 text-white hover:bg-white hover:text-purple-600 hover:border-purple-600 hover:border-2">
+                <Button className="w-full" variant="gradient">
                   Ver Mensajes
                 </Button>
               </Link>
@@ -239,7 +240,7 @@ export default function ClienteDashboard() {
 
               <p className="text-gray-600 mb-4">Estamos para ayudarte</p>
               <Link href="https://wa.me/543516655333">
-                <Button className="w-full  bg-green-600 text-white hover:bg-white hover:text-green-600 hover:border-green-600 hover:border-2">
+                <Button className="w-full" variant="gradient">
                   Contáctanos
                 </Button>
               </Link>
@@ -284,7 +285,7 @@ export default function ClienteDashboard() {
                             ))}
                           </div>
                         ) : puedeCalificar ? (
-                          <Button size="sm" onClick={() => abrirModal(service.id, nombre(service.receptor))}>
+                          <Button size="sm" variant="gradient" onClick={() => abrirModal(service.id, nombre(service.receptor))}>
                             Calificar
                           </Button>
                         ) : null}

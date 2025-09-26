@@ -7,10 +7,12 @@ Usuario = get_user_model()
 
 class UsuarioSerializer(serializers.ModelSerializer):
     foto_perfil = serializers.SerializerMethodField()
+    provincia = serializers.SerializerMethodField()
+    ciudad = serializers.SerializerMethodField()
     
     class Meta:
         model = Usuario
-        fields = ['id', 'first_name', 'last_name', 'email', 'foto_perfil']
+        fields = ['id', 'first_name', 'last_name', 'email', 'foto_perfil', 'provincia', 'ciudad']
     
     def get_foto_perfil(self, obj):
         if not obj.foto_perfil:
@@ -19,6 +21,16 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if request:
             return request.build_absolute_uri(obj.foto_perfil.url)
         return obj.foto_perfil.url
+    
+    def get_provincia(self, obj):
+        if obj.direccion and obj.direccion.ciudad and obj.direccion.ciudad.provincia:
+            return obj.direccion.ciudad.provincia.nombre
+        return None
+    
+    def get_ciudad(self, obj):
+        if obj.direccion and obj.direccion.ciudad:
+            return obj.direccion.ciudad.nombre
+        return None
 
 class DiaSemanalSerializer(serializers.ModelSerializer):
     class Meta:

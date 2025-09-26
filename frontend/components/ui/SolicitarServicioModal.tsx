@@ -16,6 +16,8 @@ interface SolicitarServicioModalProps {
   cuidador: any;
   onSubmit: (formData: any) => void;
   loading?: boolean;
+  diasSemanales?: any[];
+  horariosDiarios?: any[];
 }
 
 export function SolicitarServicioModal({
@@ -24,6 +26,8 @@ export function SolicitarServicioModal({
   cuidador,
   onSubmit,
   loading = false,
+  diasSemanales = [],
+  horariosDiarios = [],
 }: SolicitarServicioModalProps) {
   const [formData, setFormData] = useState({
     servicio: [] as string[],
@@ -213,9 +217,11 @@ export function SolicitarServicioModal({
                 <SelectValue placeholder="Selecciona el horario de servicio" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="morning">Mañana (8:00 - 14:00)</SelectItem>
-                <SelectItem value="night">Noche (18:00 - 8:00)</SelectItem>
-                <SelectItem value="whole-day">Todo el día (24 horas)</SelectItem>
+                {horariosDiarios.map((horario) => (
+                  <SelectItem key={horario.id} value={horario.nombre}>
+                    {horario.nombre}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -227,33 +233,25 @@ export function SolicitarServicioModal({
               Días de la Semana
             </Label>
             <div className="grid grid-cols-2 gap-3">
-              {[
-                { value: "Lunes", label: "Lunes" },
-                { value: "Martes", label: "Martes" },
-                { value: "Miércoles", label: "Miércoles" },
-                { value: "Jueves", label: "Jueves" },
-                { value: "Viernes", label: "Viernes" },
-                { value: "Sábado", label: "Sábado" },
-                { value: "Domingo", label: "Domingo" },
-              ].map((dia) => (
-                <div key={dia.value} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50">
+              {diasSemanales.map((dia) => (
+                <div key={dia.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50">
                   <Checkbox
-                    id={dia.value}
-                    checked={formData.dias_semanales.includes(dia.value)}
+                    id={dia.id.toString()}
+                    checked={formData.dias_semanales.includes(dia.nombre)}
                     onCheckedChange={(checked) => {
                       setFormData((prev) => {
                         const dias = checked
-                          ? [...prev.dias_semanales, dia.value]
-                          : prev.dias_semanales.filter((d) => d !== dia.value);
+                          ? [...prev.dias_semanales, dia.nombre]
+                          : prev.dias_semanales.filter((d) => d !== dia.nombre);
                         return { ...prev, dias_semanales: dias };
                       });
                     }}
                   />
                   <label
-                    htmlFor={dia.value}
+                    htmlFor={dia.id.toString()}
                     className="text-sm text-gray-700 cursor-pointer flex-1"
                   >
-                    {dia.label}
+                    {dia.nombre}
                   </label>
                 </div>
               ))}

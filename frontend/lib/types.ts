@@ -20,12 +20,13 @@ export interface Solicitud {
   id_cliente: number;
   id_cuidador?: number; 
   cliente: string;
+  cliente_ciudad: string;
+  cliente_provincia: string;
   servicio: string[];
   fecha_inicio: string;
   fecha_fin: string;
   hora: string;
   rangos_horarios: string[];
-  ubicacion: string;
   foto: string;
 }
 
@@ -49,7 +50,7 @@ export interface PerfilCliente {
 
 export type ServicioDTO = {
   id: number;
-  cliente: number | { id: number; username: string; first_name?: string; last_name?: string };
+  cliente: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string };
   receptor: number | { id: number; username: string; first_name?: string; last_name?: string };
   fecha_inicio: string;   // ISO string
   fecha_fin: string;      // ISO string

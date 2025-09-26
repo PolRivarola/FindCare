@@ -1,7 +1,7 @@
 // Lo que devuelve DRF (ajustá a tu serializer real)
 export type ServicioDTO = {
   id: number;
-  cliente: number | { id: number; username: string; first_name?: string; last_name?: string };
+  cliente: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string };
   receptor: number | { id: number; username: string; first_name?: string; last_name?: string };
   fecha_inicio: string;   // ISO string
   fecha_fin: string;      // ISO string
@@ -22,7 +22,6 @@ export type Solicitud = {
   fecha_inicio: string;   // YYYY-MM-DD
   fecha_fin: string;      // YYYY-MM-DD
   hora: string;           // tal como lo mostrás
-  ubicacion: string;      // si no hay en backend, lo rellenás luego
   rangos_horarios: string[];
   aceptado: boolean;
 };

@@ -79,6 +79,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
     queryset = (
         Servicio.objects
         .select_related("cliente", "receptor")
+        .select_related("cliente__direccion__ciudad__provincia", "receptor__direccion__ciudad__provincia")
         .prefetch_related("dias_semanales")
         .all()
     )
@@ -96,19 +97,9 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # el cliente autenticado crea la solicitud
-        # Handle dias_semanales_ids - convert day names to DiaSemanal objects
-        dias_semanales_names = serializer.validated_data.get('dias_semanales_ids', [])
-        if dias_semanales_names:
-            # Convert day names to DiaSemanal objects
-            dias_objects = []
-            for dia_name in dias_semanales_names:
-                dia, created = DiaSemanal.objects.get_or_create(
-                    nombre=dia_name,
-                    defaults={'nombre': dia_name}
-                )
-                dias_objects.append(dia)
-            serializer.validated_data['dias_semanales'] = dias_objects
-        else:
+        # The data from frontend already contains proper DiaSemanal objects
+        dias_semanales = serializer.validated_data.get('dias_semanales')
+        if not dias_semanales:
             # If no days provided, return error
             from rest_framework.exceptions import ValidationError
             raise ValidationError({"dias_semanales_ids": "Debe seleccionar al menos un día de la semana."})

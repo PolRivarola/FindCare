@@ -35,7 +35,7 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
 
         const rows = await apiGet<ServicioDTO[]>("/servicios", { receptor_id: uid, aceptado: "false", ordering: "-fecha_inicio" });
         if (!ac.signal.aborted) {
-          setSolicitudes(mapServiciosToUI(rows));
+          setSolicitudes(mapServiciosToUI(rows) as unknown as Solicitud[]);
         }
       } catch {
         if (!ac.signal.aborted) {

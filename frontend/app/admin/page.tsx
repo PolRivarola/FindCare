@@ -315,8 +315,8 @@ function FlaggedRatingsCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="overflow-auto max-h-[60vh]">
-        <div className="space-y-4">
+      <CardContent className="overflow-auto max-h-[60vh] ">
+        <div className="space-y-4 mb-16">
           {ratings.map((rating) => (
             <RatingItem
               key={rating.id}

@@ -41,6 +41,8 @@ export default function BuscarCuidadoresPage() {
   const [serviciosDisponibles, setServiciosDisponibles] = useState<any[]>([]);
   const [provincias, setProvincias] = useState<any[]>([]);
   const [ciudades, setCiudades] = useState<any[]>([]);
+  const [diasSemanales, setDiasSemanales] = useState<any[]>([]);
+  const [horariosDiarios, setHorariosDiarios] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
 
@@ -70,14 +72,18 @@ export default function BuscarCuidadoresPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [cuidadoresData, servicios, provinciasData] = await Promise.all([
+        const [cuidadoresData, servicios, provinciasData, diasData, horariosData] = await Promise.all([
           apiGet<any[]>("/search/"),
           apiGet<any[]>("/tipos-cliente/"),
           apiGet<any[]>("/provincias/"),
+          apiGet<any[]>("/dias-semanales/"),
+          apiGet<any[]>("/horarios-diarios/"),
         ]);
         setCuidadores(cuidadoresData);
         setServiciosDisponibles(servicios);
         setProvincias(provinciasData);
+        setDiasSemanales(diasData);
+        setHorariosDiarios(horariosData);
       } catch (error) {
         console.error("Error al cargar datos:", error);
         toast.error("Error al cargar los datos.");
@@ -138,6 +144,11 @@ export default function BuscarCuidadoresPage() {
 
   const handleSolicitud = async (formData: any) => {
     if (!selectedCuidador) return;
+    
+    if (diasSemanales.length === 0) {
+      toast.error("Los días de la semana aún no se han cargado. Por favor, intenta de nuevo.");
+      return;
+    }
 
     try {
       setModalLoading(true);
@@ -150,22 +161,52 @@ export default function BuscarCuidadoresPage() {
       // Build description with service types and additional details
       let descripcion = `Tipos de servicio solicitados: ${serviceTypesText}`;
       if (formData.descripcion) {
-        descripcion += `\n\nDescripción adicional: ${formData.descripcion}`;
+        descripcion += `\n\n- Descripción adicional: ${formData.descripcion}`;
       }
-      if (formData.ubicacion) {
-        descripcion += `\n\nUbicación: ${formData.ubicacion}`;
+
+      // Convert day names to IDs
+      const convertirDiasAIds = (diaNames: string[]) => {
+        if (diasSemanales.length === 0) {
+          console.error("No se han cargado los días semanales desde la API");
+          toast.error("Error: No se pudieron cargar los días de la semana");
+          return [];
+        }
+        
+        const result = diaNames.map(diaName => {
+          // Buscar coincidencia exacta
+          let diaSemanalesEncontrado = diasSemanales.find(dia => dia.nombre === diaName);
+          
+          // Si no encuentra coincidencia exacta, intentar buscar sin tildes
+          if (!diaSemanalesEncontrado) {
+            const normalizedName = diaName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            diaSemanalesEncontrado = diasSemanales.find(dia => 
+              dia.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedName
+            );
+          }
+          
+          return diaSemanalesEncontrado ? diaSemanalesEncontrado.id : null;
+        }).filter(id => id !== null);
+        
+        return result;
+      };
+
+      const diaIds = convertirDiasAIds(formData.dias_semanales);
+      
+      if (diaIds.length === 0) {
+        toast.error("Error al seleccionar los días de la semana");
+        return;
       }
 
       const servicioData = {
-        receptor_id: selectedCuidador.cuidador_id || selectedCuidador.id,
+        receptor_id: selectedCuidador.id,
         fecha_inicio: formData.fecha_inicio,
         fecha_fin: formData.fecha_fin,
         descripcion: descripcion,
         horas_dia: formData.hora,
-        dias_semanales_ids: formData.dias_semanales,
+        dias_semanales_ids: diaIds,
       };
 
-      await apiPost("/api/servicios/", servicioData);
+      await apiPost("/servicios/", servicioData);
 
       toast.success("Solicitud de servicio enviada correctamente");
       setSolicitudEnviada((prev) => ({ ...prev, [selectedCuidador.id]: true }));
@@ -383,6 +424,7 @@ export default function BuscarCuidadoresPage() {
                         <Button variant="outline">Ver Perfil</Button>
                       </Link>
                       <Button
+                        variant={solicitudEnviada[c.id] ? "success" : "gradient"}
                         disabled={solicitudEnviada[c.id]}
                         onClick={() => openModal(c)}
                       >
@@ -406,6 +448,8 @@ export default function BuscarCuidadoresPage() {
         cuidador={selectedCuidador}
         onSubmit={handleSolicitud}
         loading={modalLoading}
+        diasSemanales={diasSemanales}
+        horariosDiarios={horariosDiarios}
       />
     </div>
   );

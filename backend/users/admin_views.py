@@ -81,7 +81,7 @@ class AdminFlaggedRatingsView(APIView):
                 "rating": rating.puntuacion,
                 "comentario": rating.comentario or "",
                 "fecha": rating.creado_en.strftime("%Y-%m-%d"),
-                "reportado": "Contenido inapropiado",  # You might want to add a reason field to Calificacion model
+                "reportado": rating.motivo_reporte or "Sin motivo especificado",
                 "estado": "Pendiente",  # You might want to add a status field
             })
 

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { StarRating } from "./StarRating";
+import { ReportModal } from "./ReportModal";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface ReviewCardProps {
   id: number;
@@ -10,7 +12,7 @@ interface ReviewCardProps {
   author?: string;
   showReportButton?: boolean;
   isReported?: boolean;
-  onReport?: (id: number, isReported: boolean) => void;
+  onReport?: (id: number, isReported: boolean, reason?: string) => void;
   onApprove?: (id: number) => void;
   onDelete?: (id: number) => void;
   isLoading?: boolean;
@@ -35,8 +37,25 @@ export function ReviewCard({
   className,
   variant = "default"
 }: ReviewCardProps) {
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
+
+  const handleReportClick = () => {
+    setIsReportModalOpen(true);
+  };
+
+  const handleReportSubmit = (reason: string) => {
+    if (onReport) {
+      onReport(id, isReported, reason);
+    }
+    setIsReportModalOpen(false);
+  };
+
+  const handleReportModalClose = () => {
+    setIsReportModalOpen(false);
   };
 
   const renderActions = () => {
@@ -71,10 +90,11 @@ export function ReviewCard({
     if (showReportButton && onReport) {
       return (
         <Button 
-          variant="outline" 
+          variant={isReported ? "destructive" : "gradient"} 
           size="sm" 
-          onClick={() => onReport(id, isReported)}
+          onClick={handleReportClick}
           disabled={isLoading}
+
         >
           {isReported ? 'Quitar reporte' : 'Reportar'}
         </Button>
@@ -92,42 +112,54 @@ export function ReviewCard({
   );
 
   return (
-    <div className={containerClasses}>
-      <div className="flex-1">
-        <div className="flex items-center gap-2 mb-2">
-          <StarRating 
-            rating={rating || 0} 
-            size={variant === "compact" ? "sm" : "md"}
-            showValue={variant === "admin"}
-          />
-          <span className="text-sm text-gray-500">
-            {formatDate(date)}
-          </span>
+    <>
+      <div className={containerClasses}>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <StarRating 
+              rating={rating || 0} 
+              size={variant === "compact" ? "sm" : "md"}
+              showValue={variant === "admin"}
+            />
+            <span className="text-sm text-gray-500">
+              {formatDate(date)}
+            </span>
+          </div>
+          
+          {comment && (
+            <p className={cn(
+              "text-gray-700",
+              variant === "compact" ? "text-sm" : "text-sm mt-1"
+            )}>
+              {comment}
+            </p>
+          )}
+          
+          {!comment && (
+            <p className="text-sm text-gray-500 italic">
+              Sin comentario
+            </p>
+          )}
+          
+          {author && (
+            <p className="text-xs text-gray-500 mt-1">
+              Por {author}
+            </p>
+          )}
         </div>
         
-        {comment && (
-          <p className={cn(
-            "text-gray-700",
-            variant === "compact" ? "text-sm" : "text-sm mt-1"
-          )}>
-            {comment}
-          </p>
-        )}
-        
-        {!comment && (
-          <p className="text-sm text-gray-500 italic">
-            Sin comentario
-          </p>
-        )}
-        
-        {author && (
-          <p className="text-xs text-gray-500 mt-1">
-            Por {author}
-          </p>
-        )}
+        {renderActions()}
       </div>
-      
-      {renderActions()}
-    </div>
+
+      {showReportButton && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleReportModalClose}
+          onReport={handleReportSubmit}
+          isLoading={isLoading}
+          isReported={isReported}
+        />
+      )}
+    </>
   );
 }

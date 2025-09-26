@@ -69,7 +69,7 @@ useEffect(() => {
       });
       console.log("Solicitudes cargadas:", data);
 
-      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data));
+      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data) as unknown as Solicitud[]);
 
       // cargar calificaciones recibidas por el cuidador
       const califs = await apiGet<any[]>("/calificaciones", { receptor_id: uid });
@@ -107,9 +107,10 @@ useEffect(() => {
       .catch(() => toast.error("Error al rechazar solicitud"));
   };
 
-  const toggleReport = async (id: number, current: boolean) => {
+  const toggleReport = async (id: number, current: boolean, reason?: string) => {
     try {
-      await apiPost(`/calificaciones/${id}/${current ? 'desreportar' : 'reportar'}/`, {});
+      const payload = current ? {} : { motivo: reason || "" };
+      await apiPost(`/calificaciones/${id}/${current ? 'desreportar' : 'reportar'}/`, payload);
       setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, reportada: !current } : r)));
       toast.success(current ? 'Reporte quitado' : 'Calificación reportada');
     } catch {
@@ -213,22 +214,8 @@ useEffect(() => {
                           <h4 className="font-semibold text-lg">
                             {req.cliente}
                           </h4>
-                          <p className="text-gray-600 mb-2">{req.servicio}</p>
-                          <div className="grid grid-cols-2  gap-1 text-sm text-gray-600 max-w-md">
-                            <div>
-                              <p className="mb-2">
-                                <strong>Fecha de inicio:</strong> {req.fecha_inicio}
-                              </p>
-                              <p>
-                                <strong>Horario:</strong> {req.hora}
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <strong>Ubicación:</strong> {req.ubicacion}
-                              </p>
-                            </div>
-                          </div>
+                          <p className="text-gray-600 mb-2 w-1/2">{req.servicio}</p>
+                      
                         </div>
                         <DetalleSolicitudModal
                           solicitud={req}

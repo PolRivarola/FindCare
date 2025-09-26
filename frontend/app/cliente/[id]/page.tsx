@@ -232,14 +232,7 @@ export default function PerfilClientePage() {
                 {calcularEdad(perfil.fecha_nacimiento)} años
               </div>
             </div>
-            {notOwner && (
-              <div className="mt-3">
-                <Button onClick={crearChat} className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  Chatear
-                </Button>
-              </div>
-            )}
+            
           </div>
         </div>
       </div>

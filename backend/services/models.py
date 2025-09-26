@@ -22,6 +22,7 @@ class Calificacion(models.Model):
     comentario = models.TextField(blank=True, null=True)
     creado_en = models.DateTimeField(auto_now_add=True)
     reportada = models.BooleanField(default=False)
+    motivo_reporte = models.TextField(blank=True, null=True)
 
     class Meta:
         unique_together = ("servicio", "autor")

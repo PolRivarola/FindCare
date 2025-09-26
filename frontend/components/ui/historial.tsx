@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CircleUserRound, Star, MessageCircle } from "lucide-react";
+import { CircleUserRound, Star, MessageCircle, FileText } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import PageTitle from "@/components/ui/title";
 import { CalificarModal } from "@/components/ui/CalificarModal";
 import { StarRating } from "@/components/ui/StarRating";
+import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
 
 import { apiGet, apiPost } from "@/lib/api";
 import { useRouter } from "next/navigation";
@@ -30,6 +31,8 @@ type UsuarioMini = {
   username: string;
   first_name?: string;
   last_name?: string;
+  ciudad?: string;
+  provincia?: string;
 };
 type CalificacionMini = {
   puntuacion: number;
@@ -66,6 +69,10 @@ export function HistorialServicios({ tipoUsuario }: Props) {
     servicioId: number;
     contraparteNombre: string;
   } | null>(null);
+
+  // modal de detalles
+  const [detalleModalOpen, setDetalleModalOpen] = useState(false);
+  const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioRead | null>(null);
 
   const nowISO = useMemo(() => new Date().toISOString(), []);
 
@@ -137,6 +144,31 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   const abrirModal = (servicioId: number, contraparteNombre: string) => {
     setSeleccion({ servicioId, contraparteNombre });
     setModalOpen(true);
+  };
+
+  const abrirDetalleModal = (servicio: ServicioRead) => {
+    setServicioSeleccionado(servicio);
+    setDetalleModalOpen(true);
+  };
+
+  // Convertir ServicioRead a Solicitud para el modal
+  const convertirASolicitud = (servicio: ServicioRead): any => {
+    const contraparte = getContraparte(servicio);
+    return {
+      id: servicio.id,
+      id_cliente: servicio.cliente.id,
+      id_cuidador: servicio.receptor.id,
+      foto: contraparte.foto_perfil || "/placeholder-user.jpg",
+      cliente: `${contraparte.first_name || ''} ${contraparte.last_name || ''}`.trim() || contraparte.username,
+      cliente_ciudad: servicio.cliente.ciudad || "—",
+      cliente_provincia: servicio.cliente.provincia || "—",
+      servicio: [servicio.descripcion],
+      fecha_inicio: servicio.fecha_inicio.slice(0, 10),
+      fecha_fin: servicio.fecha_fin.slice(0, 10),
+      hora: servicio.horas_dia,
+      rangos_horarios: [],
+      aceptado: servicio.aceptado
+    };
   };
 
   const enviarCalificacion = async (puntuacion: number, comentario: string) => {
@@ -225,16 +257,29 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                           EN CURSO
                         </Badge>
                       )}
+                      {s.fecha_inicio > nowISO && (
+                        <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-blue-100 text-blue-700">
+                          FUTURO
+                        </Badge>
+                      )}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-base w-60 justify-between">
+                <div className="flex items-center gap-3 text-base w-96 justify-start">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => abrirDetalleModal(s)}
+                    className="flex items-center gap-2"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Detalles
+                  </Button>
                   <Link href={perfilHref}>
                     <Button variant="secondary">Ver perfil</Button>
                   </Link>
                   
-                  {s.en_curso ? (
+                  {s.en_curso || s.fecha_inicio > nowISO ? (
                     <TooltipProvider delayDuration={100}>
                       <Tooltip>
                         <TooltipTrigger asChild>

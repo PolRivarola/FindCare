@@ -144,14 +144,6 @@ export default function PerfilPublicoPage() {
                 <div>{perfil.experiencia} años de experiencia</div>
               )}
             </div>
-            {notOwner && (
-              <div className="mt-3">
-                <Button onClick={crearChat} className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  Chatear
-                </Button>
-              </div>
-            )}
           </div>
         </div>
 
