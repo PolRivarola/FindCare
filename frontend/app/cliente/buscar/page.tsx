@@ -226,7 +226,7 @@ export default function BuscarCuidadoresPage() {
 
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className=" mx-auto">
       <div className="mb-8">
         <PageTitle>Buscar Cuidadores</PageTitle>
         <p className="text-gray-600">

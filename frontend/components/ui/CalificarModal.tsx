@@ -37,13 +37,13 @@ export function CalificarModal({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md w-full mx-auto rounded-xl shadow-2xl p-0 overflow-hidden border-0 calificar-modal">
-        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-5 text-center">
+        <div className="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-5 text-center">
           
           <DialogHeader className="items-center">
             <DialogTitle className="text-2xl font-bold tracking-tight">
               Calificar a {cuidadorNombre}
             </DialogTitle>
-            <DialogDescription className="text-blue-50 text-sm">
+            <DialogDescription className="text-purple-50 text-sm">
               Sé honesto y respetuoso. Tu opinión ayuda a la comunidad.
             </DialogDescription>
           </DialogHeader>
@@ -79,7 +79,7 @@ export function CalificarModal({
           </div>
 
           <DialogFooter className="flex items-center justify-between gap-3 pt-2">
-            <Button variant="outline" onClick={onClose} className="border-blue-200 text-blue-700 hover:bg-blue-50">
+            <Button variant="outline" onClick={onClose}>
               Cancelar
             </Button>
             <Button

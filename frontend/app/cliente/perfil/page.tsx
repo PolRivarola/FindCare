@@ -75,7 +75,7 @@ export default function PerfilClientePage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-8 space-y-6">
+    <div className=" mx-auto space-y-6">
       <PageTitle>Mi Perfil</PageTitle>
       <ClienteForm
         perfil={perfil}

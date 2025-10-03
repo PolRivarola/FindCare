@@ -276,7 +276,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                     Detalles
                   </Button>
                   <Link href={perfilHref}>
-                    <Button variant="secondary">Ver perfil</Button>
+                    <Button variant="outline">Ver perfil</Button>
                   </Link>
                   
                   {s.en_curso || s.fecha_inicio > nowISO ? (
@@ -322,6 +322,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                     <Button
                       className="text-base px-4 py-2"
                       onClick={() => abrirModal(s.id, nombre(contraparte))}
+                      variant="gradient"
                     >
                       Calificar
                     </Button>
@@ -342,6 +343,16 @@ export function HistorialServicios({ tipoUsuario }: Props) {
           } // mantiene tu API del modal
           cuidadorNombre={seleccion.contraparteNombre}
           onSubmit={enviarCalificacion}
+        />
+      )}
+
+      {servicioSeleccionado && (
+        <DetalleSolicitudModal
+          solicitud={convertirASolicitud(servicioSeleccionado)}
+          open={detalleModalOpen}
+          onOpenChange={setDetalleModalOpen}
+          actualizarSolicitudes={() => {}} // No necesitamos actualizar en historial
+          showActions={false} // Hide action buttons in historial
         />
       )}
     </div>

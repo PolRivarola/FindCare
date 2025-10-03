@@ -110,24 +110,24 @@ export function SolicitarServicioModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl w-full mx-auto rounded-xl shadow-2xl p-0 overflow-hidden border-0 solicitar-modal">
-        <div className="relative bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-5 text-center">
+      <DialogContent className="sm:max-w-2xl w-full mx-auto rounded-xl shadow-2xl p-0 overflow-hidden border-0 max-h-[90vh] flex flex-col">
+        <div className="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-5 text-center flex-shrink-0">
           <DialogHeader className="items-center">
             <DialogTitle className="text-2xl font-bold tracking-tight flex items-center gap-2">
               <User className="h-6 w-6" />
               Solicitar Servicio
             </DialogTitle>
-            <DialogDescription className="text-green-50 text-sm">
+            <DialogDescription className="text-purple-50 text-sm">
               Solicita el servicio de {cuidador?.nombre} - Completa todos los campos requeridos
             </DialogDescription>
           </DialogHeader>
         </div>
 
-        <div className="px-6 py-5 space-y-6 max-h-[70vh] overflow-y-auto">
+        <div className="px-6 py-5 space-y-6 overflow-y-auto flex-1">
           {/* Tipo de Servicio */}
           <div>
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              <FileText className="h-4 w-4 inline mr-2" />
+              <FileText className="h-4 w-4 inline mr-2 text-purple-600 " />
               Tipo de Servicio
             </Label>
             <div className="grid grid-cols-1 gap-3">
@@ -160,7 +160,7 @@ export function SolicitarServicioModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="fecha_inicio" className="text-sm font-medium text-gray-700 mb-2 block">
-                <Calendar className="h-4 w-4 inline mr-2" />
+                <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
                 Fecha de Inicio
               </Label>
               <Input
@@ -174,12 +174,12 @@ export function SolicitarServicioModal({
                     fecha_inicio: e.target.value,
                   }))
                 }
-                className="focus-visible:ring-2 focus-visible:ring-green-600"
+                className="focus-visible:ring-2 focus-visible:ring-purple-600"
               />
             </div>
             <div>
               <Label htmlFor="fecha_fin" className="text-sm font-medium text-gray-700 mb-2 block">
-                <Calendar className="h-4 w-4 inline mr-2" />
+                <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
                 Fecha de Fin
               </Label>
               <Input
@@ -193,7 +193,7 @@ export function SolicitarServicioModal({
                     fecha_fin: e.target.value,
                   }))
                 }
-                className="focus-visible:ring-2 focus-visible:ring-green-600"
+                className="focus-visible:ring-2 focus-visible:ring-purple-600"
               />
             </div>
           </div>
@@ -201,7 +201,7 @@ export function SolicitarServicioModal({
           {/* Horario */}
           <div>
             <Label className="text-sm font-medium text-gray-700 mb-2 block">
-              <Clock className="h-4 w-4 inline mr-2" />
+              <Clock className="h-4 w-4 inline mr-2 text-purple-600" />
               Horario de Servicio
             </Label>
             <Select
@@ -213,7 +213,7 @@ export function SolicitarServicioModal({
                 }))
               }
             >
-              <SelectTrigger className="focus-visible:ring-2 focus-visible:ring-green-600">
+              <SelectTrigger className="focus-visible:ring-2 focus-visible:ring-purple-600">
                 <SelectValue placeholder="Selecciona el horario de servicio" />
               </SelectTrigger>
               <SelectContent>
@@ -229,7 +229,7 @@ export function SolicitarServicioModal({
           {/* Días de la Semana */}
           <div>
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              <Calendar className="h-4 w-4 inline mr-2" />
+              <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
               Días de la Semana
             </Label>
             <div className="grid grid-cols-2 gap-3">
@@ -261,7 +261,7 @@ export function SolicitarServicioModal({
           {/* Ubicación */}
           <div>
             <Label htmlFor="ubicacion" className="text-sm font-medium text-gray-700 mb-2 block">
-              <MapPin className="h-4 w-4 inline mr-2" />
+              <MapPin className="h-4 w-4 inline mr-2 text-purple-600" />
               Ubicación del Servicio
             </Label>
             <Input
@@ -274,14 +274,14 @@ export function SolicitarServicioModal({
                 }))
               }
               placeholder="Dirección donde se prestará el servicio"
-              className="focus-visible:ring-2 focus-visible:ring-green-600"
+              className="focus-visible:ring-2 focus-visible:ring-purple-600"
             />
           </div>
 
           {/* Descripción */}
           <div>
             <Label htmlFor="descripcion" className="text-sm font-medium text-gray-700 mb-2 block">
-              <FileText className="h-4 w-4 inline mr-2" />
+              <FileText className="h-4 w-4 inline mr-2 text-purple-600" />
               Descripción del Servicio
             </Label>
             <Textarea
@@ -295,7 +295,7 @@ export function SolicitarServicioModal({
               }
               placeholder="Describe las necesidades específicas del cuidado, preferencias, y cualquier información importante..."
               rows={4}
-              className="min-h-24 resize-none focus-visible:ring-2 focus-visible:ring-green-600"
+              className="min-h-24 resize-none focus-visible:ring-2 focus-visible:ring-purple-600"
             />
           </div>
 
@@ -323,12 +323,15 @@ export function SolicitarServicioModal({
               </div>
             </div>
           )}
+        </div>
 
-          <DialogFooter className="flex items-center justify-between gap-3 pt-4 border-t">
+        {/* Footer - Outside scrollable area */}
+        <div className="px-6 py-4 bg-gray-50 border-t flex-shrink-0">
+          <DialogFooter className="flex items-center justify-end gap-3">
             <Button 
               variant="outline" 
               onClick={handleClose} 
-              className="border-green-200 text-green-700 hover:bg-green-50"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100"
               disabled={loading}
             >
               Cancelar
@@ -336,7 +339,7 @@ export function SolicitarServicioModal({
             <Button
               onClick={handleSubmit}
               disabled={loading || formData.servicio.length === 0 || !formData.fecha_inicio || !formData.fecha_fin || !formData.hora || !formData.ubicacion || formData.dias_semanales.length === 0}
-              className="bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 disabled:opacity-50"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 disabled:opacity-50"
             >
               {loading ? "Enviando..." : "Enviar Solicitud"}
             </Button>

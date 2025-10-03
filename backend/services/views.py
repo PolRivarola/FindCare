@@ -619,11 +619,15 @@ class ClientePerfilView(APIView):
 
         cl = u.cliente
         cats = list(cl.tipos_cliente.values_list("nombre", flat=True))
-        fotos = list(FotoCliente.objects.filter(cliente=cl).values_list("imagen", flat=True))
+        fotos = FotoCliente.objects.filter(cliente=cl)
         fotos_abs = []
-        for path in fotos:
-            url = f"{request.build_absolute_uri('/')[:-1]}{path.url if hasattr(path,'url') else path}"
-            fotos_abs.append(url)
+        for foto in fotos:
+            if foto.imagen:
+                # Ensure the URL has a leading slash
+                url = foto.imagen.url
+                if not url.startswith('/'):
+                    url = '/' + url
+                fotos_abs.append(request.build_absolute_uri(url))
 
         return {
             "username": u.username,
@@ -686,6 +690,23 @@ class ClientePerfilView(APIView):
         if cats:
             user.cliente.tipos_cliente.set(cats)
 
+        # Manejo de fotos: eliminar las que no están en la lista de URLs a conservar
+        fotos_a_conservar = request.data.get("fotos_existentes")
+        if fotos_a_conservar is not None:
+            # Si se envía la lista de fotos a conservar, eliminar las que no están
+            if isinstance(fotos_a_conservar, str):
+                try:
+                    fotos_a_conservar = json.loads(fotos_a_conservar)
+                except:
+                    fotos_a_conservar = []
+            
+            # Obtener todas las fotos actuales
+            fotos_actuales = FotoCliente.objects.filter(cliente=user.cliente)
+            for foto in fotos_actuales:
+                foto_url = request.build_absolute_uri(foto.imagen.url)
+                if foto_url not in fotos_a_conservar:
+                    foto.delete()
+        
         # fotos nuevas (append)
         for f in request.FILES.getlist("fotos"):
             FotoCliente.objects.create(cliente=user.cliente, imagen=f)

@@ -218,19 +218,13 @@ export default function PerfilClientePage() {
                     <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
                     <span className="font-semibold">{perfil.rating}</span>
                     <span className="text-gray-600 ml-1">
-                      ({perfil.reviews_count} reseñas)
+                      ({perfil.reviews_count} reseña/s)
                     </span>
                   </div>
                 )}
               </div>
-              <div className="flex items-center">
-                <MapPin className="h-4 w-4 mr-1" />
-                {perfil.ciudad}, {perfil.provincia}
-              </div>
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-1" />
-                {calcularEdad(perfil.fecha_nacimiento)} años
-              </div>
+              
+              
             </div>
             
           </div>
@@ -238,91 +232,8 @@ export default function PerfilClientePage() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column - Photos and Quick Info */}
+        {/* Left Column - Quick Info */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Photo Gallery */}
-          {perfil.fotos && perfil.fotos.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Galería Familiar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="relative group">
-                    <img
-                      src={
-                        perfil.fotos[currentImageIndex] || "/placeholder.svg"
-                      }
-                      alt="Foto familiar"
-                      className="w-full h-48 object-cover rounded-lg cursor-pointer transition-transform hover:scale-105"
-                      onClick={() => setImageModalOpen(true)}
-                    />
-
-                    {/* Navigation arrows for main image */}
-                    {perfil.fotos.length > 1 && (
-                      <>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentImageIndex(
-                              currentImageIndex === 0
-                                ? perfil.fotos.length - 1
-                                : currentImageIndex - 1
-                            );
-                          }}
-                          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-70"
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentImageIndex(
-                              currentImageIndex === perfil.fotos.length - 1
-                                ? 0
-                                : currentImageIndex + 1
-                            );
-                          }}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-70"
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </button>
-                      </>
-                    )}
-
-                    {/* Image counter */}
-                    {perfil.fotos.length > 1 && (
-                      <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
-                        {currentImageIndex + 1} / {perfil.fotos.length}
-                      </div>
-                    )}
-                  </div>
-
-                  {perfil.fotos.length > 1 && (
-                    <div className="flex gap-2 overflow-x-auto">
-                      {perfil.fotos.map((foto, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                            currentImageIndex === index
-                              ? "border-blue-500 scale-105"
-                              : "border-gray-200 hover:border-gray-300"
-                          }`}
-                        >
-                          <img
-                            src={foto || "/placeholder.svg"}
-                            alt={`Foto ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
           {/* Full Screen Image Modal */}
           {imageModalOpen && (
@@ -330,7 +241,7 @@ export default function PerfilClientePage() {
               <div className="relative max-w-4xl max-h-full">
                 <img
                   src={perfil.fotos[currentImageIndex] || "/placeholder.svg"}
-                  alt="Foto familiar ampliada"
+                  alt="Foto ampliada"
                   className="max-w-full max-h-full object-contain rounded-lg"
                 />
 
@@ -427,10 +338,28 @@ export default function PerfilClientePage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Care Needs */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Categorías</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {perfil.categorias.map((categoria, index) => (
+                  <Badge key={index} variant="secondary" className="text-sm">
+                    {categoria}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Right Column - Detailed Info */}
         <div className="lg:col-span-2 space-y-6">
+          
+
           {/* Description */}
           <Card>
             <CardHeader>
@@ -443,21 +372,89 @@ export default function PerfilClientePage() {
             </CardContent>
           </Card>
 
-          {/* Care Needs */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Necesidades de Cuidado</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {perfil.categorias.map((categoria, index) => (
-                  <Badge key={index} variant="secondary" className="text-sm">
-                    {categoria}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Photo Gallery */}
+          {perfil.fotos && perfil.fotos.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Galería de Fotos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="relative group">
+                    <img
+                      src={
+                        perfil.fotos[currentImageIndex] || "/placeholder.svg"
+                      }
+                      alt="Foto"
+                      className="w-full h-96 object-cover rounded-lg cursor-pointer transition-transform hover:scale-[1.02]"
+                      onClick={() => setImageModalOpen(true)}
+                    />
+
+                    {/* Navigation arrows for main image */}
+                    {perfil.fotos.length > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(
+                              currentImageIndex === 0
+                                ? perfil.fotos.length - 1
+                                : currentImageIndex - 1
+                            );
+                          }}
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-80"
+                        >
+                          <ChevronLeft className="h-6 w-6" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(
+                              currentImageIndex === perfil.fotos.length - 1
+                                ? 0
+                                : currentImageIndex + 1
+                            );
+                          }}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-opacity-80"
+                        >
+                          <ChevronRight className="h-6 w-6" />
+                        </button>
+                      </>
+                    )}
+
+                    {/* Image counter */}
+                    {perfil.fotos.length > 1 && (
+                      <div className="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-2 rounded-lg text-sm font-medium">
+                        {currentImageIndex + 1} / {perfil.fotos.length}
+                      </div>
+                    )}
+                  </div>
+
+                  {perfil.fotos.length > 1 && (
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {perfil.fotos.map((foto, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-2 transition-all ${
+                            currentImageIndex === index
+                              ? "border-blue-500 shadow-lg"
+                              : "border-gray-200 hover:border-gray-400"
+                          }`}
+                        >
+                          <img
+                            src={foto || "/placeholder.svg"}
+                            alt={`Foto ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Calificaciones recibidas */}
           <Card>

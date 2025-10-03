@@ -6,6 +6,8 @@ import { apiGet } from "@/lib/api";
 interface User {
   id: number;
   username: string;
+  first_name?: string;
+  last_name?: string;
   es_cuidador: boolean;
   es_cliente: boolean;
   is_staff?: boolean;

@@ -121,8 +121,9 @@ export function ReviewCard({
               size={variant === "compact" ? "sm" : "md"}
               showValue={variant === "admin"}
             />
+            
             <span className="text-sm text-gray-500">
-              {formatDate(date)}
+              {date}
             </span>
           </div>
           
@@ -141,11 +142,8 @@ export function ReviewCard({
             </p>
           )}
           
-          {author && (
-            <p className="text-xs text-gray-500 mt-1">
-              Por {author}
-            </p>
-          )}
+          
+          
         </div>
         
         {renderActions()}

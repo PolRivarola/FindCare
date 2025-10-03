@@ -81,22 +81,15 @@ export function DetalleSolicitudModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild className="ml-4 flex-shrink-0 self-center">
-        <Button size="sm" variant="default" className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          Detalles
-        </Button>
-      </DialogTrigger>
-
       <DialogContent className="rounded-2xl p-0 shadow-2xl bg-white border-0 max-w-2xl w-full overflow-hidden">
         {/* Header with gradient background */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-5">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-5">
           <DialogHeader className="items-center">
             <DialogTitle className="text-2xl font-bold tracking-tight flex items-center gap-3">
               <User className="h-6 w-6" />
               Solicitud de Servicio
             </DialogTitle>
-            <p className="text-blue-100 text-sm mt-2">
+            <p className="text-purple-100 text-sm mt-2">
               Detalles completos de la solicitud de {solicitud.cliente}
             </p>
           </DialogHeader>
@@ -104,11 +97,11 @@ export function DetalleSolicitudModal({
 
         <div className="px-6 py-6 space-y-6 max-h-[70vh] overflow-y-auto">
           {/* Client Information Card */}
-          <Card className="border-l-4 border-l-blue-500">
+          <Card className="border-l-4 border-l-purple-500">
             <CardContent className="p-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <User className="h-6 w-6 text-blue-600" />
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <User className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg text-gray-900">{solicitud.cliente}</h3>
@@ -118,7 +111,7 @@ export function DetalleSolicitudModal({
                   </div>
                 </div>
                 <Link href={`/cliente/${solicitud.id_cliente}`}>
-                  <Button variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+                  <Button variant="outline" size="sm" >
                     Ver Perfil
                   </Button>
                 </Link>
@@ -132,7 +125,7 @@ export function DetalleSolicitudModal({
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <Calendar className="h-5 w-5 text-green-600" />
+                  <Calendar className="h-5 w-5 text-purple-600" />
                   <h4 className="font-semibold text-gray-900">Fechas del Servicio</h4>
                 </div>
                 <div className="space-y-2 text-sm">
@@ -170,7 +163,7 @@ export function DetalleSolicitudModal({
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3 mb-3">
-                <FileText className="h-5 w-5 text-orange-600" />
+                <FileText className="h-5 w-5 text-purple-600" />
                 <h4 className="font-semibold text-gray-900">Tipos de Servicio</h4>
               </div>
               <div className="flex flex-wrap gap-2">

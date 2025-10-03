@@ -267,10 +267,14 @@ export default function CuidadorForm({
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {/* Header */}
+      
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-purple-600 bg-clip-text text-transparent">
-          {title || "Perfil de Cuidador"}
-        </h1>
+        {mode === "create" && (
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            Crear Perfil de Cuidador
+          </h1>
+        )}
+        
         <p className="text-gray-600 text-lg">
           Completa tu información para ofrecer los mejores servicios de cuidado
         </p>
@@ -280,10 +284,10 @@ export default function CuidadorForm({
       </div>
 
       {/* Profile Photo Section */}
-      <Card className="border-none shadow-lg bg-gradient-to-br from-blue-50 to-purple-50">
+      <Card className="border-none shadow-lg bg-gradient-to-br from-purple-50 to-blue-50">
         <CardHeader className="text-center pb-4">
           <CardTitle className="flex items-center justify-center gap-2 text-xl">
-            <User className="h-5 w-5 text-blue-600" />
+            <User className="h-5 w-5 text-purple-600" />
             Foto de Perfil
           </CardTitle>
         </CardHeader>
@@ -293,9 +297,7 @@ export default function CuidadorForm({
               url={perfil.foto_perfil || ""}
               onChange={(file) => setFotoFile(file)}
             />
-            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
-              <Upload className="h-4 w-4 text-white" />
-            </div>
+            
           </div>
         </CardContent>
       </Card>
@@ -306,7 +308,7 @@ export default function CuidadorForm({
 
       {/* Categories */}
       <Card className="border-none shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-t-lg">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
           <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
             <Award className="h-5 w-5 text-purple-600" />
             Especialidades
@@ -325,7 +327,7 @@ export default function CuidadorForm({
                   variant={active ? "default" : "outline"}
                   className={`cursor-pointer px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
                     active
-                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                      ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg"
                       : "border-2 border-purple-200 text-purple-700 hover:border-purple-400 hover:bg-purple-50"
                   }`}
                   onClick={() => {
@@ -345,9 +347,9 @@ export default function CuidadorForm({
 
       {/* Experience */}
       <Card className="border-none shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
           <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
-            <Briefcase className="h-5 w-5 text-orange-600" />
+            <Briefcase className="h-5 w-5 text-purple-600" />
             Experiencia Profesional
           </CardTitle>
           <p className="text-sm text-gray-600 mt-2">
@@ -365,7 +367,7 @@ export default function CuidadorForm({
                   variant="ghost"
                   size="sm"
                   onClick={() => removeExperiencia(i)}
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="text-purple-500 hover:text-purple-700 hover:bg-purple-50"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -383,7 +385,7 @@ export default function CuidadorForm({
                     onChange={(e) =>
                       updateExperiencia(i, "descripcion", e.target.value)
                     }
-                    className="border-2 border-gray-200 focus:border-orange-500 transition-colors resize-none"
+                      className="border-2 border-gray-200 focus:border-purple-500 transition-colors resize-none"
                   />
                 </div>
 
@@ -399,7 +401,7 @@ export default function CuidadorForm({
                       onChange={(e) =>
                         updateExperiencia(i, "fecha_inicio", e.target.value)
                       }
-                      className="h-12 border-2 border-gray-200 focus:border-orange-500 transition-colors"
+                      className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
                     />
                   </div>
                   <div className="space-y-2">
@@ -413,7 +415,7 @@ export default function CuidadorForm({
                       onChange={(e) =>
                         updateExperiencia(i, "fecha_fin", e.target.value)
                       }
-                      className="h-12 border-2 border-gray-200 focus:border-orange-500 transition-colors"
+                      className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
                     />
                   </div>
                 </div>
@@ -424,7 +426,7 @@ export default function CuidadorForm({
           <Button
             variant="outline"
             onClick={addExperiencia}
-            className="w-full h-12 border-2 border-dashed border-orange-300 text-orange-600 hover:border-orange-500 hover:bg-orange-50 transition-all duration-200 bg-transparent"
+            className="w-full h-12 border-2 border-dashed border-purple-300 text-purple-600 hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 bg-transparent"
           >
             <Briefcase className="h-4 w-4 mr-2" />
             Agregar experiencia
@@ -434,9 +436,9 @@ export default function CuidadorForm({
 
       {/* Certificates */}
       <Card className="border-none shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-t-lg">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
           <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
-            <FileText className="h-5 w-5 text-teal-600" />
+            <FileText className="h-5 w-5 text-purple-600" />
             Certificados y Documentos
           </CardTitle>
           <p className="text-sm text-gray-600 mt-2">
@@ -444,11 +446,11 @@ export default function CuidadorForm({
           </p>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
-          <div className="border-2 border-dashed border-teal-300 rounded-lg p-8 text-center bg-teal-50/50">
-            <Upload className="h-12 w-12 text-teal-500 mx-auto mb-4" />
+          <div className="border-2 border-dashed border-purple-300 rounded-lg p-8 text-center bg-purple-50/50">
+            <Upload className="h-12 w-12 text-purple-500 mx-auto mb-4" />
             <label
               htmlFor="cert-upload"
-              className="cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-6 py-3 rounded-lg font-medium hover:from-teal-600 hover:to-cyan-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="cursor-pointer inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               <Upload className="h-4 w-4" />
               Subir certificados
@@ -479,8 +481,8 @@ export default function CuidadorForm({
                     className="flex items-center justify-between bg-white border-2 border-teal-200 rounded-lg p-4 shadow-sm"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-teal-600" />
+                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-purple-600" />
                       </div>
                       <span className="text-sm font-medium text-gray-800 truncate max-w-40">
                         {c.file.name}
@@ -490,7 +492,7 @@ export default function CuidadorForm({
                       variant="ghost"
                       size="sm"
                       onClick={() => removeCertificado(i)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      className="text-purple-500 hover:text-purple-700 hover:bg-purple-50"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -514,7 +516,7 @@ export default function CuidadorForm({
                     href={c.archivo} // ahora absoluto: http://127.0.0.1:8000/media/...
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                      className="flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     <span className="text-sm font-medium text-gray-800 truncate flex-1">
                       {c.nombre}
@@ -530,7 +532,7 @@ export default function CuidadorForm({
       {/* Passwords */}
       {mode === "create" ? (
         <Card className="border-none shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
             <CardTitle className="text-xl text-gray-800">Crear contraseña</CardTitle>
           </CardHeader>
           <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -540,7 +542,7 @@ export default function CuidadorForm({
         </Card>
       ) : (
         <Card className="border-none shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 rounded-t-lg">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
             <CardTitle className="text-xl text-gray-800">Cambiar contraseña (opcional)</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
@@ -557,7 +559,8 @@ export default function CuidadorForm({
       <div className="flex justify-center pt-6">
         <Button
           onClick={submit}
-          className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600  text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+          variant="gradient"
+          className="w-full md:w-auto px-12 py-4 text-lg font-semibold"
         >
           {title ? "Guardar cambios" : "Continuar"}
         </Button>

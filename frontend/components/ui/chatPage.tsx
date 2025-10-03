@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 import PageTitle from "./title";
+import Link from "next/link";
 
 export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cuidador" }) {
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
@@ -170,7 +171,14 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
                     <div className="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center">
                       {selectedConversation.nombre.charAt(0)}
                     </div>
-                    <div><h3 className="font-semibold">{selectedConversation.nombre}</h3></div>
+                    <div>
+                      <Link 
+                        href={tipoUsuario === "cliente" ? `/cuidador/${selectedConversation.user_id}` : `/cliente/${selectedConversation.user_id}`}
+                        className="hover:underline"
+                      >
+                        <h3 className="font-semibold">{selectedConversation.nombre}</h3>
+                      </Link>
+                    </div>
                   </div>
                   <div className="flex space-x-2" />
                 </div>

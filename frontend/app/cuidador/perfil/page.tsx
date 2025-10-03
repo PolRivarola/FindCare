@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { apiGet, apiPost } from "@/lib/api";
 import { toast } from "sonner";
 import CuidadorForm, { PerfilCuidador } from "@/components/ui/cuidadorForm";
+import PageTitle from "@/components/ui/title";
 
 export default function CuidadorPerfilPage() {
   const [perfil, setPerfil] = useState<PerfilCuidador | null>(null);
@@ -75,7 +76,8 @@ export default function CuidadorPerfilPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className=" mx-auto ">
+      <PageTitle>Mi Perfil</PageTitle>
       <CuidadorForm
         perfil={perfil}
         setPerfil={(p) => setPerfil(p)}

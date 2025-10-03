@@ -121,12 +121,12 @@ useEffect(() => {
   return (
     <div className="flex-1">
       <main className="p-6 ">
-        <div className="mb-8 border-2 border-blue-100 bg-blue-50 p-6 rounded-lg shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            ¡Hola, {user?.username}!
+      <div className="mb-8 border-2  bg-blue-600 p-6 rounded-lg shadow-sm">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            ¡Hola{user ? `, ${user.first_name || user.username}` : ""}!
           </h1>
-          <p className="text-gray-600">
-            Gestiona tus servicios y solicitudes de cuidado
+          <p className="text-white">
+            Gestiona tus servicios de cuidado y encuentra los mejores cuidadores
           </p>
         </div>
 
@@ -134,8 +134,8 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Calendar className="h-6 w-6 text-blue-600" />
+                <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
+                  <Calendar className="h-6 w-6 text-white" />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">
@@ -151,8 +151,8 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-yellow-100 rounded-lg">
-                  <Star className="h-6 w-6 text-yellow-600" />
+                <div className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
+                  <Star className="h-6 w-6 text-white" />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">
@@ -170,8 +170,8 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <Bell className="h-6 w-6 text-red-600" />
+                <div className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
+                  <Bell className="h-6 w-6 text-white" />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">
@@ -248,7 +248,7 @@ useEffect(() => {
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardContent className="p-6 text-center">
-              <History className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <History className="h-12 w-12 text-purple-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Historial de Servicios
               </h3>

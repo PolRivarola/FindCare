@@ -16,6 +16,7 @@ export function MultiImagenUploader({ urls, onChange }: MultiImagenUploaderProps
   const [previews, setPreviews] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log("items", items);
     const newPreviews = items.map((item) =>
       typeof item === "string" ? item : URL.createObjectURL(item)
     );

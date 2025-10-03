@@ -9,10 +9,11 @@ class ConversacionListSerializer(serializers.ModelSerializer):
     ultimoMensaje = serializers.SerializerMethodField()
     hora = serializers.SerializerMethodField()
     noLeidos = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Conversacion
-        fields = ["id", "nombre", "tipo", "ultimoMensaje", "hora", "noLeidos"]
+        fields = ["id", "nombre", "tipo", "ultimoMensaje", "hora", "noLeidos", "user_id"]
 
     def get_contraparte(self, obj):
         user = self.context["request"].user
@@ -44,6 +45,9 @@ class ConversacionListSerializer(serializers.ModelSerializer):
     def get_noLeidos(self, obj):
         user = self.context["request"].user
         return obj.mensajes.exclude(emisor=user).exclude(leido_por=user).count()
+
+    def get_user_id(self, obj):
+        return self.get_contraparte(obj).id
 
 
 

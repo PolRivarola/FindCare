@@ -147,11 +147,11 @@ export default function ClienteDashboard() {
     <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-8 border-2 border-blue-100 bg-blue-50 p-6 rounded-lg shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            ¡Bienvenido{user ? `, ${user.username}` : ""}!
+        <div className="mb-8 border-2  bg-blue-600 p-6 rounded-lg shadow-sm">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            ¡Hola{user ? `, ${user.first_name || user.username}` : ""}!
           </h1>
-          <p className="text-gray-600">
+          <p className="text-white">
             Gestiona tus servicios de cuidado y encuentra los mejores cuidadores
           </p>
         </div>
@@ -175,12 +175,12 @@ export default function ClienteDashboard() {
                 <h3 className="text-lg font-semibold mb-2">
                   Buscar Cuidadores
                 </h3>
-                <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <Search className="h-12 w-12 text-purple-600 mx-auto mb-4" />
                 <p className="text-gray-600 mb-4">
                   Encuentra el cuidador perfecto
                 </p>
                 <Link href="/cliente/buscar">
-                  <Button className="w-full">Buscar Ahora</Button>
+                  <Button className="w-full" variant="gradient">Buscar Ahora</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -236,7 +236,7 @@ export default function ClienteDashboard() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow flex flex-col justify-center">
             <CardContent className="p-6 text-center">
               <h3 className="text-lg font-semibold mb-2">Necesitas Ayuda?</h3>
-              <MessageCircleQuestion className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <MessageCircleQuestion className="h-12 w-12 text-purple-600 mx-auto mb-4" />
 
               <p className="text-gray-600 mb-4">Estamos para ayudarte</p>
               <Link href="https://wa.me/543516655333">

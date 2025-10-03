@@ -5,6 +5,7 @@ export type Conversation = {
   ultimoMensaje: string;
   hora: string;      
   noLeidos: number;
+  user_id: number;
 };
 
 export type Message = {

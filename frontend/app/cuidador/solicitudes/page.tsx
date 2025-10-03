@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, Inbox } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import PageTitle from "@/components/ui/title";
@@ -58,6 +58,18 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
           {[1, 2].map((i) => (
             <Skeleton key={i} className="h-28 w-full rounded-lg bg-gray-300" />
           ))}
+        </div>
+      ) : solicitudes.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 p-6 mb-4">
+            <Inbox className="h-16 w-16 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            No tienes solicitudes pendientes
+          </h3>
+          <p className="text-gray-600 text-center max-w-md">
+            Cuando los clientes soliciten tus servicios, aparecerán aquí para que puedas revisarlas y aceptarlas.
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
