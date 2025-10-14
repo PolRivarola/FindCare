@@ -13,6 +13,7 @@ import {
   Search, 
   CheckCircle, 
   XCircle,
+  User,
   RefreshCw
 } from "lucide-react";
 import { ReviewCard } from "@/components/ui/ReviewCard";
@@ -215,26 +216,26 @@ export default function AdminDashboard() {
           <StatsCard
             title="Total Usuarios"
             value={stats.totalUsuarios}
-            icon={<Users className="h-6 w-6 text-blue-600" />}
-            bgColor="bg-blue-100"
+            icon={<Users className="h-12 w-12 text-purple-600" />}
+            bgColor=""
           />
           <StatsCard
             title="Cuidadores"
             value={stats.cuidadoresActivos}
-            icon={<Heart className="h-6 w-6 text-green-600" />}
-            bgColor="bg-green-100"
+            icon={<Heart className="h-12 w-12 text-purple-600" />}
+            bgColor=""
           />
           <StatsCard
             title="Clientes"
             value={stats.clientesActivos}
-            icon={<Users className="h-6 w-6 text-purple-600" />}
-            bgColor="bg-purple-100"
+            icon={<User className="h-12 w-12 text-purple-600" />}
+            bgColor=""
           />
           <StatsCard
-            title="Pendientes"
+            title="Reportes Pendientes"
             value={stats.calificacionesPendientes}
-            icon={<AlertTriangle className="h-6 w-6 text-red-600" />}
-            bgColor="bg-red-100"
+            icon={<AlertTriangle className="h-12 w-12 text-purple-600" />}
+            bgColor=""
           />
         </div>
 
@@ -256,7 +257,7 @@ interface StatsCardProps {
   title: string;
   value: number;
   icon: React.ReactNode;
-  bgColor: string;
+  bgColor?: string;
 }
 
 function StatsCard({ title, value, icon, bgColor }: StatsCardProps) {
@@ -264,7 +265,7 @@ function StatsCard({ title, value, icon, bgColor }: StatsCardProps) {
     <Card>
       <CardContent className="p-6">
         <div className="flex items-center">
-          <div className={`p-2 rounded-lg ${bgColor}`}>
+          <div className={`p-2 rounded-lg`}>
             {icon}
           </div>
           <div className="ml-4">

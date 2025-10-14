@@ -182,15 +182,15 @@ export default function Registro() {
 
   // ======= render =======
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
       <div className="max-w-2xl mx-auto px-4">
-        <Link href="/" className="flex items-center text-blue-600 mb-4">
+        <Link href="/" className="flex items-center text-purple-600 hover:text-purple-700 mb-4 transition-colors">
           <ArrowLeft className="mr-2" /> Volver
         </Link>
 
         <div className="text-center mb-8">
-          <Heart className="inline-block mr-2 text-blue-600" />
-          <h1 className="inline text-3xl font-bold">Registro de Usuario</h1>
+          <Heart className="inline-block mr-2 h-8 w-8 bg-gradient-to-tr from-purple-600 to-blue-600 rounded text-white p-1" />
+          <h1 className="inline align-middle text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Registro de Usuario</h1>
         </div>
 
         <Card>
@@ -198,7 +198,7 @@ export default function Registro() {
             <CardTitle className="text-center">Paso {step} de 2</CardTitle>
             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all"
                 style={{ width: `${(step / 2) * 100}%` }}
               />
             </div>
@@ -217,8 +217,8 @@ export default function Registro() {
                 >
                   <Label
                     htmlFor="cliente"
-                    className={`p-4 border rounded cursor-pointer flex items-center gap-2 ${
-                      userType === "cliente" ? "ring-2 ring-blue-600" : ""
+                    className={`p-4 border rounded cursor-pointer flex items-center gap-2 hover:border-purple-300 transition-colors ${
+                      userType === "cliente" ? "ring-2 ring-purple-600 border-purple-600 bg-purple-50" : ""
                     }`}
                   >
                     <RadioGroupItem value="cliente" id="cliente" />
@@ -226,8 +226,8 @@ export default function Registro() {
                   </Label>
                   <Label
                     htmlFor="cuidador"
-                    className={`p-4 border rounded cursor-pointer flex items-center gap-2 ${
-                      userType === "cuidador" ? "ring-2 ring-blue-600" : ""
+                    className={`p-4 border rounded cursor-pointer flex items-center gap-2 hover:border-purple-300 transition-colors ${
+                      userType === "cuidador" ? "ring-2 ring-purple-600 border-purple-600 bg-purple-50" : ""
                     }`}
                   >
                     <RadioGroupItem value="cuidador" id="cuidador" />
@@ -237,7 +237,8 @@ export default function Registro() {
                 <Button
                   onClick={() => setStep(2)}
                   disabled={!userType}
-                  className="w-full mt-4"
+                  variant="gradient"
+                  className="w-full "
                 >
                   Continuar <ArrowRight className="inline ml-2" />
                 </Button>
@@ -281,7 +282,7 @@ export default function Registro() {
 
         <div className="text-center mt-6">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-blue-600">
+          <Link href="/login" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
             Iniciar Sesión
           </Link>
         </div>

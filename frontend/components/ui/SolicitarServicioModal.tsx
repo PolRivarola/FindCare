@@ -217,11 +217,24 @@ export function SolicitarServicioModal({
                 <SelectValue placeholder="Selecciona el horario de servicio" />
               </SelectTrigger>
               <SelectContent>
-                {horariosDiarios.map((horario) => (
-                  <SelectItem key={horario.id} value={horario.nombre}>
-                    {horario.nombre}
-                  </SelectItem>
-                ))}
+                {horariosDiarios.map((horario) => {
+                  // Add time ranges based on the database values
+                  const getTimeDisplay = (nombre: string) => {
+                    const timeMap: { [key: string]: string } = {
+                      'Mañana': 'Mañana (6:00 - 12:00)',
+                      'Tarde': 'Tarde (12:00 - 18:00)',
+                      'Noche': 'Noche (18:00 - 24:00)',
+                      'Todo el dia': 'Todo el día (24 horas)'
+                    };
+                    return timeMap[nombre] || nombre;
+                  };
+
+                  return (
+                    <SelectItem key={horario.id} value={horario.nombre}>
+                      {getTimeDisplay(horario.nombre)}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
           </div>

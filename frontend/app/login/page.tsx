@@ -106,22 +106,22 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 flex items-center justify-center py-8">
       <div className="max-w-md w-full mx-4">
         {/* Header */}
         <div className="text-center mb-8">
           <Link
             href="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4"
+            className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al inicio
           </Link>
           <div className="flex items-center justify-center mb-4">
-            <Heart className="h-8 w-8 text-blue-600 mr-2" />
+            <Heart className="h-8 w-8 bg-gradient-to-tr from-purple-600 to-blue-600 rounded text-white p-1 mr-2" />
             <span className="text-2xl font-bold text-gray-900">FindCare</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Iniciar Sesión</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Iniciar Sesión</h1>
         </div>
 
         <Card>
@@ -170,13 +170,13 @@ export default function Login() {
               <div className="text-right">
                 <Link
                   href="/recuperar"
-                  className="text-sm text-blue-600 hover:text-blue-700"
+                  className="text-sm text-purple-600 hover:text-purple-700 transition-colors"
                 >
                   ¿Olvidaste tu contraseña?
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" variant="gradient" className="w-full" disabled={loading}>
                 {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
               </Button>
             </form>
@@ -186,7 +186,7 @@ export default function Login() {
                 ¿No tienes una cuenta?{" "}
                 <Link
                   href="/registro"
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
                 >
                   Registrarse
                 </Link>
@@ -194,7 +194,7 @@ export default function Login() {
             </div>
 
             {/* Demo credentials */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <div className="mt-6 p-4 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-lg">
               <p className="text-sm font-medium text-gray-700 mb-2">
                 Credenciales de prueba:
               </p>

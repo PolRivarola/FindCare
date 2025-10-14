@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CircleUserRound, Inbox } from "lucide-react";
-import Link from "next/link";
+import { Inbox } from "lucide-react";
 import { toast } from "sonner";
 import PageTitle from "@/components/ui/title";
 import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
+import { SolicitudCard } from "@/components/ui/SolicitudCard";
 
 import { apiGet } from "@/lib/api";
 import { useUser } from "@/context/UserContext";
@@ -72,46 +70,32 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
-          {solicitudes.map((servicio) => {
-            // Para el botón "Ver perfil" mostramos el perfil del contraparte
-            const perfilHref =
-              `/cliente/${servicio.id_cliente}`;
-
-            return (
-              <Card
+        <>
+          <div className="space-y-4">
+            {solicitudes.map((servicio) => (
+              <SolicitudCard
                 key={servicio.id}
-                className="p-6 flex justify-between items-center"
-              >
-                <div className="flex items-center gap-6">
-                  <CircleUserRound className="h-12 w-12 text-blue-600 mx-auto" />
-                  <div>
-                    <p className="text-xl font-semibold">{servicio.cliente}</p>
-                    <p className="text-l text-gray-500">{servicio.servicio}</p>
-                    <p className="text-l text-gray-500">
-                      {servicio.fecha_inicio} - {servicio.fecha_fin}
-                    </p>
-                  </div>
-                </div>
+                solicitud={servicio}
+                onVerDetalles={setModalOpenId}
+              />
+            ))}
+          </div>
 
-                <div className="flex items-center gap-6 text-base">
-                  <Link href={perfilHref}>
-                    <Button variant="secondary">Ver perfil</Button>
-                  </Link>
-
-                  <DetalleSolicitudModal
-                    solicitud={servicio}
-                    open={modalOpenId === servicio.id}
-                    onOpenChange={(open) =>
-                      setModalOpenId(open ? servicio.id : null)
-                    }
-                    actualizarSolicitudes={setSolicitudes}
-                  />
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+          {/* Render modals outside the map */}
+          {solicitudes.map((servicio) => (
+            modalOpenId === servicio.id && (
+              <DetalleSolicitudModal
+                key={servicio.id}
+                solicitud={servicio}
+                open={true}
+                onOpenChange={(open) =>
+                  setModalOpenId(open ? servicio.id : null)
+                }
+                actualizarSolicitudes={setSolicitudes}
+              />
+            )
+          ))}
+        </>
       )}
     </div>
   );

@@ -28,6 +28,7 @@ export interface Solicitud {
   fecha_fin: string;
   hora: string;
   rangos_horarios: string[];
+  dias_semanales: string[];
   foto: string;
 }
 

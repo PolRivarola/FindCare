@@ -1,7 +1,7 @@
 // Lo que devuelve DRF (ajustá a tu serializer real)
 export type ServicioDTO = {
   id: number;
-  cliente: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string };
+  cliente: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string; foto_perfil?: string };
   receptor: number | { id: number; username: string; first_name?: string; last_name?: string };
   fecha_inicio: string;   // ISO string
   fecha_fin: string;      // ISO string

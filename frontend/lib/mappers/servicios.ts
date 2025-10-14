@@ -5,14 +5,15 @@ function toDateOnly(iso: string) {
   return iso?.slice(0, 10) ?? "";
 }
 
-function pickUsername(u: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string }) {
-  if (typeof u === "number") return { id: u, label: `Usuario ${u}`, ciudad: "—", provincia: "—" };
+function pickUsername(u: number | { id: number; username: string; first_name?: string; last_name?: string; ciudad?: string; provincia?: string; foto_perfil?: string }) {
+  if (typeof u === "number") return { id: u, label: `Usuario ${u}`, ciudad: "—", provincia: "—", foto: null };
   const full = [u.first_name, u.last_name].filter(Boolean).join(" ").trim();
   return { 
     id: u.id, 
     label: full || u.username,
     ciudad: u.ciudad || "—",
-    provincia: u.provincia || "—"
+    provincia: u.provincia || "—",
+    foto: u.foto_perfil || null
   };
 }
   
@@ -25,15 +26,16 @@ export function mapServiciosToUI(rows: ServicioDTO[]): Solicitud[] {
       id: r.id,
       id_cliente: cliente.id,
       id_cuidador: receptor.id,
-      foto: "/placeholder.jpg",                       // ajustá si luego traés foto real
+      foto: cliente.foto || "/placeholder.jpg",      // use actual profile picture or placeholder
       cliente: cliente.label,                         // nombre que mostrás en tu card
       cliente_ciudad: cliente.ciudad,
       cliente_provincia: cliente.provincia,
       servicio: [r.descripcion].filter(Boolean),      // puedes expandir a tags si querés
-      fecha_inicio: toDateOnly(r.fecha_inicio),
-      fecha_fin: toDateOnly(r.fecha_fin),
+      fecha_inicio: r.fecha_inicio,
+      fecha_fin: r.fecha_fin,
       hora: r.horas_dia || "—",
       rangos_horarios: [],
+      dias_semanales: r.dias_semanales.map(d => typeof d === 'object' ? d.nombre || 'Día' : 'Día').filter(Boolean),
       aceptado: r.aceptado                            // derivá si necesitás
     };
   });

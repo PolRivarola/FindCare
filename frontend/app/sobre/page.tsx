@@ -8,7 +8,7 @@ export default function SobreNosotros() {
     { icon: Users, label: "Familias Atendidas", value: "1,200+" },
     { icon: Heart, label: "Cuidadores Verificados", value: "350+" },
     { icon: Clock, label: "Horas de Cuidado", value: "50,000+" },
-    { icon: Star, label: "Calificación Promedio", value: "4.9/5" },
+    { icon: Star, label: "Calificación Promedio", value: "4.7/5" },
   ]
 
   const values = [
@@ -89,34 +89,13 @@ export default function SobreNosotros() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center">
-              <Heart className="h-8 w-8 text-blue-600 mr-2" />
-              <span className="text-2xl font-bold text-gray-900">FindCare</span>
-            </Link>
-
-            <nav className="flex space-x-6">
-              <Link href="/" className="text-gray-600 hover:text-blue-600">
-                Inicio
-              </Link>
-              <Link href="/login" className="text-gray-600 hover:text-blue-600">
-                Iniciar Sesión
-              </Link>
-              <Link href="/registro" className="text-gray-600 hover:text-blue-600">
-                Registrarse
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16">
+      <section className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Sobre <span className="text-blue-600">FindCare</span>
+            Sobre <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">FindCare</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Somos una plataforma dedicada a conectar familias con cuidadores profesionales, brindando tranquilidad y
@@ -130,14 +109,14 @@ export default function SobreNosotros() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <Card key={index} className="text-center">
+              <Card key={index} className="text-center border-purple-100 hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-blue-100 rounded-full">
-                      <stat.icon className="h-8 w-8 text-blue-600" />
+                    <div className="p-3 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full">
+                      <stat.icon className="h-8 w-8 text-purple-600" />
                     </div>
                   </div>
-                  <h3 className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">{stat.value}</h3>
                   <p className="text-gray-600">{stat.label}</p>
                 </CardContent>
               </Card>
@@ -186,11 +165,11 @@ export default function SobreNosotros() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+              <Card key={index} className="text-center border-purple-100 hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-blue-100 rounded-full">
-                      <value.icon className="h-8 w-8 text-blue-600" />
+                    <div className="p-3 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full">
+                      <value.icon className="h-8 w-8 text-purple-600" />
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{value.title}</h3>
@@ -207,11 +186,11 @@ export default function SobreNosotros() {
 
 
       {/* Contact Section */}
-      <section className="py-16 bg-blue-600">
+      <section className="py-16 bg-gradient-to-r from-purple-600 to-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">¿Tienes Preguntas?</h2>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            <p className="text-xl text-purple-100 max-w-2xl mx-auto">
               Estamos aquí para ayudarte. Contáctanos y te responderemos lo antes posible.
             </p>
           </div>
@@ -219,41 +198,41 @@ export default function SobreNosotros() {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="text-center">
               <div className="flex justify-center mb-4">
-                <div className="p-3 bg-blue-500 rounded-full">
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
                   <Phone className="h-6 w-6 text-white" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Teléfono</h3>
-              <p className="text-blue-100">+54 3516655333</p>
-              <p className="text-blue-100">Lun - Vie: 8:00 - 20:00</p>
+              <p className="text-purple-100">+54 3516655333</p>
+              <p className="text-purple-100">Lun - Vie: 8:00 - 20:00</p>
             </div>
 
             <div className="text-center">
               <div className="flex justify-center mb-4">
-                <div className="p-3 bg-blue-500 rounded-full">
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
                   <Mail className="h-6 w-6 text-white" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Email</h3>
-              <p className="text-blue-100">info@FindCare.com</p>
-              <p className="text-blue-100">soporte@FindCare.com</p>
+              <p className="text-purple-100">info@FindCare.com</p>
+              <p className="text-purple-100">soporte@FindCare.com</p>
             </div>
 
             <div className="text-center">
               <div className="flex justify-center mb-4">
-                <div className="p-3 bg-blue-500 rounded-full">
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
                   <MapPin className="h-6 w-6 text-white" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Oficina</h3>
-              <p className="text-blue-100">Av. Ituzaingo 1234</p>
-              <p className="text-blue-100">Córdoba, Argentina</p>
+              <p className="text-purple-100">Av. Ituzaingo 1234</p>
+              <p className="text-purple-100">Córdoba, Argentina</p>
             </div>
           </div>
 
           <div className="text-center">
             <Link href="/registro">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
                 Únete a FindCare
               </Button>
             </Link>
@@ -262,9 +241,8 @@ export default function SobreNosotros() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white ">
-
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+      <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <p>&copy; 2024 FindCare. Todos los derechos reservados.</p>
           </div>
       </footer>

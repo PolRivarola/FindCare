@@ -22,6 +22,7 @@ import { useUser } from "@/context/UserContext";
 import { CalificarModal } from "@/components/ui/CalificarModal";
 import { ReviewCard } from "@/components/ui/ReviewCard";
 import { Flag } from "lucide-react";
+import { formatDate } from "@/lib/utils/dateFormat";
 
 type UsuarioMini = { id: number; username: string; first_name?: string; last_name?: string; foto_perfil?: string };
 type CalificacionMini = { puntuacion: number; comentario?: string | null; creado_en: string } | null;
@@ -147,8 +148,8 @@ export default function ClienteDashboard() {
     <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div className="mb-8 border-2  bg-blue-600 p-6 rounded-lg shadow-sm">
-          <h1 className="text-3xl font-bold text-white mb-2">
+        <div className="mb-8 border-2 bg-gradient-to-tr from-purple-600 to-blue-600 p-6 rounded-lg shadow-sm">
+        <h1 className="text-3xl font-bold text-white mb-2">
             ¡Hola{user ? `, ${user.first_name || user.username}` : ""}!
           </h1>
           <p className="text-white">
@@ -271,7 +272,7 @@ export default function ClienteDashboard() {
                       <div>
                         <h4 className="font-medium">{nombre(service.receptor)}</h4>
                         <p className="text-sm text-gray-500">
-                          {service.fecha_inicio.slice(0,10)} - {service.fecha_fin.slice(0,10)}
+                          {formatDate(service.fecha_inicio)} - {formatDate(service.fecha_fin)}
                         </p>
                       </div>
                       <div className="text-right">
@@ -311,31 +312,44 @@ export default function ClienteDashboard() {
                 Próximos Servicios
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              {/* Scroll container with fixed height; header remains visible */}
-              <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
-                {upcomingServices.map((service) => {
-                  const d = new Date(service.fecha_inicio);
-                  const fecha = d.toLocaleDateString();
-                  const hora = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                  return (
-                    <div
-                      key={service.id}
-                      className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500"
-                    >
-                      <div>
-                        <h4 className="font-medium">{nombre(service.receptor)}</h4>
-                        <p className="text-sm text-blue-600 font-medium">
-                          {fecha} a las {hora}
-                        </p>
+            <CardContent >
+              {upcomingServices.length === 0 ? (
+                <div className="flex flex-col items-center justify-center min-h-96 text-center">
+                  <Calendar className="h-12 w-12 text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-600 mb-2">
+                    No tienes servicios próximos
+                  </h3>
+                  <p className="text-gray-500 mb-4">
+                    Busca cuidadores para programar nuevos servicios
+                  </p>
+                  
+                </div>
+              ) : (
+                /* Scroll container with fixed height; header remains visible */
+                <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
+                  {upcomingServices.map((service) => {
+                    const d = new Date(service.fecha_inicio);
+                    const fecha = d.toLocaleDateString();
+                    const hora = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                    return (
+                      <div
+                        key={service.id}
+                        className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500"
+                      >
+                        <div>
+                          <h4 className="font-medium">{nombre(service.receptor)}</h4>
+                          <p className="text-sm text-blue-600 font-medium">
+                            {fecha} a las {hora}
+                          </p>
+                        </div>
+                        <div>
+                          <Link href="/cliente/chat"><Button size="sm">Contactar</Button></Link>
+                        </div>
                       </div>
-                      <div>
-                        <Link href="/cliente/chat"><Button size="sm">Contactar</Button></Link>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

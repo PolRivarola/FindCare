@@ -2,11 +2,21 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "/api/b";
 
 function withSlash(path: string) {
-  // leaves /foo/bar/ as is; adds / if missing; doesn’t touch ?query
+  // leaves /foo/bar/ as is; adds / if missing; doesn't touch ?query
   const [p, q = ""] = path.split("?");
   if (/\.[a-z0-9]+$/i.test(p)) return path;         // keep files like .json, .png
   const fixed = p.endsWith("/") ? p : p + "/";
   return q ? `${fixed}?${q}` : fixed;
+}
+
+// Global authentication error handler
+function handleAuthError(status: number, response: Response) {
+  if (status === 401 || status === 403) {
+    // Dispatch a custom event to notify components about authentication failure
+    window.dispatchEvent(new CustomEvent('authError', { 
+      detail: { status, response } 
+    }));
+  }
 }
 
 export async function apiGet<T>(endpoint: string, params?: Record<string, any>) {
@@ -26,7 +36,10 @@ export async function apiGet<T>(endpoint: string, params?: Record<string, any>) 
   }
   const url = `${API_BASE_URL}${withSlash(endpoint)}${query}`;
   const r = await fetch(url, { method: "GET", credentials: "include", headers: { "Content-Type": "application/json" }, cache: "no-store" });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
   return r.json() as Promise<T>;
 }
 
@@ -38,7 +51,10 @@ export async function apiPost<T>(endpoint: string, body?: any) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body ?? {}),
   });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
   return r.json() as Promise<T>;
 }
 
@@ -46,14 +62,20 @@ export async function apiPost<T>(endpoint: string, body?: any) {
 export async function apiPut<T>(endpoint: string, body?: any) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
   const r = await fetch(url, { method: "PUT", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
   return r.json() as Promise<T>;
 }
 
 export async function apiDelete(endpoint: string) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
   const r = await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" }});
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
 }
 
 export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
@@ -64,7 +86,10 @@ export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
     // Don't set Content-Type - let browser set it with boundary for multipart/form-data
     body: formData,
   });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
   return r.json() as Promise<T>;
 }
 
@@ -76,6 +101,9 @@ export async function apiPatchFormData<T>(endpoint: string, formData: FormData) 
     // Let the browser set multipart boundary automatically
     body: formData,
   });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    handleAuthError(r.status, r);
+    throw new Error(await r.text());
+  }
   return r.json() as Promise<T>;
 }

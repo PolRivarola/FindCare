@@ -3,6 +3,7 @@ import { StarRating } from "./StarRating";
 import { ReportModal } from "./ReportModal";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { formatDate } from "@/lib/utils/dateFormat";
 
 interface ReviewCardProps {
   id: number;
@@ -39,9 +40,6 @@ export function ReviewCard({
 }: ReviewCardProps) {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
 
   const handleReportClick = () => {
     setIsReportModalOpen(true);
@@ -49,7 +47,9 @@ export function ReviewCard({
 
   const handleReportSubmit = (reason: string) => {
     if (onReport) {
-      onReport(id, isReported, reason);
+      // For removing reports (isReported = true), we don't need a reason
+      const reportReason = isReported ? undefined : reason;
+      onReport(id, isReported, reportReason);
     }
     setIsReportModalOpen(false);
   };
@@ -123,7 +123,7 @@ export function ReviewCard({
             />
             
             <span className="text-sm text-gray-500">
-              {date}
+              {formatDate(date)}
             </span>
           </div>
           

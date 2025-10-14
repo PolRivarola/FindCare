@@ -162,7 +162,7 @@ class CalificacionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Calificacion
-        fields = ["id", "puntuacion", "comentario", "creado_en", "autor", "receptor", "reportada"]
+        fields = ["id", "puntuacion", "comentario", "creado_en", "autor", "receptor", "reportada", "motivo_reporte"]
 
 class CertMiniSerializer(serializers.ModelSerializer):
     archivo = serializers.SerializerMethodField()

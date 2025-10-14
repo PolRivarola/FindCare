@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ServicioDTO, Solicitud } from "@/lib/types";
 
-import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star } from "lucide-react";
+import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star, FileText } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { apiGet, apiPost, apiDelete } from "@/lib/api";
@@ -23,6 +23,7 @@ import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
 import { ReviewCard } from "@/components/ui/ReviewCard";
 import { useUser } from "@/context/UserContext";
 import { mapServiciosToUI } from "@/lib/mappers/servicios";
+import { SolicitudCard } from "@/components/ui/SolicitudCard";
 
 
 export default function CuidadorDashboard() {
@@ -121,7 +122,7 @@ useEffect(() => {
   return (
     <div className="flex-1">
       <main className="p-6 ">
-      <div className="mb-8 border-2  bg-blue-600 p-6 rounded-lg shadow-sm">
+      <div className="mb-8 border-2 bg-gradient-to-tr from-purple-600 to-blue-600 p-6 rounded-lg shadow-sm">
           <h1 className="text-3xl font-bold text-white mb-2">
             ¡Hola{user ? `, ${user.first_name || user.username}` : ""}!
           </h1>
@@ -134,11 +135,11 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
-                  <Calendar className="h-6 w-6 text-white" />
+                <div className="p-2 ">
+                  <Calendar className="h-12 w-12 text-purple-600 mx-auto " />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-md font-medium text-gray-600">
                     Servicios Completados
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
@@ -151,11 +152,11 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
-                  <Star className="h-6 w-6 text-white" />
+                <div className="p-2 ">
+                  <Star className="h-12 w-12 text-purple-600 mx-auto" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-md font-medium text-gray-600">
                     Calificación
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
@@ -170,11 +171,11 @@ useEffect(() => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg">
-                  <Bell className="h-6 w-6 text-white" />
+                <div className="p-2 ">
+                  <Bell className="h-12 w-12 text-purple-600 mx-auto " />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-md font-medium text-gray-600">
                     Solicitudes Pendientes
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
@@ -205,30 +206,29 @@ useEffect(() => {
               <>
                 <div className="space-y-4">
                   {solicitudes.map((req) => (
-                    <div
+                    <SolicitudCard
                       key={req.id}
-                      className="border rounded-lg p-4 hover:bg-gray-50"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-lg">
-                            {req.cliente}
-                          </h4>
-                          <p className="text-gray-600 mb-2 w-1/2">{req.servicio}</p>
-                      
-                        </div>
-                        <DetalleSolicitudModal
-                          solicitud={req}
-                          open={modalOpenId === req.id}
-                          onOpenChange={(open) =>
-                            setModalOpenId(open ? req.id : null)
-                          }
-                          actualizarSolicitudes={setSolicitudes} 
-                        />
-                      </div>
-                    </div>
+                      solicitud={req}
+                      onVerDetalles={setModalOpenId}
+                    />
                   ))}
                 </div>
+
+                {/* Render modals outside the map */}
+                {solicitudes.map((req) => (
+                  modalOpenId === req.id && (
+                    <DetalleSolicitudModal
+                      key={req.id}
+                      solicitud={req}
+                      open={true}
+                      onOpenChange={(open) =>
+                        setModalOpenId(open ? req.id : null)
+                      }
+                      actualizarSolicitudes={setSolicitudes} 
+                    />
+                  )
+                ))}
+
                 <div className="mt-4">
                   <Link href="/cuidador/solicitudes">
                     <Button variant="outline" className="w-full">

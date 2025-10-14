@@ -43,6 +43,13 @@ export function ReportModal({
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = () => {
+    // For removing reports, no validation needed
+    if (isReported) {
+      onReport("");
+      return;
+    }
+    
+    // For creating reports, validate inputs
     const validationErrors: string[] = [];
     
     if (!selectedReason) {
@@ -69,7 +76,7 @@ export function ReportModal({
     onClose();
   };
 
-  const isSubmitDisabled = isLoading || !selectedReason || (selectedReason === "Otro" && !customReason.trim());
+  const isSubmitDisabled = isLoading || (!isReported && (!selectedReason || (selectedReason === "Otro" && !customReason.trim())));
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>

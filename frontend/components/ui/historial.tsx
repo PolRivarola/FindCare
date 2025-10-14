@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { CircleUserRound, Star, MessageCircle, FileText } from "lucide-react";
+import { formatDate } from "@/lib/utils/dateFormat";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -251,7 +252,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                       {nombre(contraparte)}
                     </p>
                     <p className="text-l text-gray-500">
-                      {s.fecha_inicio.slice(0, 10)} - {s.fecha_fin.slice(0, 10)}
+                      {formatDate(s.fecha_inicio.slice(0, 10))} - {formatDate(s.fecha_fin.slice(0, 10))}
                       {s.en_curso && (
                         <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-green-100 text-green-700">
                           EN CURSO
@@ -289,7 +290,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                             onClick={() => abrirChat(s)}
                             
                             
-                            className="text-blue-600 hover:text-green-600 w-full"
+                            className="text-purple-600 hover:text-green-600 w-full"
                           >
                             <MessageCircle className="!h-8 !w-8" />
                           </Button>

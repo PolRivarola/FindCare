@@ -16,7 +16,9 @@ interface User {
 
 interface UserContextType {
   user: User | null;
+  isLoading: boolean;
   refreshUser: () => Promise<void>;
+  clearUser: () => void;
   refreshUnreadStatus: () => Promise<void>;
   isAdmin: () => boolean;
 }
@@ -25,14 +27,25 @@ const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
     try {
+      setIsLoading(true);
       const userData = await apiGet<User>("/users/me/");
       setUser(userData);
-    } catch {
+    } catch (error) {
+      // Clear user state on authentication errors
       setUser(null);
+      // Don't throw the error, just clear the user state
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const clearUser = () => {
+    setUser(null);
+    setIsLoading(false);
   };
 
   const refreshUnreadStatus = async () => {
@@ -45,10 +58,25 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetchUser();
+    
+    // Listen for authentication errors from API calls
+    const handleAuthError = () => {
+      clearUser();
+    };
+    
+    window.addEventListener('authError', handleAuthError);
+    return () => window.removeEventListener('authError', handleAuthError);
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, refreshUser: fetchUser, refreshUnreadStatus, isAdmin }}>
+    <UserContext.Provider value={{ 
+      user, 
+      isLoading, 
+      refreshUser: fetchUser, 
+      clearUser,
+      refreshUnreadStatus, 
+      isAdmin 
+    }}>
       {children}
     </UserContext.Provider>
   );

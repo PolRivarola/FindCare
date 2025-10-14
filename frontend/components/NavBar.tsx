@@ -1,13 +1,14 @@
 "use client"
 import Link from "next/link"
 import { Heart, Search, History, User, MessageCircle, Bell, MessageCircleQuestion } from "lucide-react"
-import { useUser } from "@/context/UserContext"
+import { useUserContext } from "@/context/UserContext"
 import LogoutButton from "@/components/LogoutButton"
+import { NavLink } from "@/components/NavLink"
 import { useEffect, useState } from "react"
 import { apiGet } from "@/lib/api"
 
 export default function NavBar() {
-  const user = useUser()
+  const { user, isLoading } = useUserContext()
   const [hasUnread, setHasUnread] = useState(false)
 
   // Fetch unread messages
@@ -44,73 +45,70 @@ export default function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <Link href={user ? (user.es_cuidador ? "/cuidador/dashboard" : "/cliente/dashboard") : "/"} className="flex items-center">
-            <Heart className="h-8 w-8 text-blue-600 mr-2" />
+            <Heart className="h-8 w-8 bg-gradient-to-tr from-purple-600 to-blue-600 rounded text-white p-1 mr-2" />
             <span className="text-2xl font-bold text-gray-900">FindCare</span>
           </Link>
 
           <nav className="flex items-center space-x-6">
-            {!user && (
+            {isLoading ? (
+              // Show loading state to prevent flash of wrong content
+              <div className="flex items-center space-x-6">
+                <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            ) : !user ? (
               <>
-                <Link href="/" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <Search className="h-4 w-4 mr-1" /> Inicio
-                </Link>
-                <Link href="/sobre" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <MessageCircleQuestion className="h-4 w-4 mr-1" /> Sobre Nosotros
-                </Link>
-                <Link href="/login" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <User className="h-4 w-4 mr-1" /> Ingresar
-                </Link>
+                <NavLink href="/" icon={Search}>
+                  Inicio
+                </NavLink>
+                <NavLink href="/sobre" icon={MessageCircleQuestion}>
+                  Sobre Nosotros
+                </NavLink>
+                <NavLink href="/login" icon={User}>
+                  Ingresar
+                </NavLink>
               </>
-            )}
+            ) : null}
 
             {user && user.es_cliente && (
               <>
-                <Link href="/cliente/dashboard" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <Heart className="h-4 w-4 mr-1" /> Dashboard
-                </Link>
-                <Link href="/cliente/buscar" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <Search className="h-4 w-4 mr-1" /> Buscar Cuidadores
-                </Link>
-                <Link href="/cliente/historial" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <History className="h-4 w-4 mr-1" /> Historial
-                </Link>
-                <Link href="/cliente/perfil" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <User className="h-4 w-4 mr-1" /> Mi Perfil
-                </Link>
-                <Link href="/cliente/chat" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  {hasUnread ? (
-                    <span className="inline-block h-3 w-3 rounded-full bg-red-500 mr-2" />
-                  ) : (
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                  )}
+                <NavLink href="/cliente/dashboard" icon={Heart}>
+                  Dashboard
+                </NavLink>
+                <NavLink href="/cliente/buscar" icon={Search}>
+                  Buscar Cuidadores
+                </NavLink>
+                <NavLink href="/cliente/historial" icon={History}>
+                  Historial
+                </NavLink>
+                <NavLink href="/cliente/perfil" icon={User}>
+                  Mi Perfil
+                </NavLink>
+                <NavLink href="/cliente/chat" icon={MessageCircle} hasUnread={hasUnread}>
                   Mensajes
-                </Link>
+                </NavLink>
                 <LogoutButton />
               </>
             )}
 
             {user && user.es_cuidador && (
               <>
-                <Link href="/cuidador/dashboard" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <Heart className="h-4 w-4 mr-1" /> Dashboard
-                </Link>
-                <Link href="/cuidador/solicitudes" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <Bell className="h-4 w-4 mr-1" /> Solicitudes
-                </Link>
-                <Link href="/cuidador/historial" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <History className="h-4 w-4 mr-1" /> Historial
-                </Link>
-                <Link href="/cuidador/perfil" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  <User className="h-4 w-4 mr-1" /> Mi Perfil
-                </Link>
-                <Link href="/cuidador/chat" className="text-gray-600 hover:text-blue-600 flex items-center">
-                  {hasUnread ? (
-                    <span className="inline-block h-3 w-3 rounded-full bg-red-500 mr-2" />
-                  ) : (
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                  )}
+                <NavLink href="/cuidador/dashboard" icon={Heart}>
+                  Dashboard
+                </NavLink>
+                <NavLink href="/cuidador/solicitudes" icon={Bell}>
+                  Solicitudes
+                </NavLink>
+                <NavLink href="/cuidador/historial" icon={History}>
+                  Historial
+                </NavLink>
+                <NavLink href="/cuidador/perfil" icon={User}>
+                  Mi Perfil
+                </NavLink>
+                <NavLink href="/cuidador/chat" icon={MessageCircle} hasUnread={hasUnread}>
                   Mensajes
-                </Link>
+                </NavLink>
                 <LogoutButton />
               </>
             )}

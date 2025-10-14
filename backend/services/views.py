@@ -219,12 +219,14 @@ class CalificacionViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"], url_path="reportar")
     def reportar(self, request, pk=None):
         cal = self.get_object()
-        # Solo el receptor o admin puede reportar
         if request.user != cal.receptor and not request.user.is_staff:
             return Response({"detail": "No autorizado"}, status=403)
+        
+        motivo = request.data.get("motivo", "")
         cal.reportada = True
-        cal.save(update_fields=["reportada"])
-        return Response({"detail": "ok", "reportada": True})
+        cal.motivo_reporte = motivo
+        cal.save(update_fields=["reportada", "motivo_reporte"])
+        return Response({"detail": "ok", "reportada": True, "motivo": motivo})
 
     @action(detail=True, methods=["post"], url_path="desreportar")
     def desreportar(self, request, pk=None):
@@ -233,7 +235,8 @@ class CalificacionViewSet(viewsets.ModelViewSet):
         if request.user != cal.receptor and not request.user.is_staff:
             return Response({"detail": "No autorizado"}, status=403)
         cal.reportada = False
-        cal.save(update_fields=["reportada"])
+        cal.motivo_reporte = None
+        cal.save(update_fields=["reportada", "motivo_reporte"])
         return Response({"detail": "ok", "reportada": False})
 
 
