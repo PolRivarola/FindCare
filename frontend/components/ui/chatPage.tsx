@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Send, MessageSquare } from "lucide-react";
 import { apiGet, apiPost } from "@/lib/api";
-import { Conversation, Message } from "@/lib/types";
+import { Conversation, Message, PaginatedResponse } from "@/lib/types";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
@@ -16,67 +16,160 @@ import PageTitle from "./title";
 import Link from "next/link";
 
 export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cuidador" }) {
+  const MESSAGE_LIMIT = 50;
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [conversationMeta, setConversationMeta] = useState({ page: 1, hasNext: false });
+  const [loadingMoreConversations, setLoadingMoreConversations] = useState(false);
+  const [messageMeta, setMessageMeta] = useState<{ nextOffset: number | null }>({ nextOffset: null });
+  const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
   const search = useSearchParams();
   const router = useRouter();
   const { refreshUnreadStatus } = useUserContext();
 
+  const parseOffset = (url: string | null) => {
+    if (!url) return null;
+    try {
+      const base = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+      const parsed = new URL(url, base);
+      const offset = parsed.searchParams.get("offset");
+      return offset ? Number(offset) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const loadConversations = async (
+    page = 1,
+    append = false,
+    abortRef?: { current: boolean }
+  ) => {
+    if (append) {
+      setLoadingMoreConversations(true);
+    } else {
+      setLoadingConversations(true);
+    }
+
+    try {
+      const response = await apiGet<PaginatedResponse<Conversation>>("/conversaciones/", {
+        page,
+      });
+
+      if (abortRef?.current) return [] as Conversation[];
+
+      setConversations((prev) => (append ? [...prev, ...response.results] : response.results));
+      setConversationMeta({ page, hasNext: Boolean(response.next) });
+      return response.results;
+    } catch {
+      if (!abortRef?.current) {
+        toast.error("No se pudieron cargar las conversaciones.");
+      }
+      return [] as Conversation[];
+    } finally {
+      if (append) {
+        setLoadingMoreConversations(false);
+      } else {
+        setLoadingConversations(false);
+      }
+    }
+  };
+
+  const fetchMessages = async (
+    conversationId: number,
+    offset = 0,
+    append = false,
+    abortRef?: { current: boolean }
+  ) => {
+    if (append) {
+      setLoadingOlderMessages(true);
+    } else {
+      setLoadingMessages(true);
+    }
+
+    try {
+      const response = await apiGet<PaginatedResponse<Message>>(
+        `/conversaciones/${conversationId}/mensajes/`,
+        { limit: MESSAGE_LIMIT, offset }
+      );
+
+      if (abortRef?.current) return;
+
+      if (append) {
+        setMessages((prev) => [...response.results, ...prev]);
+      } else {
+        setMessages(response.results);
+      }
+
+      setMessageMeta({ nextOffset: parseOffset(response.next) });
+
+      if (!append) {
+        setConversations((prev) =>
+          prev.map((c) => (c.id === conversationId ? { ...c, noLeidos: 0 } : c))
+        );
+        await refreshUnreadStatus();
+      }
+    } catch {
+      if (!abortRef?.current) {
+        toast.error("No se pudieron cargar los mensajes.");
+      }
+    } finally {
+      if (append) {
+        setLoadingOlderMessages(false);
+      } else {
+        setLoadingMessages(false);
+      }
+    }
+  };
+
+  const loadMoreConversations = () => {
+    if (!conversationMeta.hasNext || loadingMoreConversations) return;
+    loadConversations(conversationMeta.page + 1, true);
+  };
+
+  const loadOlderMessages = () => {
+    if (selectedChat == null || messageMeta.nextOffset === null || loadingOlderMessages) return;
+    fetchMessages(selectedChat, messageMeta.nextOffset, true);
+  };
+
   // CARGAR CONVERSACIONES
   useEffect(() => {
-    let abort = false;
-    setLoadingConversations(true);
+    const abortRef = { current: false };
 
-    apiGet<Conversation[]>("/conversaciones/")
-      .then((data) => {
-        if (abort) return;
-        setConversations(data);
-        const desired = search.get("c");
-        if (desired) {
-          const id = Number(desired);
-          setSelectedChat((prev) => prev ?? (data.find(c => c.id === id)?.id ?? data[0]?.id ?? null));
-          // clean param
-          router.replace(location.pathname);
-        } else {
-          setSelectedChat((prev) => prev ?? data[0]?.id ?? null);
+    (async () => {
+      const data = await loadConversations(1, false, abortRef);
+      if (abortRef.current) return;
+
+      const desired = search.get("c");
+      if (desired) {
+        const id = Number(desired);
+        setSelectedChat((prev) => prev ?? (data.find((c) => c.id === id)?.id ?? data[0]?.id ?? null));
+        if (typeof window !== "undefined") {
+          router.replace(window.location.pathname);
         }
-      })
-      .catch(() => {
-        toast.error("No se pudieron cargar las conversaciones.");
-      })
-      .finally(() => !abort && setLoadingConversations(false));
+      } else {
+        setSelectedChat((prev) => prev ?? data[0]?.id ?? null);
+      }
+    })();
 
-    return () => { abort = true; };
+    return () => {
+      abortRef.current = true;
+    };
   }, []);
 
   // CARGAR MENSAJES DE LA CONVERSACIÓN SELECCIONADA
   useEffect(() => {
     if (selectedChat == null) return;
-    let abort = false;
-    setLoadingMessages(true);
+    const abortRef = { current: false };
+    setMessageMeta({ nextOffset: null });
+    fetchMessages(selectedChat, 0, false, abortRef);
 
-    apiGet<Message[]>(`/conversaciones/${selectedChat}/mensajes/`)
-      .then(async (data) => {
-        if (abort) return;
-        setMessages(data);
-        let currentConvo = conversations.find(c => c.id === selectedChat)
-        if (currentConvo) {
-          currentConvo.noLeidos = 0;
-          setConversations([...conversations]);
-        }
-        // Refresh navbar unread status since messages were marked as read on the backend
-        await refreshUnreadStatus();
-      })
-      .catch(() => {
-        toast.error("No se pudieron cargar los mensajes.");
-      })
-      .finally(() => !abort && setLoadingMessages(false));
-
-    return () => { abort = true; };
+    return () => {
+      abortRef.current = true;
+    };
   }, [selectedChat]);
 
   // ENVIAR MENSAJE
@@ -123,34 +216,49 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
                 </div>
               </div>
             ) : (
-              conversations.map((conversation) => (
-                <div
-                  key={conversation.id}
-                  onClick={() => setSelectedChat(conversation.id)}
-                  className={`p-4 cursor-pointer hover:bg-gray-50 ${
-                    selectedChat === conversation.id ? "bg-blue-50 border-l-4 border-blue-500" : ""
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center">
-                        {conversation.nombre.charAt(0)}
+              <>
+                {conversations.map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    onClick={() => setSelectedChat(conversation.id)}
+                    className={`p-4 cursor-pointer hover:bg-gray-50 ${
+                      selectedChat === conversation.id ? "bg-blue-50 border-l-4 border-blue-500" : ""
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center">
+                          {conversation.nombre.charAt(0)}
+                        </div>
+                        <div className="ml-3">
+                          <h4 className="font-medium">{conversation.nombre}</h4>
+                          <p className="text-xs text-gray-500">{conversation.tipo}</p>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h4 className="font-medium">{conversation.nombre}</h4>
-                        <p className="text-xs text-gray-500">{conversation.tipo}</p>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">{conversation.hora}</p>
+                        {conversation.noLeidos > 0 && (
+                          <Badge className="bg-red-500 text-white text-xs mt-1">{conversation.noLeidos}</Badge>
+                        )}
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-500">{conversation.hora}</p>
-                      {conversation.noLeidos > 0 && (
-                        <Badge className="bg-red-500 text-white text-xs mt-1">{conversation.noLeidos}</Badge>
-                      )}
-                    </div>
+                    <p className="text-sm text-gray-600 truncate">{conversation.ultimoMensaje}</p>
                   </div>
-                  <p className="text-sm text-gray-600 truncate">{conversation.ultimoMensaje}</p>
-                </div>
-              ))
+                ))}
+
+                {conversationMeta.hasNext && (
+                  <div className="p-4">
+                    <Button
+                      variant="ghost"
+                      className="w-full"
+                      onClick={loadMoreConversations}
+                      disabled={loadingMoreConversations}
+                    >
+                      {loadingMoreConversations ? "Cargando..." : "Ver más"}
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </CardContent>
         </Card>
@@ -195,6 +303,17 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
                   </div>
                 ) : (
                   <div className="space-y-4">
+                    {messageMeta.nextOffset !== null && (
+                      <div className="flex justify-center">
+                        <Button
+                          variant="ghost"
+                          onClick={loadOlderMessages}
+                          disabled={loadingOlderMessages}
+                        >
+                          {loadingOlderMessages ? "Cargando..." : "Ver mensajes anteriores"}
+                        </Button>
+                      </div>
+                    )}
                     {messages.map((m) => (
                       <div key={m.id} className={`flex ${m.isOwn ? "justify-end" : "justify-start"}`}>
                         <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${m.isOwn ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900"}`}>

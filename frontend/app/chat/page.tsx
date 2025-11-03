@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Send, Phone, Video, MoreVertical } from "lucide-react";
 import { apiGet } from "@/lib/api";
-import { Conversation, Message } from "@/lib/types";
+import { Conversation, Message, PaginatedResponse } from "@/lib/types";
 import { set } from "date-fns";
 import { toast } from "sonner";
 import PageTitle from "@/components/ui/title";
@@ -25,10 +25,10 @@ export default function Chat() {
     setLoadingConversations(true);
     setLoadingMessages(true);
 
-    apiGet<Conversation[]>("/conversaciones/")
+    apiGet<PaginatedResponse<Conversation>>("/conversaciones/")
       .then((data) => {
-        setConversations(data);
-        setSelectedChat(data[0]?.id ?? null);
+        setConversations(data.results);
+        setSelectedChat(data.results[0]?.id ?? null);
       })
       .catch(() => {
         toast.error("No se pudieron cargar las conversaciones.");
@@ -58,8 +58,8 @@ export default function Chat() {
   useEffect(() => {
     if (selectedChat !== null) {
       setLoadingMessages(true);
-      apiGet<Message[]>(`/conversaciones/${selectedChat}/mensajes/`)
-        .then(setMessages)
+      apiGet<PaginatedResponse<Message>>(`/conversaciones/${selectedChat}/mensajes/`)
+        .then((resp) => setMessages(resp.results))
         .catch(() => {
           toast.error("No se pudieron cargar los mensajes.");
           setMessages([

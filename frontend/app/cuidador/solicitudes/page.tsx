@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Inbox } from "lucide-react";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ import { SolicitudCard } from "@/components/ui/SolicitudCard";
 
 import { apiGet } from "@/lib/api";
 import { useUser } from "@/context/UserContext";
-import type { Solicitud, ServicioDTO } from "@/lib/types";
+import type { PaginatedResponse, Solicitud, ServicioDTO } from "@/lib/types";
 import { mapServiciosToUI } from "@/lib/mappers/servicios";
 
 type Props = { tipoUsuario: "cliente" | "cuidador" };
@@ -20,6 +21,8 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpenId, setModalOpenId] = useState<number | null>(null);
+  const [pagination, setPagination] = useState({ page: 1, hasNext: false });
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -31,9 +34,10 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
         // Armamos los filtros según el tipo de usuario
         
 
-        const rows = await apiGet<ServicioDTO[]>("/servicios", { receptor_id: uid, aceptado: "false", ordering: "-fecha_inicio" });
+        const rows = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios", { receptor_id: uid, aceptado: "false", ordering: "-fecha_inicio" });
         if (!ac.signal.aborted) {
-          setSolicitudes(mapServiciosToUI(rows) as unknown as Solicitud[]);
+          setSolicitudes(mapServiciosToUI(rows.results) as unknown as Solicitud[]);
+          setPagination({ page: 1, hasNext: Boolean(rows.next) });
         }
       } catch {
         if (!ac.signal.aborted) {
@@ -46,6 +50,29 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
 
     return () => ac.abort();
   }, [user?.id, tipoUsuario]);
+
+  const handleLoadMore = async () => {
+    if (!user || !pagination.hasNext) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = pagination.page + 1;
+      const response = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios", {
+        receptor_id: user.id,
+        aceptado: "false",
+        ordering: "-fecha_inicio",
+        page: nextPage,
+      });
+      setSolicitudes((prev) => [
+        ...prev,
+        ...(mapServiciosToUI(response.results) as unknown as Solicitud[]),
+      ]);
+      setPagination({ page: nextPage, hasNext: Boolean(response.next) });
+    } catch {
+      toast.error("No se pudieron cargar más solicitudes.");
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -95,6 +122,14 @@ export default function SolicitudesServicios({ tipoUsuario }: Props) {
               />
             )
           ))}
+
+          {pagination.hasNext && (
+            <div className="flex justify-center mt-6">
+              <Button variant="outline" onClick={handleLoadMore} disabled={loadingMore}>
+                {loadingMore ? "Cargando..." : "Ver más"}
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>
