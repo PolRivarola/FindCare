@@ -243,21 +243,25 @@ class CalificacionViewSet(viewsets.ModelViewSet):
 class ExperienciaViewSet(viewsets.ModelViewSet):
     queryset = Experiencia.objects.all()
     serializer_class = ExperienciaSerializer
+    pagination_class = None
 
 
 class CertificacionViewSet(viewsets.ModelViewSet):
     queryset = Certificacion.objects.all()
     serializer_class = CertificacionSerializer
+    pagination_class = None
 
 
 class DiaSemanalViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = DiaSemanal.objects.all()
     serializer_class = DiaSemanalSerializer
+    pagination_class = None
 
 
 class HorarioDiarioViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HorarioDiario.objects.all()
     serializer_class = HorarioDiarioSerializer
+    pagination_class = None
 
 
 # --------------------------

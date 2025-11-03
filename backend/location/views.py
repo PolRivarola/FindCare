@@ -10,11 +10,13 @@ class ProvinciaViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     queryset = Provincia.objects.all().order_by('nombre')
     serializer_class = ProvinciaSerializer
+    pagination_class = None
 
 class CiudadViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = CiudadSerializer
     queryset = Ciudad.objects.select_related('provincia').all().order_by('nombre')
+    pagination_class = None
     def get_queryset(self):
         qs = Ciudad.objects.select_related('provincia').all().order_by('nombre')
         prov_id = self.request.query_params.get('provincia')
@@ -26,3 +28,4 @@ class CiudadViewSet(viewsets.ModelViewSet):
 class DireccionViewSet(viewsets.ModelViewSet):
     queryset = Direccion.objects.all()
     serializer_class = DireccionSerializer
+    pagination_class = None

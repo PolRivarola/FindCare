@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from config.pagination import SearchPagination
+from services.models import Calificacion
 from users.models import Usuario, Cliente, Cuidador, TipoCliente
 from rest_framework.generics import CreateAPIView, ListAPIView
 from users.serializers import RegistroClienteSerializer, RegistroCuidadorSerializer
@@ -45,6 +47,7 @@ class TipoClienteViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = TipoCliente.objects.all()
     serializer_class = TipoClienteSerializer
+    pagination_class = None
 
 
 class RegistroClienteView(CreateAPIView):
@@ -67,6 +70,7 @@ class CuidadorSearchView(ListAPIView):
     search_fields = ['usuario__first_name', 'usuario__last_name', 'usuario__descripcion']
     ordering_fields = ['anios_experiencia', 'usuario__first_name']
     ordering = ['-anios_experiencia']
+    pagination_class = SearchPagination
 
     def get_queryset(self):
         queryset = Cuidador.objects.select_related('usuario', 'usuario__direccion', 'usuario__direccion__ciudad', 'usuario__direccion__ciudad__provincia').prefetch_related('tipos_cliente')
@@ -98,30 +102,28 @@ class CuidadorSearchView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        
-        # Calculate ratings for each cuidador
+        page = self.paginate_queryset(queryset)
+        target = page if page is not None else queryset
+
         cuidadores_data = []
-        for cuidador in queryset:
-            # Get average rating from calificaciones
-            from services.models import Calificacion
+        for cuidador in target:
             ratings = Calificacion.objects.filter(receptor=cuidador.usuario)
-            avg_rating = ratings.aggregate(avg_rating=Avg('puntuacion'))['avg_rating'] or 0
+            agg = ratings.aggregate(avg_rating=Avg('puntuacion'))
+            avg_rating = agg['avg_rating'] or 0
             review_count = ratings.count()
-            
-            # Get location info
+
             provincia = ""
             ciudad = ""
             if cuidador.usuario.direccion and cuidador.usuario.direccion.ciudad:
                 ciudad = cuidador.usuario.direccion.ciudad.nombre
                 if cuidador.usuario.direccion.ciudad.provincia:
                     provincia = cuidador.usuario.direccion.ciudad.provincia.nombre
-            
-            # Get specialties
+
             especialidades = [tc.nombre for tc in cuidador.tipos_cliente.all()]
-            
+
             cuidadores_data.append({
-                'id': cuidador.usuario.id,  # Use user ID for profile links
-                'cuidador_id': cuidador.id,  # Keep cuidador ID for reference
+                'id': cuidador.usuario.id,
+                'cuidador_id': cuidador.id,
                 'nombre': f"{cuidador.usuario.first_name} {cuidador.usuario.last_name}".strip() or cuidador.usuario.username,
                 'username': cuidador.usuario.username,
                 'especialidad': especialidades,
@@ -135,6 +137,9 @@ class CuidadorSearchView(ListAPIView):
                 'telefono': cuidador.usuario.telefono or "",
                 'email': cuidador.usuario.email,
             })
-        
+
+        if page is not None:
+            return self.get_paginated_response(cuidadores_data)
+
         return Response(cuidadores_data)
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { SolicitarServicioModal } from "@/components/ui/SolicitarServicioModal";
 import { toast } from "sonner";
 import { apiGet, apiPost } from "@/lib/api";
+import { PaginatedResponse } from "@/lib/types";
 
 export default function BuscarCuidadoresPage() {
   const [filters, setFilters] = useState({
@@ -44,6 +45,9 @@ export default function BuscarCuidadoresPage() {
   const [diasSemanales, setDiasSemanales] = useState<any[]>([]);
   const [horariosDiarios, setHorariosDiarios] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [cuidadoresMeta, setCuidadoresMeta] = useState({ page: 1, count: 0, hasNext: false });
+  const firstSearchRef = useRef(true);
 
 
   const handleFilterChange = (field: string, value: string) => {
@@ -72,14 +76,19 @@ export default function BuscarCuidadoresPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [cuidadoresData, servicios, provinciasData, diasData, horariosData] = await Promise.all([
-          apiGet<any[]>("/search/"),
+        const [cuidadoresResp, servicios, provinciasData, diasData, horariosData] = await Promise.all([
+          apiGet<PaginatedResponse<any>>("/search/"),
           apiGet<any[]>("/tipos-cliente/"),
           apiGet<any[]>("/provincias/"),
           apiGet<any[]>("/dias-semanales/"),
           apiGet<any[]>("/horarios-diarios/"),
         ]);
-        setCuidadores(cuidadoresData);
+        setCuidadores(cuidadoresResp.results);
+        setCuidadoresMeta({
+          page: 1,
+          count: cuidadoresResp.count,
+          hasNext: Boolean(cuidadoresResp.next),
+        });
         setServiciosDisponibles(servicios);
         setProvincias(provinciasData);
         setDiasSemanales(diasData);
@@ -89,6 +98,7 @@ export default function BuscarCuidadoresPage() {
         toast.error("Error al cargar los datos.");
       } finally {
         setLoading(false);
+        firstSearchRef.current = false;
       }
     };
 
@@ -114,32 +124,45 @@ export default function BuscarCuidadoresPage() {
   }, [provincia]);
 
   // Search cuidadores with filters
-  const searchCuidadores = async () => {
+  const searchCuidadores = async (page = 1, append = false) => {
     try {
-      setLoading(true);
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+
       const searchParams: any = {};
-      
       if (provincia) searchParams.provincia = provincia;
       if (ciudad) searchParams.ciudad = ciudad;
       if (filters.experiencia) searchParams.min_experiencia = filters.experiencia;
       if (filters.especialidad.length > 0) searchParams.especialidad = filters.especialidad;
       if (orden) searchParams.ordering = orden;
+      searchParams.page = page;
 
-      const cuidadoresData = await apiGet<any[]>("/search/", searchParams);
-      console.log(cuidadoresData);
-      setCuidadores(cuidadoresData);
+      const response = await apiGet<PaginatedResponse<any>>("/search/", searchParams);
+
+      setCuidadores((prev) => (append ? [...prev, ...response.results] : response.results));
+      setCuidadoresMeta({
+        page,
+        count: response.count,
+        hasNext: Boolean(response.next),
+      });
     } catch (error) {
       console.error("Error al buscar cuidadores:", error);
       toast.error("Error al buscar cuidadores.");
     } finally {
-      setLoading(false);
+      if (append) {
+        setLoadingMore(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    if (!loading) {
-      searchCuidadores();
-    }
+    if (firstSearchRef.current) return;
+    searchCuidadores(1, false);
   }, [provincia, ciudad, filters, orden]);
 
   const handleSolicitud = async (formData: any) => {
@@ -344,7 +367,7 @@ export default function BuscarCuidadoresPage() {
         <div className="md:col-span-3 space-y-6">
           <div className="flex justify-between items-center mb-4">
             <p className="text-gray-600">
-              Mostrando {cuidadores.length} cuidadores
+              Mostrando {cuidadores.length} de {cuidadoresMeta.count} cuidadores
             </p>
             <Select onValueChange={(v) => setOrden(v)}>
               <SelectTrigger className="w-48">
@@ -385,59 +408,73 @@ export default function BuscarCuidadoresPage() {
               <p className="text-gray-500">Intenta ajustar los filtros de búsqueda</p>
             </div>
           ) : (
-            cuidadores.map((c) => (
-            <Card key={c.id}>
-              <CardContent className="p-6">
-                <div className="flex gap-6">
-                  <img
-                    src={c.foto_perfil || "/placeholder-user.jpg"}
-                    alt={c.nombre}
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <div className="flex justify-between mb-2">
-                      <h3 className="text-xl font-semibold">{c.nombre}</h3>
-                    </div>
-                    <div className="text-sm text-gray-600 flex flex-wrap gap-4 mb-2">
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 mr-1 text-yellow-400" />
-                        {c.rating} ({c.reviews} reseñas)
+            <>
+              {cuidadores.map((c) => (
+                <Card key={c.id}>
+                  <CardContent className="p-6">
+                    <div className="flex gap-6">
+                      <img
+                        src={c.foto_perfil || "/placeholder-user.jpg"}
+                        alt={c.nombre}
+                        className="w-24 h-24 rounded-full object-cover"
+                      />
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-2">
+                          <h3 className="text-xl font-semibold">{c.nombre}</h3>
+                        </div>
+                        <div className="text-sm text-gray-600 flex flex-wrap gap-4 mb-2">
+                          <div className="flex items-center">
+                            <Star className="h-4 w-4 mr-1 text-yellow-400" />
+                            {c.rating} ({c.reviews} reseñas)
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="h-4 w-4 mr-1" />
+                            {c.ciudad}, {c.provincia}
+                          </div>
+                          <div>{c.experiencia} años de experiencia</div>
+                        </div>
+                        <div className="mb-2">
+                          <div className="flex flex-wrap gap-2">
+                            {c.especialidad.map((esp: string, index: number) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {esp}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-gray-600 mb-4">{c.descripcion}</p>
+                        <div className="flex gap-3">
+                          <Link href={`/cuidador/${c.id}`}>
+                            <Button variant="outline">Ver Perfil</Button>
+                          </Link>
+                          <Button
+                            variant={solicitudEnviada[c.id] ? "success" : "gradient"}
+                            disabled={solicitudEnviada[c.id]}
+                            onClick={() => openModal(c)}
+                          >
+                            {solicitudEnviada[c.id]
+                              ? "Solicitud enviada"
+                              : "Solicitar Servicio"}
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {c.ciudad}, {c.provincia}
-                      </div>
-                      <div>{c.experiencia} años de experiencia</div>
                     </div>
-                    <div className="mb-2">
-                      <div className="flex flex-wrap gap-2">
-                        {c.especialidad.map((esp: string, index: number) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            {esp}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-gray-600 mb-4">{c.descripcion}</p>
-                    <div className="flex gap-3">
-                      <Link href={`/cuidador/${c.id}`}>
-                        <Button variant="outline">Ver Perfil</Button>
-                      </Link>
-                      <Button
-                        variant={solicitudEnviada[c.id] ? "success" : "gradient"}
-                        disabled={solicitudEnviada[c.id]}
-                        onClick={() => openModal(c)}
-                      >
-                        {solicitudEnviada[c.id]
-                          ? "Solicitud enviada"
-                          : "Solicitar Servicio"}
-                      </Button>
-                    </div>
-                  </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {cuidadoresMeta.hasNext && (
+                <div className="flex justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => searchCuidadores(cuidadoresMeta.page + 1, true)}
+                    disabled={loadingMore}
+                  >
+                    {loadingMore ? "Cargando..." : "Cargar más"}
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
-          ))
+              )}
+            </>
           )}
         </div>
       </div>

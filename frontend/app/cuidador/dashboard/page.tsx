@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ServicioDTO, Solicitud } from "@/lib/types";
+import { PaginatedResponse, ServicioDTO, Solicitud } from "@/lib/types";
 
 import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star, FileText } from "lucide-react";
 import Link from "next/link";
@@ -63,18 +63,18 @@ useEffect(() => {
         });
       }
       
-      const data = await apiGet<ServicioDTO[]>("/servicios/", {
+      const data = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios/", {
         receptor_id: uid,           
         aceptado: "false",          
         ordering: "-fecha_inicio",
       });
-      console.log("Solicitudes cargadas:", data);
+      console.log("Solicitudes cargadas:", data.results);
 
-      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data) as unknown as Solicitud[]);
+      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data.results) as unknown as Solicitud[]);
 
       // cargar calificaciones recibidas por el cuidador
-      const califs = await apiGet<any[]>("/calificaciones", { receptor_id: uid });
-      if (!ac.signal.aborted) setReviews(califs);
+      const califs = await apiGet<PaginatedResponse<any>>("/calificaciones", { receptor_id: uid });
+      if (!ac.signal.aborted) setReviews(califs.results);
     } catch {
       if (!ac.signal.aborted) {
         toast.error("Error al cargar datos");

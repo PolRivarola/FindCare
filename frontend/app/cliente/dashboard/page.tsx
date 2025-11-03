@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { apiGet, apiPost } from "@/lib/api";
+import { PaginatedResponse } from "@/lib/types";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 import { CalificarModal } from "@/components/ui/CalificarModal";
@@ -66,25 +67,28 @@ export default function ClienteDashboard() {
     (async () => {
       try {
         
-        const [recientes, proximos, recibidas] = await Promise.all([
-          apiGet<ServicioRead[]>("/servicios", {
+        const [recientesResp, proximosResp, recibidasResp] = await Promise.all([
+          apiGet<PaginatedResponse<ServicioRead>>("/servicios", {
             cliente_id: user.id,
             aceptado: "true",
             fecha_inicio_before: nowISO,
             ordering: "-fecha_inicio",
           }),
-          apiGet<ServicioRead[]>("/servicios", {
+          apiGet<PaginatedResponse<ServicioRead>>("/servicios", {
             cliente_id: user.id,
             fecha_inicio_after: nowISO,
             ordering: "-fecha_inicio",
             aceptado: "true",
 
           }),
-          apiGet<any[]>("/calificaciones", { receptor_id: user.id }),
+          apiGet<PaginatedResponse<any>>("/calificaciones", { receptor_id: user.id }),
         ]);
 
 
         if (!ac.signal.aborted) {
+          const recientes = recientesResp.results;
+          const proximos = proximosResp.results;
+          const recibidas = recibidasResp.results;
           // Filter out active services from recent services
           const serviciosCompletados = recientes.filter((s) => !s.en_curso);
           setRecentServices(serviciosCompletados.slice(0, 5));
