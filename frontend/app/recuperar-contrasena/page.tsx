@@ -146,6 +146,7 @@ export default function RecuperarPassword() {
                     <li>• Revisa tu carpeta de spam o correo no deseado</li>
                     <li>• Verifica que el email esté escrito correctamente</li>
                     <li>• El enlace expira en 24 horas</li>
+                    <li>• En desarrollo, revisa la consola del servidor</li>
                   </ul>
                 </div>
               </div>

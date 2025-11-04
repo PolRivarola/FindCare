@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { DateInput } from "@/components/ui/DateInput";
 import SingleImageInput from "@/components/ui/inputPic";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +36,7 @@ export type PerfilCuidador = {
   categorias_ids?: number[]; // para edición
   experiencias: Exp[];
   certificados: { nombre: string; archivo: string }[];
+  fotoDeleted?: boolean;
 };
 
 type Props = {
@@ -172,6 +174,11 @@ export default function CuidadorForm({
 
     // 3) Foto de perfil
     if (fotoFile) fd.append("foto_perfil", fotoFile);
+    
+    // Handle photo deletion
+    if (perfil.fotoDeleted) {
+      fd.append("delete_foto_perfil", "true");
+    }
 
     const categoriasIds = categoriasDisponibles
       .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
@@ -295,7 +302,15 @@ export default function CuidadorForm({
           <div className="relative">
             <SingleImageInput
               url={perfil.foto_perfil || ""}
-              onChange={(file) => setFotoFile(file)}
+              onChange={(file) => {
+                setFotoFile(file);
+                if (file === null) {
+                  // Handle photo deletion
+                  setPerfil({ ...perfil, fotoDeleted: true });
+                } else {
+                  setPerfil({ ...perfil, fotoDeleted: false });
+                }
+              }}
             />
             
           </div>
@@ -395,12 +410,13 @@ export default function CuidadorForm({
                       Fecha de inicio
                       <span className="text-red-500 font-bold">*</span>
                     </label>
-                    <Input
-                      type="date"
+                    <DateInput
                       value={exp.fecha_inicio?.slice(0, 10) || ""}
-                      onChange={(e) =>
-                        updateExperiencia(i, "fecha_inicio", e.target.value)
+                      onChange={(value) =>
+                        updateExperiencia(i, "fecha_inicio", value)
                       }
+                      placeholder="DD/MM/YYYY"
+                      max={exp.fecha_fin ? exp.fecha_fin.slice(0, 10) : undefined}
                       className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
                     />
                   </div>
@@ -409,12 +425,13 @@ export default function CuidadorForm({
                       Fecha de fin
                       <span className="text-red-500 font-bold">*</span>
                     </label>
-                    <Input
-                      type="date"
+                    <DateInput
                       value={exp.fecha_fin?.slice(0, 10) || ""}
-                      onChange={(e) =>
-                        updateExperiencia(i, "fecha_fin", e.target.value)
+                      onChange={(value) =>
+                        updateExperiencia(i, "fecha_fin", value)
                       }
+                      placeholder="DD/MM/YYYY"
+                      min={exp.fecha_inicio ? exp.fecha_inicio.slice(0, 10) : undefined}
                       className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
                     />
                   </div>

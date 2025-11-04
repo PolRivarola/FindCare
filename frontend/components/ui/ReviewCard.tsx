@@ -61,14 +61,14 @@ export function ReviewCard({
   const renderActions = () => {
     if (variant === "admin") {
       return (
-        <div className="flex space-x-2 ml-4">
+        <div className="flex flex-col sm:flex-row gap-2 mt-3 sm:mt-0 sm:ml-4 w-full sm:w-auto">
           {onApprove && (
             <Button
               size="sm"
               variant="default"
               onClick={() => onApprove(id)}
               disabled={isLoading}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto text-xs md:text-sm"
             >
               {loadingType === "approving" ? "Aprobando..." : "Aprobar"}
             </Button>
@@ -79,6 +79,7 @@ export function ReviewCard({
               variant="destructive"
               onClick={() => onDelete(id)}
               disabled={isLoading}
+              className="w-full sm:w-auto text-xs md:text-sm"
             >
               {loadingType === "deleting" ? "Eliminando..." : "Eliminar"}
             </Button>
@@ -94,7 +95,7 @@ export function ReviewCard({
           size="sm" 
           onClick={handleReportClick}
           disabled={isLoading}
-
+          className="w-full sm:w-auto mt-3 sm:mt-0 text-xs md:text-sm"
         >
           {isReported ? 'Quitar reporte' : 'Reportar'}
         </Button>
@@ -105,8 +106,8 @@ export function ReviewCard({
   };
 
   const containerClasses = cn(
-    "flex items-start justify-between p-4 rounded-lg",
-    variant === "compact" ? "p-3" : "p-4",
+    "flex flex-col sm:flex-row items-start justify-between p-3 md:p-4 rounded-lg",
+    variant === "compact" ? "p-2 md:p-3" : "p-3 md:p-4",
     variant === "admin" ? "border hover:bg-gray-50" : "bg-gray-50",
     className
   );
@@ -114,15 +115,15 @@ export function ReviewCard({
   return (
     <>
       <div className={containerClasses}>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="flex-1 w-full sm:w-auto">
+          <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 mb-2">
             <StarRating 
               rating={rating || 0} 
               size={variant === "compact" ? "sm" : "md"}
               showValue={variant === "admin"}
             />
             
-            <span className="text-sm text-gray-500">
+            <span className="text-xs md:text-sm text-gray-500">
               {formatDate(date)}
             </span>
           </div>
@@ -130,14 +131,14 @@ export function ReviewCard({
           {comment && (
             <p className={cn(
               "text-gray-700",
-              variant === "compact" ? "text-sm" : "text-sm mt-1"
+              variant === "compact" ? "text-xs md:text-sm" : "text-xs md:text-sm mt-1"
             )}>
               {comment}
             </p>
           )}
           
           {!comment && (
-            <p className="text-sm text-gray-500 italic">
+            <p className="text-xs md:text-sm text-gray-500 italic">
               Sin comentario
             </p>
           )}

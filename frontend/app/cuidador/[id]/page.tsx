@@ -45,16 +45,7 @@ export default function PerfilPublicoPage() {
 
   const notOwner = Boolean(currentUser && perfil && currentUser.id !== perfil.id);
 
-  const calcularEdad = (fechaNacimiento: string) => {
-    const hoy = new Date();
-    const nacimiento = new Date(fechaNacimiento);
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-    const mes = hoy.getMonth() - nacimiento.getMonth();
-    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-      edad--;
-    }
-    return edad;
-  };
+
 
   if (loading) {
     return (
@@ -135,15 +126,15 @@ export default function PerfilPublicoPage() {
                 {perfil.especialidad}
               </p>
             )}
-            <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-              <div className="flex items-center">
+            {perfil.experiencia && (
+            <div className="flex items-center  mt-2 text-sm text-gray-600">
+              
+              
                 <Calendar className="h-4 w-4 mr-1" />
-                {calcularEdad(perfil.fecha_nacimiento)} años
-              </div>
-              {perfil.experiencia && (
                 <div>{perfil.experiencia} años de experiencia</div>
-              )}
+              
             </div>
+            )}
           </div>
         </div>
 
@@ -174,8 +165,8 @@ export default function PerfilPublicoPage() {
                 <span className="text-gray-700">{perfil.telefono}</span>
               </div>
               <div className="flex items-center">
-                <Mail className="h-4 w-4 text-gray-500 mr-3" />
-                <span className="text-gray-700">{perfil.email}</span>
+                <Mail className="h-4 w-4 text-gray-500 mr-3 flex-shrink-0" />
+                <span className="text-gray-700 break-all">{perfil.email}</span>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 text-gray-500 mr-3" />
@@ -289,21 +280,20 @@ export default function PerfilPublicoPage() {
                         <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
                           <Calendar className="h-4 w-4" />
                           <span>
-                            {new Date(exp.fecha_inicio).toLocaleDateString(
-                              "es-ES",
-                              {
+                            {(() => {
+                              const inicio = new Date(exp.fecha_inicio).toLocaleDateString("es-ES", {
                                 month: "long",
                                 year: "numeric",
-                              }
-                            )}{" "}
-                            -{" "}
-                            {new Date(exp.fecha_fin).toLocaleDateString(
-                              "es-ES",
-                              {
+                              });
+                              const fin = new Date(exp.fecha_fin).toLocaleDateString("es-ES", {
                                 month: "long",
                                 year: "numeric",
-                              }
-                            )}
+                              });
+                              const capitalize = (str: string) =>
+                                str.charAt(0).toUpperCase() + str.slice(1);
+
+                              return `${capitalize(inicio)} - ${capitalize(fin)}`;
+                            })()}
                           </span>
                         </div>
                         <p className="text-gray-700 leading-relaxed">

@@ -119,6 +119,40 @@ useEffect(() => {
     }
   };
 
+  // Show loading skeleton on initial load
+  if (loading && solicitudes.length === 0 && stats.serviciosCompletados === 0) {
+    return (
+      <div className="flex-1">
+        <main className="p-6">
+          <div className="mb-8 border-2 bg-gradient-to-tr from-purple-600 to-blue-600 p-6 rounded-lg shadow-sm animate-pulse">
+            <div className="h-8 w-64 bg-white/20 rounded mb-2"></div>
+            <div className="h-4 w-96 bg-white/20 rounded"></div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {[...Array(3)].map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-6">
+                  <div className="h-24 bg-gray-200 rounded"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <Card className="mb-8 animate-pulse">
+            <CardHeader>
+              <div className="h-6 w-48 bg-gray-200 rounded"></div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="h-28 bg-gray-200 rounded"></div>
+                <div className="h-28 bg-gray-200 rounded"></div>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="flex-1">
       <main className="p-6 ">

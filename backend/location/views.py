@@ -20,7 +20,6 @@ class CiudadViewSet(viewsets.ModelViewSet):
         prov_id = self.request.query_params.get('provincia')
         if prov_id:
             qs = qs.filter(provincia__id=prov_id)
-            print(f"Filtrando ciudades por provincia {prov_id}, quedan {qs.first().nombre}")
         return qs
 
 class DireccionViewSet(viewsets.ModelViewSet):

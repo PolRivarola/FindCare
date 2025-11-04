@@ -16,6 +16,7 @@ import ProfileInfoLocationCards from "@/components/ui/ProfileInfoLocationCards";
 
 export type ClienteFormPerfil = PerfilCliente & {
   fotoFile?: File;
+  fotoDeleted?: boolean;
 };
 
 export interface ClienteFormProps {
@@ -107,22 +108,44 @@ export default function ClienteForm({
 
     // Crear FormData
     const fd = new FormData();
+    
+    // 1) Campos obligatorios - siempre se envían (ya validados arriba)
     fd.append("first_name", perfil.first_name);
     fd.append("last_name", perfil.last_name);
     fd.append("email", perfil.email);
     fd.append("telefono", perfil.telefono);
     fd.append("fecha_nacimiento", perfil.fecha_nacimiento);
-    fd.append("descripcion", perfil.descripcion);
     fd.append("provincia", perfil.provincia);
     fd.append("ciudad", perfil.ciudad);
-    fd.append("direccion", perfil.direccion);
 
+    // 2) Campos opcionales - solo si tienen valor
+    const putOptional = (k: string, v: any) => {
+      if (v !== undefined && v !== null && v !== "") {
+        fd.append(k, String(v));
+      }
+    };
+    putOptional("descripcion", perfil.descripcion);
+    putOptional("direccion", perfil.direccion);
+
+    // 3) Foto de perfil
     if (perfil.fotoFile) {
       fd.append("foto_perfil", perfil.fotoFile);
     }
+    
+    // Handle photo deletion
+    if (perfil.fotoDeleted) {
+      fd.append("delete_foto_perfil", "true");
+    }
 
-    fd.append("categorias", JSON.stringify(perfil.categorias || []));
+    // 4) Categorías - convertir nombres a IDs
+    const categoriasIds = categoriasDisponibles
+      .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
+      .map((c) => c.id);
 
+    // Enviar como claves repetidas para multipart/form-data
+    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
+
+    // 5) Fotos adicionales
     // Separate existing photos (strings) from new photos (Files)
     const fotosExistentes: string[] = [];
     const fotosNuevas: File[] = [];
@@ -143,13 +166,18 @@ export default function ClienteForm({
       fd.append("fotos", file);
     });
 
+    // 6) Contraseñas
     if (mode === "create") {
       fd.append("password", password);
       fd.append("confirm_password", confirmPassword);
-    } else if (currentPassword && newPassword && confirmNewPassword) {
-      fd.append("current_password", currentPassword);
-      fd.append("new_password", newPassword);
-      fd.append("confirm_password", confirmNewPassword);
+    } else if (mode === "edit") {
+      // Cambio de contraseña opcional
+      const quiereCambiar = currentPassword || newPassword || confirmNewPassword;
+      if (quiereCambiar) {
+        fd.append("current_password", currentPassword);
+        fd.append("new_password", newPassword);
+        fd.append("confirm_password", confirmNewPassword);
+      }
     }
 
     setSubmitting(true);
@@ -210,7 +238,7 @@ export default function ClienteForm({
         </CardHeader>
         <CardContent className="flex justify-center">
           <div className="relative">
-            <SingleImageInput url={perfil.foto_perfil || ""} onChange={(file) => setPerfil({ ...perfil, fotoFile: file })} />
+            <SingleImageInput url={perfil.foto_perfil || ""} onChange={(file) => setPerfil({ ...perfil, fotoFile: file || undefined, fotoDeleted: file === null })} />
             
           </div>
         </CardContent>
@@ -242,7 +270,6 @@ export default function ClienteForm({
           <div className="flex flex-wrap gap-3">
           {categoriasDisponibles.map((cat) => {
               const active = (perfil.categorias || []).includes(cat.nombre);
-              console.log(perfil);
               return (
                 <Badge
                   key={cat.id}
@@ -274,8 +301,20 @@ export default function ClienteForm({
             <CardTitle className="text-xl text-gray-800">Crear contraseña</CardTitle>
           </CardHeader>
           <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Input type="password" placeholder="Repetir contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            <Input 
+              type="password" 
+              placeholder="Contraseña" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+            />
+            <Input 
+              type="password" 
+              placeholder="Repetir contraseña" 
+              value={confirmPassword} 
+              onChange={(e) => setConfirmPassword(e.target.value)} 
+              className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+            />
           </CardContent>
         </Card>
       ) : (
@@ -285,9 +324,27 @@ export default function ClienteForm({
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Input type="password" placeholder="Contraseña actual" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-              <Input type="password" placeholder="Nueva contraseña" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-              <Input type="password" placeholder="Repetir nueva contraseña" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
+              <Input 
+                type="password" 
+                placeholder="Contraseña actual" 
+                value={currentPassword} 
+                onChange={(e) => setCurrentPassword(e.target.value)} 
+                className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+              />
+              <Input 
+                type="password" 
+                placeholder="Nueva contraseña" 
+                value={newPassword} 
+                onChange={(e) => setNewPassword(e.target.value)} 
+                className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+              />
+              <Input 
+                type="password" 
+                placeholder="Repetir nueva contraseña" 
+                value={confirmNewPassword} 
+                onChange={(e) => setConfirmNewPassword(e.target.value)} 
+                className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+              />
             </div>
           </CardContent>
         </Card>

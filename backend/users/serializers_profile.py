@@ -44,7 +44,6 @@ class ReviewSerializer(serializers.Serializer):
 
 
 class PerfilPublicoSerializer(serializers.Serializer):
-    # Usuario base
     id = serializers.IntegerField()
     username = serializers.CharField()
     first_name = serializers.CharField(allow_blank=True, required=False)
@@ -56,20 +55,16 @@ class PerfilPublicoSerializer(serializers.Serializer):
     descripcion = serializers.CharField(allow_blank=True, required=False)
     foto_perfil = serializers.SerializerMethodField()
 
-    # ubicación plana
     provincia = serializers.CharField(allow_blank=True, required=False)
     ciudad = serializers.CharField(allow_blank=True, required=False)
 
-    # “categorías” (TipoCliente nombres) según rol
     categorias = serializers.ListField(child=serializers.CharField(), default=list)
 
-    # info de cuidador (opcionales)
-    experiencia = serializers.IntegerField(required=False, default=None)  # años (si querés computarlo)
+    experiencia = serializers.IntegerField(required=False, default=None)
     especialidad = serializers.CharField(required=False, allow_blank=True)
     precio = serializers.IntegerField(required=False)
     disponible = serializers.BooleanField(required=False)
 
-    # rating + reviews
     rating = serializers.FloatField(allow_null=True)
     reviews = ReviewSerializer(many=True, required=False)
 

@@ -12,9 +12,7 @@ from location.models import Provincia, Ciudad, Direccion
 from users.models import Usuario, TipoCliente, Cliente, Cuidador
 from services.models import Servicio, Calificacion, DiaSemanal, Experiencia, Certificacion, HorarioDiario
 
-# -------------------------
 # Helpers
-# -------------------------
 
 def get_or_create_user(username, email, first_name, last_name, direccion, telefono, desc, desc_min, password):
     user, created = Usuario.objects.get_or_create(
@@ -81,14 +79,11 @@ def mk_certificacion(cuidador, nombre_archivo, nombre_label):
         archivo=archivo
     )
 
-# -------------------------
 # MAIN SEED FUNCTION
-# -------------------------
 
 def seed():
     print("🚀 Creando datos dummy...")
 
-    # Base geográfica mínima
     prov, _ = Provincia.objects.get_or_create(nombre="Córdoba")
     cba, _ = Ciudad.objects.get_or_create(nombre="Córdoba", provincia=prov)
     dir1, _ = Direccion.objects.get_or_create(direccion="Av. Siempre Viva 742", ciudad=cba)
@@ -96,16 +91,13 @@ def seed():
     dir3, _ = Direccion.objects.get_or_create(direccion="Bv. San Juan 123", ciudad=cba)
     dir4, _ = Direccion.objects.get_or_create(direccion="Av. Sabattini 2500", ciudad=cba)
 
-    # Tipos cliente
     tc1, _ = TipoCliente.objects.get_or_create(nombre="Edad avanzada")
     tc2, _ = TipoCliente.objects.get_or_create(nombre="Discapacidad motriz")
     tc3, _ = TipoCliente.objects.get_or_create(nombre="Discapacidad intelectual")
 
-    # Días y horarios
     dias = ensure_days()
     ensure_horarios()
 
-    # Usuarios
     cliente1 = get_or_create_user("cliente_demo", "cliente@test.com", "Ana", "Pérez", dir1, "351-555-0001",
                                   "Busco acompañamiento diario", "Acompañamiento", "Cliente123!")
     cliente2 = get_or_create_user("cliente_demo2", "cliente2@test.com", "Laura", "García", dir3, "351-555-0011",
@@ -115,7 +107,6 @@ def seed():
     cuidador2 = get_or_create_user("cuidador_demo2", "cuidador2@test.com", "María", "López", dir4, "351-555-0022",
                                    "Adultos mayores y rehabilitación", "Adultos mayores", "Cuidador123!")
 
-    # Perfiles
     attach_cliente(cliente1, [tc1, tc2])
     attach_cliente(cliente2, [tc2, tc3])
     attach_cuidador(cuidador1, [tc1], anios=5)
@@ -123,7 +114,6 @@ def seed():
 
     now = timezone.now()
 
-    # Servicios cliente1 ↔ cuidador1
     s1 = mk_servicio(cliente1, cuidador1, now - timedelta(days=15), now - timedelta(days=14, hours=-2), True,
                      "Acompañamiento en domicilio; movilidad reducida.", dias)
     rate(s1, autor=cliente1, receptor=cuidador1, puntuacion=5, comentario="Excelente atención y puntualidad.")
@@ -140,7 +130,6 @@ def seed():
     mk_servicio(cliente1, cuidador1, now + timedelta(days=5), now + timedelta(days=5, hours=4), False,
                 "Visita de evaluación inicial.", dias)
 
-    # Servicios cliente2 ↔ cuidador2
     t1 = mk_servicio(cliente2, cuidador2, now - timedelta(days=20), now - timedelta(days=19, hours=-1), True,
                      "Asistencia post-operatoria; control de signos vitales.", dias)
     rate(t1, autor=cliente2, receptor=cuidador2, puntuacion=3, comentario="Correcto; mejorar puntualidad.")
@@ -152,7 +141,6 @@ def seed():
     mk_servicio(cliente2, cuidador2, now + timedelta(days=1), now + timedelta(days=1, hours=4), False,
                 "Evaluación inicial.", dias)
 
-    # Experiencias y certificaciones
     Experiencia.objects.get_or_create(
         cuidador=cuidador1,
         descripcion="Residencia geriátrica - 2 años",

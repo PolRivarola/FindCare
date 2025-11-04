@@ -144,6 +144,42 @@ export default function ClienteDashboard() {
     }
   };
 
+  // Show loading skeleton on initial load
+  if (loading && recentServices.length === 0 && upcomingServices.length === 0) {
+    return (
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8 border-2 bg-gradient-to-tr from-purple-600 to-blue-600 p-6 rounded-lg shadow-sm animate-pulse">
+          <div className="h-8 w-64 bg-white/20 rounded mb-2"></div>
+          <div className="h-4 w-96 bg-white/20 rounded"></div>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-6">
+                <div className="h-32 bg-gray-200 rounded"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="grid lg:grid-cols-2 gap-8">
+          {[...Array(2)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardHeader>
+                <div className="h-6 w-48 bg-gray-200 rounded"></div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </main>
+    )
+  }
+
   return (
     <>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -329,8 +365,12 @@ export default function ClienteDashboard() {
                 <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
                   {upcomingServices.map((service) => {
                     const d = new Date(service.fecha_inicio);
-                    const fecha = d.toLocaleDateString();
-                    const hora = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                    const fecha = d.toLocaleDateString("es-ES", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric"
+                    });
+                    const hora = d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
                     return (
                       <div
                         key={service.id}

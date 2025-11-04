@@ -43,12 +43,10 @@ class HorarioDiarioSerializer(serializers.ModelSerializer):
         fields = ['id', 'nombre']
 
 class ServicioSerializer(serializers.ModelSerializer):
-    # --- lectura (GET) ---
     cliente = UsuarioSerializer(read_only=True)
     receptor = UsuarioSerializer(read_only=True)
     dias_semanales = DiaSemanalSerializer(many=True, read_only=True)
 
-    # --- escritura (POST/PUT/PATCH) ---
     receptor_id = serializers.PrimaryKeyRelatedField(
         queryset=Usuario.objects.all(), source="receptor", write_only=True
     )
@@ -58,10 +56,8 @@ class ServicioSerializer(serializers.ModelSerializer):
     )
 
     en_curso = serializers.SerializerMethodField()
-    # calificaciones por rol
     calificacion_cliente = serializers.SerializerMethodField()
     calificacion_cuidador = serializers.SerializerMethodField()
-    # flags de conveniencia para el front (para el usuario autenticado)
     puede_calificar = serializers.SerializerMethodField()
 
     class Meta:
@@ -190,7 +186,6 @@ class ExpMiniSerializer(serializers.ModelSerializer):
 
 
 class CuidadorPerfilReadSerializer(serializers.Serializer):
-    # Usuario
     id = serializers.IntegerField()
     username = serializers.CharField()
     first_name = serializers.CharField()
@@ -201,26 +196,22 @@ class CuidadorPerfilReadSerializer(serializers.Serializer):
     descripcion = serializers.CharField(allow_blank=True)
     foto_perfil = serializers.ImageField(allow_null=True)
 
-    # Dirección “plana”
     provincia = serializers.CharField(allow_blank=True)
     ciudad = serializers.CharField(allow_blank=True)
     direccion = serializers.CharField(allow_blank=True)
 
-    # Perfil de cuidador
     tipo_usuario = serializers.CharField(default="cuidador")
     categorias = serializers.ListField(child=serializers.CharField(), default=list)
     certificados = CertMiniSerializer(many=True)
     experiencias = ExpMiniSerializer(many=True)
 
-    # métricas opcionales
     rating = serializers.FloatField(required=False, allow_null=True)
-    reviews = serializers.ListField(required=False)  # si devolvés objetos de reseñas
+    reviews = serializers.ListField(required=False)
 
 # services/serializers.py
 from rest_framework import serializers
 
 class CuidadorPerfilUpdateSerializer(serializers.Serializer):
-    # campos básicos del usuario
     first_name = serializers.CharField(required=False, allow_blank=True)
     last_name = serializers.CharField(required=False, allow_blank=True)
     email = serializers.EmailField(required=False)
@@ -232,18 +223,14 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=False, write_only=True, allow_blank=False, trim_whitespace=False)
     confirm_password = serializers.CharField(required=False, write_only=True, allow_blank=False, trim_whitespace=False)
 
-    # dirección
     provincia = serializers.CharField(required=False)
     ciudad = serializers.CharField(required=False)
     direccion = serializers.CharField(required=False)
 
-    # categorías (ids de TipoCliente)
     categorias_ids = serializers.ListField(child=serializers.IntegerField(), required=False)
 
-    # 👇 clave: viene como string JSON en multipart
     experiencias = serializers.JSONField(required=False)
 
-    # archivos
     certificados = serializers.ListField(child=serializers.FileField(), required=False)
     certificados_nombres = serializers.ListField(child=serializers.CharField(), required=False)
 
@@ -258,12 +245,10 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
         if names and len(names) != len(files):
             raise serializers.ValidationError("certificados y certificados_nombres deben tener la misma longitud.")
 
-        # validación de cambio de contraseña (si vienen campos)
         cp = data.get("current_password")
         np = data.get("new_password")
         rp = data.get("confirm_password")
         if any([cp, np, rp]):
-            # todos deben venir
             if not (cp and np and rp):
                 raise serializers.ValidationError("Debe enviar current_password, new_password y confirm_password.")
             if np != rp:
@@ -273,7 +258,6 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
         return data
 
     def validate_experiencias(self, value):
-        # value puede venir ya como lista (porque JSONField parsea el string)
         if not isinstance(value, list):
             raise serializers.ValidationError("Debe ser una lista.")
         errs = {}

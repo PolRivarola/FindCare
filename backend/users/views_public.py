@@ -62,7 +62,6 @@ class PerfilPublicoView(APIView):
         rating = round(agg["rating"], 2) if agg["rating"] is not None else None
         reviews_total = agg["total"] or 0
 
-        # listado (paginable si quieres; aquí mandamos las últimas 20)
         califs_qs = (
             Calificacion.objects
             .filter(receptor=user)
@@ -70,7 +69,7 @@ class PerfilPublicoView(APIView):
             .order_by("-creado_en")[:20]
         )
 
-        def _author_name(u: User) -> str: # type: ignore
+        def _author_name(u: User) -> str:
             full = f"{u.first_name or ''} {u.last_name or ''}".strip()
             return full or u.username
         

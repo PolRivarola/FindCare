@@ -50,7 +50,7 @@ class TipoClienteViewSet(viewsets.ReadOnlyModelViewSet):
 class RegistroClienteView(CreateAPIView):
     queryset = Cliente.objects.all()
     serializer_class = RegistroClienteSerializer
-    permission_classes = [AllowAny] # Permite registro sin autenticación
+    permission_classes = [AllowAny]
 
 class RegistroCuidadorView(CreateAPIView):
     queryset = Cuidador.objects.all()
@@ -71,17 +71,14 @@ class CuidadorSearchView(ListAPIView):
     def get_queryset(self):
         queryset = Cuidador.objects.select_related('usuario', 'usuario__direccion', 'usuario__direccion__ciudad', 'usuario__direccion__ciudad__provincia').prefetch_related('tipos_cliente')
         
-        # Filter by provincia
         provincia_id = self.request.query_params.get('provincia')
         if provincia_id:
             queryset = queryset.filter(usuario__direccion__ciudad__provincia__id=provincia_id)
         
-        # Filter by ciudad
         ciudad_id = self.request.query_params.get('ciudad')
         if ciudad_id:
             queryset = queryset.filter(usuario__direccion__ciudad__id=ciudad_id)
         
-        # Filter by minimum experience
         min_experiencia = self.request.query_params.get('min_experiencia')
         if min_experiencia:
             try:
@@ -89,7 +86,6 @@ class CuidadorSearchView(ListAPIView):
             except ValueError:
                 pass
         
-        # Filter by specialty (tipos_cliente)
         especialidad_ids = self.request.query_params.getlist('especialidad')
         if especialidad_ids:
             queryset = queryset.filter(tipos_cliente__id__in=especialidad_ids).distinct()
@@ -99,16 +95,13 @@ class CuidadorSearchView(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         
-        # Calculate ratings for each cuidador
         cuidadores_data = []
         for cuidador in queryset:
-            # Get average rating from calificaciones
             from services.models import Calificacion
             ratings = Calificacion.objects.filter(receptor=cuidador.usuario)
             avg_rating = ratings.aggregate(avg_rating=Avg('puntuacion'))['avg_rating'] or 0
             review_count = ratings.count()
             
-            # Get location info
             provincia = ""
             ciudad = ""
             if cuidador.usuario.direccion and cuidador.usuario.direccion.ciudad:
@@ -116,12 +109,11 @@ class CuidadorSearchView(ListAPIView):
                 if cuidador.usuario.direccion.ciudad.provincia:
                     provincia = cuidador.usuario.direccion.ciudad.provincia.nombre
             
-            # Get specialties
             especialidades = [tc.nombre for tc in cuidador.tipos_cliente.all()]
             
             cuidadores_data.append({
-                'id': cuidador.usuario.id,  # Use user ID for profile links
-                'cuidador_id': cuidador.id,  # Keep cuidador ID for reference
+                'id': cuidador.usuario.id,
+                'cuidador_id': cuidador.id,
                 'nombre': f"{cuidador.usuario.first_name} {cuidador.usuario.last_name}".strip() or cuidador.usuario.username,
                 'username': cuidador.usuario.username,
                 'especialidad': especialidades,

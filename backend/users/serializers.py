@@ -3,12 +3,7 @@ from rest_framework.exceptions import ValidationError
 from users.models import Usuario, TipoCliente, Cliente, FotoCliente, Cuidador
 from location.models import Direccion
 from location.serializers import DireccionSerializer
-# Nota: ya no importamos DiaSemanal ni HorarioDiario aquí
-#       (días/horarios se manejan en services)
-
-# =========================
-# USUARIO (READ / WRITE)
-# =========================
+from users.utils import generate_username
 
 class UsuarioReadSerializer(serializers.ModelSerializer):
     direccion = DireccionSerializer(read_only=True)
@@ -30,8 +25,8 @@ class UsuarioReadSerializer(serializers.ModelSerializer):
             'fecha_nacimiento', 'direccion', 'direccion_id',
             'telefono', 'foto_perfil', 'descripcion', 'descripcion_min',
             'fecha_creacion', 'fecha_actualizacion',
-            'is_staff', 'is_superuser',            # útil para admin
-            'es_cuidador', 'es_cliente',           # ← NUEVO
+            'is_staff', 'is_superuser',
+            'es_cuidador', 'es_cliente',
         ]
         read_only_fields = ['fecha_creacion', 'fecha_actualizacion']
 
@@ -43,7 +38,6 @@ class UsuarioReadSerializer(serializers.ModelSerializer):
 
 
 class UsuarioCreateSerializer(serializers.ModelSerializer):
-    """Para registro: acepta password y direccion_id (PK)."""
     password = serializers.CharField(write_only=True, min_length=8)
     direccion_id = serializers.PrimaryKeyRelatedField(
         queryset=Direccion.objects.all(),
@@ -52,13 +46,14 @@ class UsuarioCreateSerializer(serializers.ModelSerializer):
         allow_null=True,
         required=False,
     )
+    username = serializers.CharField(required=False, read_only=True)
 
     class Meta:
         model = Usuario
         fields = [
             "username", "email", "first_name", "last_name",
             "password", "fecha_nacimiento",
-            "direccion_id",      # ← mapea a 'direccion'
+            "direccion_id",
             "telefono", "foto_perfil", "descripcion", "descripcion_min",
         ]
         extra_kwargs = {
@@ -67,15 +62,21 @@ class UsuarioCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password")
+        validated_data.pop("username", None)
+        
+        first_name = validated_data.get("first_name", "")
+        last_name = validated_data.get("last_name", "")
+        fecha_nac = validated_data.get("fecha_nacimiento")
+        
+        username = generate_username(first_name, last_name, fecha_nac)
+        validated_data["username"] = username
         usuario = Usuario(**validated_data)
         usuario.set_password(password)
         usuario.save()
         return usuario
 
 
-# =========================
 # TIPOS / FOTOS
-# =========================
 
 class TipoClienteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -89,9 +90,7 @@ class FotoClienteSerializer(serializers.ModelSerializer):
         fields = ['id', 'cliente', 'imagen']
 
 
-# =========================
 # CLIENTE (READ)
-# =========================
 
 class ClienteSerializer(serializers.ModelSerializer):
     usuario = UsuarioReadSerializer(read_only=True)
@@ -118,9 +117,7 @@ class ClienteSerializer(serializers.ModelSerializer):
         ]
 
 
-# =========================
 # CUIDADOR (READ)
-# =========================
 
 class CuidadorSerializer(serializers.ModelSerializer):
     usuario = UsuarioReadSerializer(read_only=True)
@@ -146,13 +143,10 @@ class CuidadorSerializer(serializers.ModelSerializer):
         ]
 
 
-# =========================
 # REGISTRO CLIENTE (WRITE)
-# =========================
 
 class RegistroClienteSerializer(serializers.Serializer):
-    # Campos de usuario (flat) para alta rápida
-    username = serializers.CharField()
+    username = serializers.CharField(required=False, read_only=True)
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True, min_length=8)
 
@@ -163,7 +157,6 @@ class RegistroClienteSerializer(serializers.Serializer):
     descripcion = serializers.CharField(required=False, allow_blank=True)
     descripcion_min = serializers.CharField(required=False, allow_blank=True)
 
-    # Mapeo a FK por PK
     direccion_id = serializers.PrimaryKeyRelatedField(
         queryset=Direccion.objects.all(),
         source="direccion",
@@ -171,14 +164,12 @@ class RegistroClienteSerializer(serializers.Serializer):
         allow_null=True
     )
 
-    # Relación M2M del cliente
     tipos_cliente_ids = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=TipoCliente.objects.all(),
         write_only=True
     )
 
-    # Fotos opcionales
     fotos = serializers.ListField(
         child=serializers.ImageField(),
         write_only=True,
@@ -192,6 +183,13 @@ class RegistroClienteSerializer(serializers.Serializer):
         if not password:
             raise ValidationError({"password": "Es requerido"})
 
+        validated_data.pop('username', None)
+        first_name = validated_data.get('first_name', '')
+        last_name = validated_data.get('last_name', '')
+        fecha_nac = validated_data.get('fecha_nacimiento')
+        
+        username = generate_username(first_name, last_name, fecha_nac)
+        validated_data['username'] = username
         usuario = Usuario(**validated_data)
         usuario.set_password(password)
         usuario.save()
@@ -206,15 +204,9 @@ class RegistroClienteSerializer(serializers.Serializer):
         return cliente
 
 
-# =========================
 # REGISTRO CUIDADOR (WRITE)
-# =========================
 
 class RegistroCuidadorSerializer(serializers.ModelSerializer):
-    """
-    Registro de cuidador SIN disponibilidad ni horarios.
-    Eso se gestiona en 'services' con sus propios endpoints.
-    """
     usuario = UsuarioCreateSerializer()
     tipos_cliente_ids = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -238,12 +230,10 @@ class RegistroCuidadorSerializer(serializers.ModelSerializer):
 
         tipos_cliente = validated_data.pop('tipos_cliente', [])
 
-        # Crear usuario validando password + direccion_id
         user_ser = UsuarioCreateSerializer(data=usuario_data)
         user_ser.is_valid(raise_exception=True)
         usuario = user_ser.save()
 
-        # Crear cuidador (sin horarios/días)
         cuidador = Cuidador.objects.create(usuario=usuario, **validated_data)
         if tipos_cliente:
             cuidador.tipos_cliente.set(tipos_cliente)

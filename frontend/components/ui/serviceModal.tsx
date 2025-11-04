@@ -66,8 +66,8 @@ export function DetalleSolicitudModal({
   const rechazarSolicitud = async () => {
     setLoading(true);
     try {
-      // Eliminar la solicitud pendiente
-      await apiDelete(`/servicios/${solicitud.id}/`);
+      // Use the rechazar endpoint instead of direct deletion
+      await apiPost(`/servicios/${solicitud.id}/rechazar/`, {});
       toast.success("Solicitud rechazada");
       // Remover del listado local
       actualizarSolicitudes((prev) => prev.filter((s) => s.id !== solicitud.id));
@@ -82,37 +82,37 @@ export function DetalleSolicitudModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-2xl p-0 shadow-2xl bg-white border-0 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="rounded-2xl p-0 shadow-2xl bg-white border-0 max-w-2xl w-[95vw] md:w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header with gradient background */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-5 flex-shrink-0">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 md:px-6 py-4 md:py-5 flex-shrink-0">
           <DialogHeader className="items-center">
-            <DialogTitle className="text-2xl font-bold tracking-tight flex items-center gap-3">
-              <User className="h-6 w-6" />
+            <DialogTitle className="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2 md:gap-3">
+              <User className="h-5 w-5 md:h-6 md:w-6" />
               Solicitud de Servicio
             </DialogTitle>
-            <p className="text-purple-100 text-sm mt-2">
+            <p className="text-purple-100 text-xs md:text-sm mt-2">
               Detalles completos de la solicitud de {solicitud.cliente}
             </p>
           </DialogHeader>
         </div>
 
-        <div className="px-6 py-6 space-y-6 overflow-y-auto flex-1">
+        <div className="px-4 md:px-6 py-4 md:py-6 space-y-4 md:space-y-6 overflow-y-auto flex-1">
           {/* Client Information Card */}
           <Card className="border-l-4 border-l-purple-500">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+            <CardContent className="p-3 md:p-4">
+              <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4">
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                   <img src={solicitud.foto} alt={solicitud.cliente} className="w-full h-full rounded-full object-cover" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg text-gray-900">{solicitud.cliente}</h3>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <MapPin className="h-4 w-4" />
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="font-semibold text-base md:text-lg text-gray-900">{solicitud.cliente}</h3>
+                  <div className="flex items-center justify-center sm:justify-start gap-2 text-xs md:text-sm text-gray-600 mt-1">
+                    <MapPin className="h-3 w-3 md:h-4 md:w-4" />
                     <span>{solicitud.cliente_ciudad}, {solicitud.cliente_provincia}</span>
                   </div>
                 </div>
-                <Link href={`/cliente/${solicitud.id_cliente}`}>
-                  <Button variant="outline" size="sm" >
+                <Link href={`/cliente/${solicitud.id_cliente}`} className="w-full sm:w-auto">
+                  <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs md:text-sm">
                     Ver Perfil
                   </Button>
                 </Link>
@@ -121,7 +121,7 @@ export function DetalleSolicitudModal({
           </Card>
 
           {/* Service Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {/* Dates */}
             <Card>
               <CardContent className="p-4">
@@ -209,12 +209,14 @@ export function DetalleSolicitudModal({
 
         {/* Action Buttons - Only show if showActions is true */}
         {showActions && (
-          <div className="px-6 py-4 bg-gray-50 border-t flex-shrink-0">
-            <DialogFooter className="flex justify-end gap-3">
+          <div className="px-4 md:px-6 py-3 md:py-4 bg-gray-50 border-t flex-shrink-0">
+            <DialogFooter className="flex flex-col sm:flex-row justify-end gap-2 md:gap-3">
               <Button
                 onClick={rechazarSolicitud}
                 disabled={loading}
                 variant="destructive"
+                className="w-full sm:w-auto text-sm"
+                size="sm"
               >
                 <XCircle className="h-4 w-4" />
                 {loading ? "Rechazando..." : "Rechazar"}
@@ -223,6 +225,8 @@ export function DetalleSolicitudModal({
                 onClick={aceptarSolicitud}
                 disabled={loading}
                 variant="success"
+                className="w-full sm:w-auto text-sm"
+                size="sm"
               >
                 <CheckCircle className="h-4 w-4" />
                 {loading ? "Aceptando..." : "Aceptar"}

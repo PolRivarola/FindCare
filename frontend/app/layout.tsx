@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "FindCare - Conectamos familias con cuidadores profesionales",
   description:
     "Plataforma para conectar familias con cuidadores verificados para el cuidado de personas mayores y con discapacidad",
-    generator: 'v0.dev'
+    generator: 'v0.dev',
 }
 
 export default function RootLayout({

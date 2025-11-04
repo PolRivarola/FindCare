@@ -99,7 +99,7 @@ export default function SobreNosotros() {
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Somos una plataforma dedicada a conectar familias con cuidadores profesionales, brindando tranquilidad y
-            cuidado de calidad para tus seres queridos.
+            atención de calidad para tus seres queridos.
           </p>
         </div>
       </section>

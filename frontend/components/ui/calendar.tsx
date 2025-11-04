@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
+import { es } from "date-fns/locale"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -13,10 +14,12 @@ function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  locale,
   ...props
 }: CalendarProps) {
   return (
     <DayPicker
+      locale={locale || es}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -56,6 +59,30 @@ function Calendar({
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        Dropdown: (props: any) => {
+          const { name, children, ...rest } = props;
+          if (name === "month") {
+            return (
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-muted-foreground">Mes:</span>
+                <select {...rest} className="text-sm border rounded px-2 py-1 bg-background">
+                  {children}
+                </select>
+              </div>
+            );
+          }
+          if (name === "year") {
+            return (
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-muted-foreground">Año:</span>
+                <select {...rest} className="text-sm border rounded px-2 py-1 bg-background">
+                  {children}
+                </select>
+              </div>
+            );
+          }
+          return <select {...rest} className="text-sm border rounded px-2 py-1 bg-background">{children}</select>;
+        },
       }}
       {...props}
     />

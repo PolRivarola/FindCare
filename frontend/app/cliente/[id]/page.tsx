@@ -327,8 +327,8 @@ export default function PerfilClientePage() {
                 <span className="text-gray-700">{perfil.telefono}</span>
               </div>
               <div className="flex items-center">
-                <Mail className="h-4 w-4 text-gray-500 mr-3" />
-                <span className="text-gray-700">{perfil.email}</span>
+                <Mail className="h-4 w-4 text-gray-500 mr-3 flex-shrink-0" />
+                <span className="text-gray-700 break-all">{perfil.email}</span>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 text-gray-500 mr-3" />

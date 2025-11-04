@@ -17,6 +17,7 @@ from rest_framework.views import APIView
 from django.utils.text import slugify
 import json
 from django.contrib.auth import get_user_model
+from users.utils import generate_username
 
 
 
@@ -56,13 +57,10 @@ def _make_aware(dt: datetime) -> datetime:
     return dt
 
 def _parse_dt(val: str) -> datetime:
-    """
-    Acepta 'YYYY-MM-DD' o ISO con hora y devuelve datetime aware.
-    """
     if not val:
         return None
     try:
-        if len(val) == 10:  # 'YYYY-MM-DD'
+        if len(val) == 10:
             dt = datetime.fromisoformat(val + " 00:00:00")
         else:
             dt = datetime.fromisoformat(val)
@@ -96,11 +94,8 @@ class ServicioViewSet(viewsets.ModelViewSet):
     ordering = ["-fecha_inicio"]
 
     def perform_create(self, serializer):
-        # el cliente autenticado crea la solicitud
-        # The data from frontend already contains proper DiaSemanal objects
         dias_semanales = serializer.validated_data.get('dias_semanales')
         if not dias_semanales:
-            # If no days provided, return error
             from rest_framework.exceptions import ValidationError
             raise ValidationError({"dias_semanales_ids": "Debe seleccionar al menos un día de la semana."})
         
@@ -108,10 +103,6 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path="stats/cuidador")
     def stats_cuidador(self, request):
-        """
-        GET /api/servicios/stats/cuidador/?receptor_id=<user_id>
-        Devuelve: { pendientes, completados, calificacion_promedio }
-        """
         try:
             rid = int(request.query_params.get("receptor_id", ""))
         except (TypeError, ValueError):
@@ -141,25 +132,25 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="aceptar")
     def aceptar(self, request, pk=None):
-        """
-        POST /api/servicios/{id}/aceptar/
-        Marca aceptado=True. (Opcional: validar que request.user sea el receptor)
-        """
         servicio = self.get_object()
-        # if request.user.id != servicio.receptor_id: return Response({"detail": "Solo el receptor puede aceptar"}, 403)
         servicio.aceptado = True
         servicio.save(update_fields=["aceptado"])
         return Response({"detail": "ok"}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=["post"], url_path="rechazar")
+    def rechazar(self, request, pk=None):
+        servicio = self.get_object()
+        if request.user.id != servicio.receptor_id:
+            return Response({"detail": "Solo el receptor puede rechazar"}, status=403)
+        
+        if servicio.aceptado:
+            return Response({"detail": "No se puede rechazar un servicio ya aceptado"}, status=400)
+        
+        servicio.delete()
+        return Response({"detail": "Solicitud rechazada"}, status=status.HTTP_200_OK)
+
     @action(detail=True, methods=["post"], url_path="calificar")
     def calificar(self, request, pk=None):
-        """
-        POST /api/servicios/{id}/calificar/
-        body: { "puntuacion": 1..5, "comentario": "..." }
-
-        El autor es request.user y el receptor es la contraparte.
-        Requiere: servicio aceptado y finalizado (fecha_fin < now).
-        """
         servicio = self.get_object()
         user = request.user
 
@@ -183,7 +174,6 @@ class ServicioViewSet(viewsets.ModelViewSet):
 
         comentario = request.data.get("comentario", "")
 
-        # receptor = el otro participante
         receptor_id = servicio.receptor_id if user.id == servicio.cliente_id else servicio.cliente_id
 
         calif, created = Calificacion.objects.update_or_create(
@@ -207,7 +197,6 @@ class CalificacionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        # Permite filtrar por receptor_id (quien recibió la calificación)
         rid = self.request.query_params.get("receptor_id")
         if rid:
             try:
@@ -231,7 +220,6 @@ class CalificacionViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"], url_path="desreportar")
     def desreportar(self, request, pk=None):
         cal = self.get_object()
-        # Solo el receptor o admin puede revertir
         if request.user != cal.receptor and not request.user.is_staff:
             return Response({"detail": "No autorizado"}, status=403)
         cal.reportada = False
@@ -288,20 +276,7 @@ class CuidadorPerfilView(APIView):
 
     def _gen_username(self, first_name: str, last_name: str, fecha_nac):
         """first.last.yyyymmdd (único)"""
-        if isinstance(fecha_nac, str):
-            try:
-                fecha_nac = datetime.fromisoformat(fecha_nac).date()
-            except Exception:
-                fecha_nac = None
-        ymd = fecha_nac.strftime("%Y%m%d") if fecha_nac else "00000000"
-        base = slugify(f"{first_name}.{last_name}.{ymd}") or "user"
-        candidate = base
-        i = 1
-        User = get_user_model()
-        while User.objects.filter(username=candidate).exists():
-            candidate = f"{base}-{i}"
-            i += 1
-        return candidate
+        return generate_username(first_name, last_name, fecha_nac)
 
     def _parse_dt(self, s: str):
         """Acepta 'YYYY-MM-DD' o ISO8601; devuelve timezone-aware."""
@@ -358,7 +333,6 @@ class CuidadorPerfilView(APIView):
         if not self._ensure_cuidador(user):
             return Response({"detail": "No es cuidador."}, status=403)
         payload = self._build_read_payload(request, user)
-        # opcional: podrías validar/serializar otra vez
         return Response(payload, status=200)
 
     @transaction.atomic
@@ -375,22 +349,22 @@ class CuidadorPerfilView(APIView):
         rp = data.get("confirm_password")
 
         if cp and np and rp:
-            # Verificamos la actual
             if not user.check_password(cp):
                 return Response({"detail": "La contraseña actual no es correcta."}, status=400)
-            # Seteamos la nueva
             user.set_password(np)
             user.save(update_fields=["password"])
 
-        # --- usuario básico ---
         for field in ["first_name", "last_name", "email", "telefono", "fecha_nacimiento", "descripcion"]:
             if field in data:
                 setattr(user, field, data[field])
 
         if "foto_perfil" in data:
             user.foto_perfil = data["foto_perfil"]
-
-        # --- dirección ---
+        
+        if request.data.get("delete_foto_perfil") == "true":
+            if user.foto_perfil:
+                user.foto_perfil.delete(save=False)
+            user.foto_perfil = None
         prov_name = data.get("provincia")
         city_name = data.get("ciudad")
         addr_str = data.get("direccion")
@@ -402,13 +376,10 @@ class CuidadorPerfilView(APIView):
 
         user.save()
 
-        # --- categorías (TipoCliente) ---
         if "categorias_ids" in data and hasattr(user, "cuidador"):
             qs = TipoCliente.objects.filter(id__in=data["categorias_ids"])
             user.cuidador.tipos_cliente.set(qs)
 
-        # --- experiencias ---
-        # vienen como JSON en request.data["experiencias"] -> validado por JSONField
         if "experiencias" in data:
             Experiencia.objects.filter(cuidador=user).delete()
             bulk = []
@@ -429,7 +400,6 @@ class CuidadorPerfilView(APIView):
             if bulk:
                 Experiencia.objects.bulk_create(bulk)
 
-        # --- certificados (nuevos) ---
         files = request.FILES.getlist("certificados")
         names = request.data.getlist("certificados_nombres")
         for idx, f in enumerate(files):
@@ -445,27 +415,13 @@ class CuidadorPerfilView(APIView):
     
     @transaction.atomic
     def post(self, request):
-        """
-        Registro de cuidador (público):
-        multipart/form-data o JSON.
-        Campos principales:
-          - first_name, last_name, email, telefono, fecha_nacimiento (YYYY-MM-DD), descripcion (opc.)
-          - password, confirm_password
-          - provincia, ciudad, direccion (para crear Direccion)
-          - categorias_ids: array (o JSON string) de IDs de TipoCliente
-          - experiencias: JSON string array [{descripcion, fecha_inicio, fecha_fin}]
-          - certificados: múltiples files (key repetida 'certificados')
-            certificados_nombres: múltiples strings (key repetida paralela)
-          - foto_perfil: file (opcional)
-        """
         User = get_user_model()
 
-        # 1) tomar datos básicos
         first_name = request.data.get("first_name", "").strip()
         last_name  = request.data.get("last_name", "").strip()
         email      = request.data.get("email", "").strip().lower()
         telefono   = request.data.get("telefono", "").strip()
-        fecha_nac  = request.data.get("fecha_nacimiento")  # 'YYYY-MM-DD'
+        fecha_nac  = request.data.get("fecha_nacimiento")
         descripcion = request.data.get("descripcion", "")
 
         password   = request.data.get("password")
@@ -497,7 +453,6 @@ class CuidadorPerfilView(APIView):
         if User.objects.filter(email=email).exists():
             return Response({"detail": "Ya existe un usuario con ese email."}, status=400)
 
-        # parse fecha nacimiento a date
         fecha_nac_date = None
         if fecha_nac:
             try:
@@ -505,7 +460,6 @@ class CuidadorPerfilView(APIView):
             except Exception:
                 return Response({"detail": "fecha_nacimiento inválida (use YYYY-MM-DD)."}, status=400)
 
-        # 2) dirección
         direccion = request.data.get("direccion")
         direccion_obj = None
         if provincia and ciudad and direccion:
@@ -513,10 +467,8 @@ class CuidadorPerfilView(APIView):
             ciu,  _ = Ciudad.objects.get_or_create(nombre=ciudad, provincia=prov)
             direccion_obj, _ = Direccion.objects.get_or_create(direccion=direccion, ciudad=ciu)
 
-        # 3) username único autogenerado
         username = self._gen_username(first_name, last_name, fecha_nac_date)
 
-        # 4) crear usuario
         user = User(
             username=username,
             email=email,
@@ -528,7 +480,6 @@ class CuidadorPerfilView(APIView):
             direccion=direccion_obj,
         )
 
-        # foto de perfil (opcional)
         foto = request.FILES.get("foto_perfil")
         if foto:
             user.foto_perfil = foto
@@ -536,24 +487,19 @@ class CuidadorPerfilView(APIView):
         user.set_password(password)
         user.save()
 
-        # 5) crear perfil cuidador
         anios_experiencia = int(request.data.get("anios_experiencia", 0) or 0)
-        # si tu modelo exige >0 podrías forzar mínimo 0 o 1
         Cuidador.objects.create(usuario=user, anios_experiencia=max(0, anios_experiencia))
 
-        # 6) categorías (TipoCliente) por ids
         raw_cats = request.data.get("categorias_ids")
         cats_list = []
         if isinstance(raw_cats, list):
             cats_list = [int(x) for x in raw_cats]
         elif isinstance(raw_cats, str) and raw_cats.strip():
-            # podría venir como JSON string "[]"
             try:
                 parsed = json.loads(raw_cats)
                 if isinstance(parsed, list):
                     cats_list = [int(x) for x in parsed]
             except Exception:
-                # también podría venir "1,2,3"
                 try:
                     cats_list = [int(x) for x in raw_cats.split(",") if x.strip()]
                 except Exception:
@@ -563,7 +509,6 @@ class CuidadorPerfilView(APIView):
             qs = TipoCliente.objects.filter(id__in=cats_list)
             user.cuidador.tipos_cliente.set(qs)
 
-        # 7) experiencias (JSON string)
         raw_exps = request.data.get("experiencias")
         if raw_exps:
             try:
@@ -589,14 +534,12 @@ class CuidadorPerfilView(APIView):
             if to_create:
                 Experiencia.objects.bulk_create(to_create)
 
-        # 8) certificados (archivos)
         files = request.FILES.getlist("certificados")
         names = request.data.getlist("certificados_nombres")
         for idx, f in enumerate(files):
             label = names[idx] if idx < len(names) and names[idx] else f.name
             Certificacion.objects.create(cuidador=user, nombre=label, archivo=f)
         
-        print("Usuario cuidador creado:", user.username, user.email, user.id)
 
     
         payload = self._build_read_payload(request, user)
@@ -626,7 +569,6 @@ class ClientePerfilView(APIView):
         fotos_abs = []
         for foto in fotos:
             if foto.imagen:
-                # Ensure the URL has a leading slash
                 url = foto.imagen.url
                 if not url.startswith('/'):
                     url = '/' + url
@@ -660,15 +602,18 @@ class ClientePerfilView(APIView):
         if not self._ensure_cliente(user):
             return Response({"detail": "No es cliente."}, status=403)
 
-        # básicos
         for field in ["first_name", "last_name", "email", "telefono", "fecha_nacimiento", "descripcion"]:
             if field in request.data and request.data.get(field) not in (None, ""):
                 setattr(user, field, request.data.get(field))
 
         if request.FILES.get("foto_perfil"):
             user.foto_perfil = request.FILES["foto_perfil"]
+        
+        if request.data.get("delete_foto_perfil") == "true":
+            if user.foto_perfil:
+                user.foto_perfil.delete(save=False)
+            user.foto_perfil = None
 
-        # dirección
         prov_name = request.data.get("provincia")
         city_name = request.data.get("ciudad")
         addr_str = request.data.get("direccion")
@@ -680,7 +625,6 @@ class ClientePerfilView(APIView):
 
         user.save()
 
-        # categorías (por nombres en JSON string)
         raw_cats = request.data.get("categorias")
         cats = []
         if isinstance(raw_cats, str) and raw_cats.strip():
@@ -693,24 +637,20 @@ class ClientePerfilView(APIView):
         if cats:
             user.cliente.tipos_cliente.set(cats)
 
-        # Manejo de fotos: eliminar las que no están en la lista de URLs a conservar
         fotos_a_conservar = request.data.get("fotos_existentes")
         if fotos_a_conservar is not None:
-            # Si se envía la lista de fotos a conservar, eliminar las que no están
             if isinstance(fotos_a_conservar, str):
                 try:
                     fotos_a_conservar = json.loads(fotos_a_conservar)
                 except:
                     fotos_a_conservar = []
             
-            # Obtener todas las fotos actuales
             fotos_actuales = FotoCliente.objects.filter(cliente=user.cliente)
             for foto in fotos_actuales:
                 foto_url = request.build_absolute_uri(foto.imagen.url)
                 if foto_url not in fotos_a_conservar:
                     foto.delete()
         
-        # fotos nuevas (append)
         for f in request.FILES.getlist("fotos"):
             FotoCliente.objects.create(cliente=user.cliente, imagen=f)
 
@@ -718,7 +658,6 @@ class ClientePerfilView(APIView):
 
     @transaction.atomic
     def post(self, request):
-        """Registro de cliente (similar a cuidador)."""
         User = get_user_model()
         first_name = request.data.get("first_name", "").strip()
         last_name = request.data.get("last_name", "").strip()
@@ -735,7 +674,6 @@ class ClientePerfilView(APIView):
         if User.objects.filter(email=email).exists():
             return Response({"detail": "Ya existe un usuario con ese email."}, status=400)
 
-        # direccion
         provincia = request.data.get("provincia")
         ciudad = request.data.get("ciudad")
         direccion = request.data.get("direccion")
@@ -772,7 +710,6 @@ class ClientePerfilView(APIView):
         user.set_password(password)
         user.save()
 
-        # crear cliente y setear categorias
         Cliente.objects.create(usuario=user)
         raw_cats = request.data.get("categorias")
         if raw_cats:
@@ -784,7 +721,6 @@ class ClientePerfilView(APIView):
             except Exception:
                 pass
 
-        # fotos
         for f in request.FILES.getlist("fotos"):
             FotoCliente.objects.create(cliente=user.cliente, imagen=f)
 
