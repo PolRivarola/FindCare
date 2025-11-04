@@ -1,0 +1,5803 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "1bdce59am4lgtri77mkxjj9kvaa8ioy4",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1us4Hb:hRnLw91wKFiBw0o_CGtY_yk8xC-qf_tG6aHjfXBcfvY",
+    "expire_date": "2025-09-12T18:57:07.631Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "c6nfc5jd99id63o4gdvp4o9forh1q753",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1v0rpp:lBQg1mTpF-yVnZZqMbMmow1TzYlGvozFcxlD0SMKvVg",
+    "expire_date": "2025-10-07T01:28:49.931Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dybmsshaji26zwz63tiiwn3o84x6vp2c",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1uv2ii:jGlzD6aaD7MmBFY-aEO4NeCybnp_rfXPskurikdF6cA",
+    "expire_date": "2025-09-20T23:53:24.526Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fhdi8c961750s1ntsp3bf8v2xlcxktha",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSE8BKYu3fcbyAwDUjU0Ke3K-O_apAvd3nPOfYmI21rj1vMSJxYXocXpdyNMj9x2wHdst1mmua3LRHJX5EG7HGfOz-vh_h1U7PVbE8JgQuYS0KIFDMZh0Vk778B6JjAamcsZFAGARcNuIJWsIZUTGi_eH_EAOCk:1upIBI:avE0TpksqT2G9cRFjpBEk6hyrfEFqgsTMOQGAKlW1BI",
+    "expire_date": "2025-09-05T03:11:08.452Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "muv1man92zulba9v51fg1k0i0oad69pq",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1vDuqI:JT2Y3yiDefF1p-mNn0uJh7gXFeFU1hDxujdjFl1e-jg",
+    "expire_date": "2025-11-12T01:19:14.842Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "y98x4hlrrs7so0xd4q8sle6jk64vyz88",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1v7Mkt:U7LYu37qvihoPb-9AgGysw9QkZDh0gL_TpLyALPy-RA",
+    "expire_date": "2025-10-24T23:42:35.642Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zdu2lxynyyx87c2fsgnntpz3hvl6czbf",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hA6lAFcuvcMDTNMpGogKe3KeHdt0oVu_3vvv9SUtrVMW5dlmrM6K1Sn340SP6TuIN9TvTXNra7LTHpX9EG7vrYsz8vh_h2U1Mu3DgGErY2evGXK7ENmi45NdnY0PoiIJRPBkwGPLuFAcUDECAKjY1DvD9xrNyI:1uugAv:JiSa1GhcytwKz-Bwrpwvm79viRWsOWktUizKYdNkces",
+    "expire_date": "2025-09-19T23:49:01.276Z"
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$vW7aB551o73AQBR1TDG82Q$Jqz3mlL61Rb4U/MP6pz2IXQ09ecmzfMhhNEFr7/33xI=",
+    "last_login": "2025-08-22T03:11:08.445Z",
+    "is_superuser": true,
+    "username": "polRivarola",
+    "first_name": "",
+    "last_name": "",
+    "email": "rivarolapol@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-22T03:10:44.391Z",
+    "fecha_nacimiento": null,
+    "direccion": null,
+    "telefono": "",
+    "foto_perfil": "",
+    "descripcion": "",
+    "descripcion_min": "",
+    "fecha_creacion": "2025-08-22T03:10:45.048Z",
+    "fecha_actualizacion": "2025-08-22T03:10:45.048Z",
+    "password_reset_token": "S_Umg-Xjn9vqH5nvEKJcAsIH0VCWZRr6ilCg8msRA-8",
+    "password_reset_token_expires": "2025-10-30T01:21:45.497Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$dWU0Gs39LIbEDr1ErTmgi8$cImkB8KLjs1jTTz7ASCm+pUK74lJqP0A/vtFzR6n1OM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cliente_demo",
+    "first_name": "Pol",
+    "last_name": "Rivarola",
+    "email": "clienteDemo@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-22T03:25:49Z",
+    "fecha_nacimiento": "2025-09-04",
+    "direccion": 9,
+    "telefono": "351-555-0005",
+    "foto_perfil": "perfiles/Captura_de_pantalla_2025-10-21_003805.png",
+    "descripcion": "Busco acompañamiento diario",
+    "descripcion_min": "Acompañamiento",
+    "fecha_creacion": "2025-08-22T03:25:49.347Z",
+    "fecha_actualizacion": "2025-11-01T21:37:08.875Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cmTcy9xx7cwVOwcD1H3fPO$suYjOxumMA+cNbwmXZaVcCeoQL4ELIYsD02Q8QTkkhI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cuidador_demo",
+    "first_name": "Pol",
+    "last_name": "Gómez",
+    "email": "cuidador@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-22T03:25:49Z",
+    "fecha_nacimiento": "2025-08-21",
+    "direccion": 6,
+    "telefono": "351-555-0002",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop_1.png",
+    "descripcion": "Fonoaudiólogo con 9 años de experiencia en atención domiciliaria y centros terapéuticos. Especializado en trastornos del lenguaje, deglución y comunicación en adultos mayores y niños.",
+    "descripcion_min": "Movilidad",
+    "fecha_creacion": "2025-08-22T03:25:49.797Z",
+    "fecha_actualizacion": "2025-11-01T21:20:16.524Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$KIIoZIIBbbX5jzNnJgze0e$SvUJ+wc1AThMvGt6bUfvEoYRvcIswRYOrDBBn+HzQKo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cliente_demo2",
+    "first_name": "Laura",
+    "last_name": "García",
+    "email": "cliente2@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-22T03:52:46.637Z",
+    "fecha_nacimiento": null,
+    "direccion": 3,
+    "telefono": "351-555-0011",
+    "foto_perfil": "",
+    "descripcion": "Asistencia post-operatoria",
+    "descripcion_min": "Post-op",
+    "fecha_creacion": "2025-08-22T03:52:46.637Z",
+    "fecha_actualizacion": "2025-08-22T03:52:46.984Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$EH6sEQvuRVGdK3ZgkrQ54V$K1GhHQ2zMDQKNAWVD2iCcP39/SyWr2ZSliG/M8en6s0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cuidador_demo2",
+    "first_name": "María",
+    "last_name": "López",
+    "email": "cuidador2@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-22T03:52:47Z",
+    "fecha_nacimiento": null,
+    "direccion": 4,
+    "telefono": "351-555-0022",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop_6.png",
+    "descripcion": "Acompañante terapéutica con 7 años de experiencia en contextos educativos y clínicos. Enfocada en el acompañamiento de personas con autismo y trastornos del desarrollo.",
+    "descripcion_min": "Adultos mayores",
+    "fecha_creacion": "2025-08-22T03:52:47.008Z",
+    "fecha_actualizacion": "2025-11-01T21:21:36.802Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$z14V4HHo1gmHDDBcs5fIkb$XEbr4+TLcNTwQCw58xXoaYZtihaURyX2zeLZCIhKaaw=",
+    "last_login": "2025-10-29T01:19:14.831Z",
+    "is_superuser": true,
+    "username": "polRivarolaZ",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-29T18:56:58.660Z",
+    "fecha_nacimiento": null,
+    "direccion": null,
+    "telefono": "",
+    "foto_perfil": "",
+    "descripcion": "",
+    "descripcion_min": "",
+    "fecha_creacion": "2025-08-29T18:56:59.011Z",
+    "fecha_actualizacion": "2025-08-29T18:56:59.011Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$7GrdMEb8VFWGDrVLeGw1xc$qF2y3UYBSZ44AmoSflIfrly9vxXNcG5DctXSUAlLTJ4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ana_martinez",
+    "first_name": "Ana",
+    "last_name": "Martínez",
+    "email": "ana.martinez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:36.993Z",
+    "fecha_nacimiento": "1947-11-06",
+    "direccion": 10,
+    "telefono": "351-123-4567",
+    "foto_perfil": "",
+    "descripcion": "Soy una mujer de 78 años que necesita ayuda con las tareas diarias y acompañamiento médico. Me gusta leer y escuchar música clásica.",
+    "descripcion_min": "Necesito acompañamiento diario",
+    "fecha_creacion": "2025-10-17T02:23:36.993Z",
+    "fecha_actualizacion": "2025-10-17T02:23:37.515Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Dg0ka5BB3tIwsqmszf03CG$Q/Xnj4zWcKgAoZNOhgIcRlVi6FLeq/dq3xa7LtVC2gY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "carlos_rodriguez",
+    "first_name": "Carlos",
+    "last_name": "Rodríguez",
+    "email": "carlos.rodriguez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:37.561Z",
+    "fecha_nacimiento": "1960-11-02",
+    "direccion": 11,
+    "telefono": "351-234-5678",
+    "foto_perfil": "",
+    "descripcion": "Hombre de 65 años en recuperación post-cirugía de cadera. Necesito ayuda con movilidad y rehabilitación.",
+    "descripcion_min": "Recuperación post-operatoria",
+    "fecha_creacion": "2025-10-17T02:23:37.561Z",
+    "fecha_actualizacion": "2025-10-17T02:23:38.031Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$M2eDnQQg18mGKABTilErYR$qlPkYnCV8EA9QvrwPzJiqcafilUhvkh2+EIziDMWsl8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "maria_gonzalez",
+    "first_name": "María",
+    "last_name": "González",
+    "email": "maria.gonzalez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:38.065Z",
+    "fecha_nacimiento": "1970-10-31",
+    "direccion": 12,
+    "telefono": "351-345-6789",
+    "foto_perfil": "",
+    "descripcion": "Madre de familia buscando cuidado especializado para mi hijo de 25 años con discapacidad intelectual. Necesitamos alguien paciente y comprensivo.",
+    "descripcion_min": "Cuidado especializado",
+    "fecha_creacion": "2025-10-17T02:23:38.066Z",
+    "fecha_actualizacion": "2025-10-17T02:23:38.613Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$oybc0sgvHq1zqEvv8zwx5m$JW9UhQE/+2YRU4Ycu8uior2T+/7yGVI/PZY+PS5mvdo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "roberto_silva",
+    "first_name": "Roberto",
+    "last_name": "Silva",
+    "email": "roberto.silva@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:38.636Z",
+    "fecha_nacimiento": "1943-11-07",
+    "direccion": 13,
+    "telefono": "351-456-7890",
+    "foto_perfil": "",
+    "descripcion": "Hombre de 82 años con diagnóstico de Alzheimer en etapa temprana. Busco cuidador con experiencia en demencia.",
+    "descripcion_min": "Cuidado para demencia",
+    "fecha_creacion": "2025-10-17T02:23:38.636Z",
+    "fecha_actualizacion": "2025-10-17T02:23:39.113Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$uCU3Bio3Ay8be36aOt2bkM$syKxVXs4h1i8lu/hX/mrboyqxrevl0FOCWC8bmS76X8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patricia_lopez",
+    "first_name": "Patricia",
+    "last_name": "López",
+    "email": "patricia.lopez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:39Z",
+    "fecha_nacimiento": "1990-10-26",
+    "direccion": 14,
+    "telefono": "351-567-8901",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop_7.png",
+    "descripcion": "Enfermera profesional con 8 años de experiencia en cuidados domiciliarios. Especializada en adultos mayores y cuidados paliativos.",
+    "descripcion_min": "Enfermera especializada",
+    "fecha_creacion": "2025-10-17T02:23:39.132Z",
+    "fecha_actualizacion": "2025-11-01T21:12:55.708Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ckGCRsSJ9ROPreaIo8R63R$3TiWyhPM5bSsMlI4biaBhKrh9ZQY4c5/WJcZwYiAj2U=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jorge_mendez",
+    "first_name": "Jorge",
+    "last_name": "Méndez",
+    "email": "jorge.mendez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:39Z",
+    "fecha_nacimiento": "1983-10-28",
+    "direccion": 15,
+    "telefono": "351-678-9012",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop_9.png",
+    "descripcion": "Técnico en rehabilitación con 6 años de experiencia. Especializado en recuperación post-operatoria y discapacidad motriz.",
+    "descripcion_min": "Especialista en rehabilitación",
+    "fecha_creacion": "2025-10-17T02:23:39.741Z",
+    "fecha_actualizacion": "2025-11-01T21:14:07.893Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$o378l8lRaDgwPRO8dRZHG0$QrpS1Ox8Ub4bFmrnZPt8KTqNUnRVQdnfBdH8zt2UKY4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "silvia_fernandez",
+    "first_name": "Silvia",
+    "last_name": "Fernández",
+    "email": "silvia.fernandez@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:40Z",
+    "fecha_nacimiento": "1987-10-27",
+    "direccion": 16,
+    "telefono": "351-789-0123",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop.png",
+    "descripcion": "Psicóloga especializada en discapacidad intelectual con 10 años de experiencia. Trabajo con familias y personas con necesidades especiales.",
+    "descripcion_min": "Psicóloga especializada",
+    "fecha_creacion": "2025-10-17T02:23:40.245Z",
+    "fecha_actualizacion": "2025-11-01T21:12:00.365Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$g0lbn3aDkSzs3dToPp1oAM$v4FelDZ3QT25NXK2nYNeabjG978p9UFtRDhvpfQ/OtU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "miguel_torres",
+    "first_name": "Miguel",
+    "last_name": "Torres",
+    "email": "miguel.torres@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-17T02:23:40Z",
+    "fecha_nacimiento": "1996-10-24",
+    "direccion": 17,
+    "telefono": "351-890-1234",
+    "foto_perfil": "perfiles/Avatars_-_Default_with_Backdrop_4.png",
+    "descripcion": "Auxiliar de enfermería con 5 años de experiencia en geriatría. Especializado en cuidados de adultos mayores y acompañamiento médico.",
+    "descripcion_min": "Auxiliar especializado",
+    "fecha_creacion": "2025-10-17T02:23:40.765Z",
+    "fecha_actualizacion": "2025-11-01T21:14:37.116Z",
+    "password_reset_token": null,
+    "password_reset_token_expires": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 1,
+  "fields": {
+    "nombre": "Edad avanzada"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 2,
+  "fields": {
+    "nombre": "Discapacidad motriz"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 3,
+  "fields": {
+    "nombre": "Discapacidad intelectual"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 4,
+  "fields": {
+    "nombre": "Adultos Mayores"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 5,
+  "fields": {
+    "nombre": "Discapacidad Motriz"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 6,
+  "fields": {
+    "nombre": "Discapacidad Intelectual"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 7,
+  "fields": {
+    "nombre": "Post-operatorio"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 8,
+  "fields": {
+    "nombre": "Enfermedades Crónicas"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 9,
+  "fields": {
+    "nombre": "Cuidados Paliativos"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 10,
+  "fields": {
+    "nombre": "Rehabilitación"
+  }
+},
+{
+  "model": "users.tipocliente",
+  "pk": 11,
+  "fields": {
+    "nombre": "Demencia/Alzheimer"
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 1,
+  "fields": {
+    "usuario": [
+      "cliente_demo"
+    ],
+    "tipos_cliente": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 2,
+  "fields": {
+    "usuario": [
+      "cliente_demo2"
+    ],
+    "tipos_cliente": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 3,
+  "fields": {
+    "usuario": [
+      "ana_martinez"
+    ],
+    "tipos_cliente": [
+      4,
+      8
+    ]
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 4,
+  "fields": {
+    "usuario": [
+      "carlos_rodriguez"
+    ],
+    "tipos_cliente": [
+      5,
+      7,
+      10
+    ]
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 5,
+  "fields": {
+    "usuario": [
+      "maria_gonzalez"
+    ],
+    "tipos_cliente": [
+      6
+    ]
+  }
+},
+{
+  "model": "users.cliente",
+  "pk": 6,
+  "fields": {
+    "usuario": [
+      "roberto_silva"
+    ],
+    "tipos_cliente": [
+      4,
+      11
+    ]
+  }
+},
+{
+  "model": "users.fotocliente",
+  "pk": 11,
+  "fields": {
+    "cliente": 1,
+    "imagen": "clientes/fotos/Captura_de_pantalla_2025-05-14_225841.png"
+  }
+},
+{
+  "model": "users.fotocliente",
+  "pk": 12,
+  "fields": {
+    "cliente": 1,
+    "imagen": "clientes/fotos/Captura_de_pantalla_2025-05-14_230007.png"
+  }
+},
+{
+  "model": "users.fotocliente",
+  "pk": 13,
+  "fields": {
+    "cliente": 1,
+    "imagen": "clientes/fotos/Captura_de_pantalla_2025-05-15_130758.png"
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 1,
+  "fields": {
+    "usuario": [
+      "cuidador_demo"
+    ],
+    "anios_experiencia": 5,
+    "tipos_cliente": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 2,
+  "fields": {
+    "usuario": [
+      "cuidador_demo2"
+    ],
+    "anios_experiencia": 7,
+    "tipos_cliente": [
+      1,
+      3
+    ]
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 5,
+  "fields": {
+    "usuario": [
+      "patricia_lopez"
+    ],
+    "anios_experiencia": 8,
+    "tipos_cliente": [
+      4,
+      8,
+      9
+    ]
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 6,
+  "fields": {
+    "usuario": [
+      "jorge_mendez"
+    ],
+    "anios_experiencia": 6,
+    "tipos_cliente": [
+      5,
+      7,
+      10
+    ]
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 7,
+  "fields": {
+    "usuario": [
+      "silvia_fernandez"
+    ],
+    "anios_experiencia": 10,
+    "tipos_cliente": [
+      6,
+      11
+    ]
+  }
+},
+{
+  "model": "users.cuidador",
+  "pk": 8,
+  "fields": {
+    "usuario": [
+      "miguel_torres"
+    ],
+    "anios_experiencia": 5,
+    "tipos_cliente": [
+      4,
+      8
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 1,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-08-07T03:54:00.341Z",
+    "fecha_fin": "2025-08-08T05:54:00.341Z",
+    "descripcion": "Acompañamiento en domicilio; movilidad reducida.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 2,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-08-15T03:54:00.341Z",
+    "fecha_fin": "2025-08-16T06:54:00.341Z",
+    "descripcion": "Control de medicación y caminatas.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 3,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-08-22T01:54:00.341Z",
+    "fecha_fin": "2025-08-22T07:54:00.341Z",
+    "descripcion": "Turno de media jornada.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 4,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-08-24T03:54:00.341Z",
+    "fecha_fin": "2025-08-24T09:54:00.341Z",
+    "descripcion": "Acompañamiento a control médico.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 6,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-08-02T03:54:00.341Z",
+    "fecha_fin": "2025-08-03T04:54:00.341Z",
+    "descripcion": "Asistencia post-operatoria; control de signos vitales.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 7,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-08-19T03:54:00.341Z",
+    "fecha_fin": "2025-08-20T06:54:00.341Z",
+    "descripcion": "Acompañamiento para rehabilitación.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 8,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-08-22T02:54:00.341Z",
+    "fecha_fin": "2025-08-22T08:54:00.341Z",
+    "descripcion": "Turno diurno.",
+    "horas_dia": "4",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 9,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-08-23T03:54:00.341Z",
+    "fecha_fin": "2025-08-23T07:54:00.341Z",
+    "descripcion": "Evaluación inicial.",
+    "horas_dia": "4",
+    "aceptado": false,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 10,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-09-05T18:00:00Z",
+    "fecha_fin": "2025-09-27T12:00:00Z",
+    "descripcion": "viejo",
+    "horas_dia": "Mediodia",
+    "aceptado": true,
+    "dias_semanales": [
+      3
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 11,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-10-13T00:10:42Z",
+    "fecha_fin": "2025-10-23T00:10:46Z",
+    "descripcion": "ttt",
+    "horas_dia": "Medio dia",
+    "aceptado": true,
+    "dias_semanales": [
+      3
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 13,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-10-13T00:00:00Z",
+    "fecha_fin": "2025-10-31T00:00:00Z",
+    "descripcion": "Tipos de servicio solicitados: Discapacidad Intelectual, Edad Avanzada\r\n\r\nDescripción adicional: fdf\r\n\r\nUbicación: c",
+    "horas_dia": "night",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      5,
+      6
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 14,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-10-05T00:00:00Z",
+    "fecha_fin": "2025-10-10T00:00:00Z",
+    "descripcion": "Tipos de servicio solicitados: Discapacidad Intelectual\n\n- Descripción adicional: mmmm",
+    "horas_dia": "Tarde",
+    "aceptado": false,
+    "dias_semanales": [
+      1,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 17,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-09-17T02:23:36.992Z",
+    "fecha_fin": "2025-09-18T02:23:36.992Z",
+    "descripcion": "Acompañamiento diario para toma de medicación y paseos cortos. Ana necesita ayuda con su diabetes y movilidad reducida.",
+    "horas_dia": "Mañana",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 18,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-10-02T02:23:36.992Z",
+    "fecha_fin": "2025-10-03T02:23:36.992Z",
+    "descripcion": "Acompañamiento a consulta médica y ayuda con ejercicios de fisioterapia.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      2
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 19,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-09-22T02:23:36.992Z",
+    "fecha_fin": "2025-09-23T02:23:36.992Z",
+    "descripcion": "Sesión de rehabilitación post-cirugía de cadera. Ejercicios de movilidad y fortalecimiento.",
+    "horas_dia": "Mañana",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      4,
+      6
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 20,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-10-07T02:23:36.992Z",
+    "fecha_fin": "2025-10-08T02:23:36.992Z",
+    "descripcion": "Continuación del tratamiento de rehabilitación. Progreso notable en la movilidad.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 21,
+  "fields": {
+    "cliente": [
+      "maria_gonzalez"
+    ],
+    "receptor": [
+      "silvia_fernandez"
+    ],
+    "fecha_inicio": "2025-09-27T02:23:36.992Z",
+    "fecha_fin": "2025-09-28T02:23:36.992Z",
+    "descripcion": "Sesión de apoyo psicológico y actividades recreativas para mi hijo. Silvia es muy paciente y comprensiva.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      2,
+      4,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 22,
+  "fields": {
+    "cliente": [
+      "roberto_silva"
+    ],
+    "receptor": [
+      "miguel_torres"
+    ],
+    "fecha_inicio": "2025-09-29T02:23:36.992Z",
+    "fecha_fin": "2025-09-30T02:23:36.992Z",
+    "descripcion": "Cuidado especializado para persona con Alzheimer. Miguel tiene experiencia en demencia y es muy cuidadoso.",
+    "horas_dia": "Todo el dia",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 23,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-10-19T02:23:36.992Z",
+    "fecha_fin": "2025-10-20T02:23:36.992Z",
+    "descripcion": "Evaluación inicial para nuevo plan de cuidados domiciliarios.",
+    "horas_dia": "Mañana",
+    "aceptado": false,
+    "dias_semanales": [
+      1
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 24,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-10-22T02:23:36.992Z",
+    "fecha_fin": "2025-10-23T02:23:36.992Z",
+    "descripcion": "Seguimiento de rehabilitación y evaluación de progreso.",
+    "horas_dia": "Tarde",
+    "aceptado": false,
+    "dias_semanales": [
+      4
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 25,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-09-17T02:26:17.180Z",
+    "fecha_fin": "2025-09-18T02:26:17.180Z",
+    "descripcion": "Acompañamiento diario para toma de medicación y paseos cortos. Ana necesita ayuda con su diabetes y movilidad reducida.",
+    "horas_dia": "Mañana",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 26,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-10-02T02:26:17.180Z",
+    "fecha_fin": "2025-10-03T02:26:17.180Z",
+    "descripcion": "Acompañamiento a consulta médica y ayuda con ejercicios de fisioterapia.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      2
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 27,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-09-22T02:26:17.180Z",
+    "fecha_fin": "2025-09-23T02:26:17.180Z",
+    "descripcion": "Sesión de rehabilitación post-cirugía de cadera. Ejercicios de movilidad y fortalecimiento.",
+    "horas_dia": "Mañana",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      4,
+      6
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 28,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-10-07T02:26:17.180Z",
+    "fecha_fin": "2025-10-08T02:26:17.180Z",
+    "descripcion": "Continuación del tratamiento de rehabilitación. Progreso notable en la movilidad.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 29,
+  "fields": {
+    "cliente": [
+      "maria_gonzalez"
+    ],
+    "receptor": [
+      "silvia_fernandez"
+    ],
+    "fecha_inicio": "2025-09-27T02:26:17.180Z",
+    "fecha_fin": "2025-09-28T02:26:17.180Z",
+    "descripcion": "Sesión de apoyo psicológico y actividades recreativas para mi hijo. Silvia es muy paciente y comprensiva.",
+    "horas_dia": "Tarde",
+    "aceptado": true,
+    "dias_semanales": [
+      2,
+      4,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 30,
+  "fields": {
+    "cliente": [
+      "roberto_silva"
+    ],
+    "receptor": [
+      "miguel_torres"
+    ],
+    "fecha_inicio": "2025-09-29T02:26:17.180Z",
+    "fecha_fin": "2025-09-30T02:26:17.180Z",
+    "descripcion": "Cuidado especializado para persona con Alzheimer. Miguel tiene experiencia en demencia y es muy cuidadoso.",
+    "horas_dia": "Todo el dia",
+    "aceptado": true,
+    "dias_semanales": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 31,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "fecha_inicio": "2025-10-19T02:26:17.180Z",
+    "fecha_fin": "2025-10-20T02:26:17.180Z",
+    "descripcion": "Evaluación inicial para nuevo plan de cuidados domiciliarios.",
+    "horas_dia": "Mañana",
+    "aceptado": false,
+    "dias_semanales": [
+      1
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 32,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "fecha_inicio": "2025-10-22T02:26:17.180Z",
+    "fecha_fin": "2025-10-23T02:26:17.180Z",
+    "descripcion": "Seguimiento de rehabilitación y evaluación de progreso.",
+    "horas_dia": "Tarde",
+    "aceptado": false,
+    "dias_semanales": [
+      4
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 33,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "silvia_fernandez"
+    ],
+    "fecha_inicio": "2025-10-21T00:00:00Z",
+    "fecha_fin": "2025-10-23T00:00:00Z",
+    "descripcion": "Tipos de servicio solicitados: Discapacidad Intelectual\n\n- Descripción adicional: Eso",
+    "horas_dia": "Tarde",
+    "aceptado": false,
+    "dias_semanales": [
+      1,
+      5,
+      7
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 34,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "fecha_inicio": "2025-11-13T00:00:00Z",
+    "fecha_fin": "2025-11-18T23:59:59Z",
+    "descripcion": "Tipos de servicio solicitados: discapacidad-intelectual, edad-avanzada\n\nDescripción adicional: eso\n\nUbicación: San Clemente",
+    "horas_dia": "Mañana",
+    "aceptado": false,
+    "dias_semanales": [
+      1,
+      3
+    ]
+  }
+},
+{
+  "model": "services.servicio",
+  "pk": 35,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "fecha_inicio": "2025-11-13T00:00:00Z",
+    "fecha_fin": "2025-11-18T23:59:59Z",
+    "descripcion": "Tipos de servicio solicitados: discapacidad-intelectual, edad-avanzada\n\nDescripción adicional: Service test\n\nUbicación: undefined",
+    "horas_dia": "Tarde",
+    "aceptado": false,
+    "dias_semanales": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 1,
+  "fields": {
+    "servicio": 1,
+    "autor": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "puntuacion": 5,
+    "comentario": "Excelente atención y puntualidad.",
+    "creado_en": "2025-08-22T03:54:00.357Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 4,
+  "fields": {
+    "servicio": 6,
+    "autor": [
+      "cliente_demo2"
+    ],
+    "receptor": [
+      "cuidador_demo2"
+    ],
+    "puntuacion": 3,
+    "comentario": "Correcto; mejorar puntualidad.",
+    "creado_en": "2025-08-22T03:54:00.422Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 5,
+  "fields": {
+    "servicio": 2,
+    "autor": [
+      "cuidador_demo"
+    ],
+    "receptor": [
+      "cliente_demo"
+    ],
+    "puntuacion": 5,
+    "comentario": "muy bueno",
+    "creado_en": "2025-08-24T00:42:49.419Z",
+    "reportada": true,
+    "motivo_reporte": "Lenguaje ofensivo"
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 8,
+  "fields": {
+    "servicio": 4,
+    "autor": [
+      "cliente_demo"
+    ],
+    "receptor": [
+      "cuidador_demo"
+    ],
+    "puntuacion": 2,
+    "comentario": "maso menos",
+    "creado_en": "2025-09-06T01:42:03.543Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 10,
+  "fields": {
+    "servicio": 17,
+    "autor": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Patricia es una excelente profesional. Muy cuidadosa con mi medicación y siempre puntual. La recomiendo totalmente.",
+    "creado_en": "2025-10-17T02:23:41.454Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 20,
+  "fields": {
+    "servicio": 25,
+    "autor": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Patricia es una excelente profesional. Muy cuidadosa con mi medicación y siempre puntual. La recomiendo totalmente.",
+    "creado_en": "2025-10-17T02:26:17.321Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 21,
+  "fields": {
+    "servicio": 26,
+    "autor": [
+      "ana_martinez"
+    ],
+    "receptor": [
+      "patricia_lopez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Excelente acompañamiento al médico. Patricia me ayudó mucho y me hizo sentir segura durante toda la consulta.",
+    "creado_en": "2025-10-17T02:26:17.328Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 22,
+  "fields": {
+    "servicio": 25,
+    "autor": [
+      "patricia_lopez"
+    ],
+    "receptor": [
+      "ana_martinez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Ana es una señora muy amable y colaborativa. Sigue todas las indicaciones médicas correctamente.",
+    "creado_en": "2025-10-17T02:26:17.336Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 23,
+  "fields": {
+    "servicio": 27,
+    "autor": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "puntuacion": 4,
+    "comentario": "Jorge es muy profesional en rehabilitación. Me ayudó mucho con mi recuperación post-cirugía.",
+    "creado_en": "2025-10-17T02:26:17.343Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 24,
+  "fields": {
+    "servicio": 28,
+    "autor": [
+      "carlos_rodriguez"
+    ],
+    "receptor": [
+      "jorge_mendez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Excelente progreso gracias a Jorge. Muy recomendable para rehabilitación.",
+    "creado_en": "2025-10-17T02:26:17.351Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 25,
+  "fields": {
+    "servicio": 27,
+    "autor": [
+      "jorge_mendez"
+    ],
+    "receptor": [
+      "carlos_rodriguez"
+    ],
+    "puntuacion": 4,
+    "comentario": "Carlos es muy comprometido con su rehabilitación. Buen paciente para trabajar.",
+    "creado_en": "2025-10-17T02:26:17.358Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 26,
+  "fields": {
+    "servicio": 29,
+    "autor": [
+      "maria_gonzalez"
+    ],
+    "receptor": [
+      "silvia_fernandez"
+    ],
+    "puntuacion": 5,
+    "comentario": "Silvia es increíble con mi hijo. Tiene mucha paciencia y experiencia. Mi hijo la adora.",
+    "creado_en": "2025-10-17T02:26:17.365Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 27,
+  "fields": {
+    "servicio": 29,
+    "autor": [
+      "silvia_fernandez"
+    ],
+    "receptor": [
+      "maria_gonzalez"
+    ],
+    "puntuacion": 5,
+    "comentario": "María es una madre muy comprensiva y colaborativa. Su hijo es un encanto.",
+    "creado_en": "2025-10-17T02:26:17.373Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 28,
+  "fields": {
+    "servicio": 30,
+    "autor": [
+      "roberto_silva"
+    ],
+    "receptor": [
+      "miguel_torres"
+    ],
+    "puntuacion": 4,
+    "comentario": "Miguel es muy cuidadoso y paciente. Entiende bien las necesidades de personas con Alzheimer.",
+    "creado_en": "2025-10-17T02:26:17.380Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.calificacion",
+  "pk": 29,
+  "fields": {
+    "servicio": 30,
+    "autor": [
+      "miguel_torres"
+    ],
+    "receptor": [
+      "roberto_silva"
+    ],
+    "puntuacion": 4,
+    "comentario": "Roberto es una persona muy amable. Aunque tiene Alzheimer, es colaborativo y respetuoso.",
+    "creado_en": "2025-10-17T02:26:17.387Z",
+    "reportada": false,
+    "motivo_reporte": null
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 2,
+  "fields": {
+    "cuidador": [
+      "cuidador_demo2"
+    ],
+    "descripcion": "Asistencia domiciliaria - 3 años",
+    "fecha_inicio": "2022-05-10T03:54:00.341Z",
+    "fecha_fin": "2025-02-03T03:54:00.341Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 13,
+  "fields": {
+    "cuidador": [
+      "cuidador_demo"
+    ],
+    "descripcion": "8ou",
+    "fecha_inicio": "2025-07-31T00:00:00Z",
+    "fecha_fin": "2025-08-28T00:00:00Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 14,
+  "fields": {
+    "cuidador": [
+      "patricia_lopez"
+    ],
+    "descripcion": "Enfermera en Hospital Privado de Córdoba - Unidad de Geriatría (2018-2022)",
+    "fecha_inicio": "2020-10-18T02:26:17.180Z",
+    "fecha_fin": "2024-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 15,
+  "fields": {
+    "cuidador": [
+      "patricia_lopez"
+    ],
+    "descripcion": "Cuidados Domiciliarios Especializados - Empresa Privada (2022-actualidad)",
+    "fecha_inicio": "2023-10-18T02:26:17.180Z",
+    "fecha_fin": "2025-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 16,
+  "fields": {
+    "cuidador": [
+      "jorge_mendez"
+    ],
+    "descripcion": "Centro de Rehabilitación Física - Rosario (2019-2023)",
+    "fecha_inicio": "2021-10-18T02:26:17.180Z",
+    "fecha_fin": "2024-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 17,
+  "fields": {
+    "cuidador": [
+      "jorge_mendez"
+    ],
+    "descripcion": "Consultorio Privado de Fisioterapia (2023-actualidad)",
+    "fecha_inicio": "2024-10-17T02:26:17.180Z",
+    "fecha_fin": "2025-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 18,
+  "fields": {
+    "cuidador": [
+      "silvia_fernandez"
+    ],
+    "descripcion": "Centro de Atención Integral para Personas con Discapacidad (2015-2020)",
+    "fecha_inicio": "2017-10-19T02:26:17.180Z",
+    "fecha_fin": "2022-10-18T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 19,
+  "fields": {
+    "cuidador": [
+      "silvia_fernandez"
+    ],
+    "descripcion": "Práctica Privada de Psicología Especializada (2020-actualidad)",
+    "fecha_inicio": "2021-10-18T02:26:17.180Z",
+    "fecha_fin": "2025-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 20,
+  "fields": {
+    "cuidador": [
+      "miguel_torres"
+    ],
+    "descripcion": "Residencia Geriátrica San José - Villa Carlos Paz (2020-2023)",
+    "fecha_inicio": "2022-10-18T02:26:17.180Z",
+    "fecha_fin": "2024-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.experiencia",
+  "pk": 21,
+  "fields": {
+    "cuidador": [
+      "miguel_torres"
+    ],
+    "descripcion": "Servicio de Cuidados Domiciliarios (2023-actualidad)",
+    "fecha_inicio": "2024-10-17T02:26:17.180Z",
+    "fecha_fin": "2025-10-17T02:26:17.180Z"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 1,
+  "fields": {
+    "nombre": "Lunes"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 2,
+  "fields": {
+    "nombre": "Martes"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 3,
+  "fields": {
+    "nombre": "Miércoles"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 4,
+  "fields": {
+    "nombre": "Jueves"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 5,
+  "fields": {
+    "nombre": "Viernes"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 6,
+  "fields": {
+    "nombre": "Sábado"
+  }
+},
+{
+  "model": "services.diasemanal",
+  "pk": 7,
+  "fields": {
+    "nombre": "Domingo"
+  }
+},
+{
+  "model": "services.horariodiario",
+  "pk": 1,
+  "fields": {
+    "nombre": "Mañana"
+  }
+},
+{
+  "model": "services.horariodiario",
+  "pk": 2,
+  "fields": {
+    "nombre": "Tarde"
+  }
+},
+{
+  "model": "services.horariodiario",
+  "pk": 3,
+  "fields": {
+    "nombre": "Noche"
+  }
+},
+{
+  "model": "services.horariodiario",
+  "pk": 4,
+  "fields": {
+    "nombre": "Todo el día"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 2,
+  "fields": {
+    "cuidador": [
+      "cuidador_demo"
+    ],
+    "nombre": "Captura de pantalla 2025-05-23 173354.png",
+    "archivo": "certificaciones/Captura_de_pantalla_2025-05-23_173354.png"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 5,
+  "fields": {
+    "cuidador": [
+      "patricia_lopez"
+    ],
+    "nombre": "Licenciatura en Enfermería - Universidad Nacional de Córdoba",
+    "archivo": "certificaciones/cert_patricia_enfermeria.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 6,
+  "fields": {
+    "cuidador": [
+      "patricia_lopez"
+    ],
+    "nombre": "Especialización en Cuidados Geriátricos",
+    "archivo": "certificaciones/cert_patricia_geriatria.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 7,
+  "fields": {
+    "cuidador": [
+      "jorge_mendez"
+    ],
+    "nombre": "Técnico Superior en Fisioterapia y Rehabilitación",
+    "archivo": "certificaciones/cert_jorge_fisioterapia.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 8,
+  "fields": {
+    "cuidador": [
+      "jorge_mendez"
+    ],
+    "nombre": "Curso de Rehabilitación Post-Quirúrgica",
+    "archivo": "certificaciones/cert_jorge_rehabilitacion.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 9,
+  "fields": {
+    "cuidador": [
+      "silvia_fernandez"
+    ],
+    "nombre": "Licenciatura en Psicología - Universidad Nacional de Rosario",
+    "archivo": "certificaciones/cert_silvia_psicologia.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 10,
+  "fields": {
+    "cuidador": [
+      "silvia_fernandez"
+    ],
+    "nombre": "Especialización en Discapacidad Intelectual",
+    "archivo": "certificaciones/cert_silvia_discapacidad.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 11,
+  "fields": {
+    "cuidador": [
+      "miguel_torres"
+    ],
+    "nombre": "Auxiliar de Enfermería - Instituto Técnico",
+    "archivo": "certificaciones/cert_miguel_auxiliar.pdf"
+  }
+},
+{
+  "model": "services.certificacion",
+  "pk": 12,
+  "fields": {
+    "cuidador": [
+      "miguel_torres"
+    ],
+    "nombre": "Curso de Cuidados para Personas con Alzheimer",
+    "archivo": "certificaciones/cert_miguel_alzheimer.pdf"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 1,
+  "fields": {
+    "nombre": "Buenos Aires"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 2,
+  "fields": {
+    "nombre": "CABA"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 3,
+  "fields": {
+    "nombre": "Catamarca"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 4,
+  "fields": {
+    "nombre": "Chaco"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 5,
+  "fields": {
+    "nombre": "Chubut"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 6,
+  "fields": {
+    "nombre": "Córdoba"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 7,
+  "fields": {
+    "nombre": "Corrientes"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 8,
+  "fields": {
+    "nombre": "Entre Ríos"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 9,
+  "fields": {
+    "nombre": "Formosa"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 10,
+  "fields": {
+    "nombre": "Jujuy"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 11,
+  "fields": {
+    "nombre": "La Pampa"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 12,
+  "fields": {
+    "nombre": "La Rioja"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 13,
+  "fields": {
+    "nombre": "Mendoza"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 14,
+  "fields": {
+    "nombre": "Misiones"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 15,
+  "fields": {
+    "nombre": "Neuquén"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 16,
+  "fields": {
+    "nombre": "Río Negro"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 17,
+  "fields": {
+    "nombre": "Salta"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 18,
+  "fields": {
+    "nombre": "San Juan"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 19,
+  "fields": {
+    "nombre": "San Luis"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 20,
+  "fields": {
+    "nombre": "Santa Cruz"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 21,
+  "fields": {
+    "nombre": "Santa Fe"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 22,
+  "fields": {
+    "nombre": "Santiago del Estero"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 23,
+  "fields": {
+    "nombre": "Tierra del Fuego"
+  }
+},
+{
+  "model": "location.provincia",
+  "pk": 24,
+  "fields": {
+    "nombre": "Tucumán"
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 1,
+  "fields": {
+    "nombre": "La Plata",
+    "provincia": 1
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 2,
+  "fields": {
+    "nombre": "Mar del Plata",
+    "provincia": 1
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 3,
+  "fields": {
+    "nombre": "Bahía Blanca",
+    "provincia": 1
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 4,
+  "fields": {
+    "nombre": "Tandil",
+    "provincia": 1
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 5,
+  "fields": {
+    "nombre": "San Nicolás",
+    "provincia": 1
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 6,
+  "fields": {
+    "nombre": "Buenos Aires",
+    "provincia": 2
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 7,
+  "fields": {
+    "nombre": "San Fernando del Valle de Catamarca",
+    "provincia": 3
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 8,
+  "fields": {
+    "nombre": "Belén",
+    "provincia": 3
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 9,
+  "fields": {
+    "nombre": "Andalgalá",
+    "provincia": 3
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 10,
+  "fields": {
+    "nombre": "Resistencia",
+    "provincia": 4
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 11,
+  "fields": {
+    "nombre": "Roque Sáenz Peña",
+    "provincia": 4
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 12,
+  "fields": {
+    "nombre": "Villa Ángela",
+    "provincia": 4
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 13,
+  "fields": {
+    "nombre": "Rawson",
+    "provincia": 5
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 14,
+  "fields": {
+    "nombre": "Trelew",
+    "provincia": 5
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 15,
+  "fields": {
+    "nombre": "Comodoro Rivadavia",
+    "provincia": 5
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 16,
+  "fields": {
+    "nombre": "Puerto Madryn",
+    "provincia": 5
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 17,
+  "fields": {
+    "nombre": "Córdoba",
+    "provincia": 6
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 18,
+  "fields": {
+    "nombre": "Villa Carlos Paz",
+    "provincia": 6
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 19,
+  "fields": {
+    "nombre": "Río Cuarto",
+    "provincia": 6
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 20,
+  "fields": {
+    "nombre": "Villa María",
+    "provincia": 6
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 21,
+  "fields": {
+    "nombre": "Alta Gracia",
+    "provincia": 6
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 22,
+  "fields": {
+    "nombre": "Corrientes",
+    "provincia": 7
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 23,
+  "fields": {
+    "nombre": "Goya",
+    "provincia": 7
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 24,
+  "fields": {
+    "nombre": "Paso de los Libres",
+    "provincia": 7
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 25,
+  "fields": {
+    "nombre": "Paraná",
+    "provincia": 8
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 26,
+  "fields": {
+    "nombre": "Concordia",
+    "provincia": 8
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 27,
+  "fields": {
+    "nombre": "Gualeguaychú",
+    "provincia": 8
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 28,
+  "fields": {
+    "nombre": "Formosa",
+    "provincia": 9
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 29,
+  "fields": {
+    "nombre": "Clorinda",
+    "provincia": 9
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 30,
+  "fields": {
+    "nombre": "San Salvador de Jujuy",
+    "provincia": 10
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 31,
+  "fields": {
+    "nombre": "Palpalá",
+    "provincia": 10
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 32,
+  "fields": {
+    "nombre": "Perico",
+    "provincia": 10
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 33,
+  "fields": {
+    "nombre": "Santa Rosa",
+    "provincia": 11
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 34,
+  "fields": {
+    "nombre": "General Pico",
+    "provincia": 11
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 35,
+  "fields": {
+    "nombre": "La Rioja",
+    "provincia": 12
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 36,
+  "fields": {
+    "nombre": "Chilecito",
+    "provincia": 12
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 37,
+  "fields": {
+    "nombre": "Mendoza",
+    "provincia": 13
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 38,
+  "fields": {
+    "nombre": "San Rafael",
+    "provincia": 13
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 39,
+  "fields": {
+    "nombre": "Godoy Cruz",
+    "provincia": 13
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 40,
+  "fields": {
+    "nombre": "Luján de Cuyo",
+    "provincia": 13
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 41,
+  "fields": {
+    "nombre": "Posadas",
+    "provincia": 14
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 42,
+  "fields": {
+    "nombre": "Oberá",
+    "provincia": 14
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 43,
+  "fields": {
+    "nombre": "Eldorado",
+    "provincia": 14
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 44,
+  "fields": {
+    "nombre": "Neuquén",
+    "provincia": 15
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 45,
+  "fields": {
+    "nombre": "San Martín de los Andes",
+    "provincia": 15
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 46,
+  "fields": {
+    "nombre": "Plottier",
+    "provincia": 15
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 47,
+  "fields": {
+    "nombre": "Viedma",
+    "provincia": 16
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 48,
+  "fields": {
+    "nombre": "Bariloche",
+    "provincia": 16
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 49,
+  "fields": {
+    "nombre": "General Roca",
+    "provincia": 16
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 50,
+  "fields": {
+    "nombre": "Salta",
+    "provincia": 17
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 51,
+  "fields": {
+    "nombre": "San Ramón de la Nueva Orán",
+    "provincia": 17
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 52,
+  "fields": {
+    "nombre": "Tartagal",
+    "provincia": 17
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 53,
+  "fields": {
+    "nombre": "San Juan",
+    "provincia": 18
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 54,
+  "fields": {
+    "nombre": "Caucete",
+    "provincia": 18
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 55,
+  "fields": {
+    "nombre": "San Luis",
+    "provincia": 19
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 56,
+  "fields": {
+    "nombre": "Villa Mercedes",
+    "provincia": 19
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 57,
+  "fields": {
+    "nombre": "Merlo",
+    "provincia": 19
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 58,
+  "fields": {
+    "nombre": "Río Gallegos",
+    "provincia": 20
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 59,
+  "fields": {
+    "nombre": "Caleta Olivia",
+    "provincia": 20
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 60,
+  "fields": {
+    "nombre": "El Calafate",
+    "provincia": 20
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 61,
+  "fields": {
+    "nombre": "Santa Fe",
+    "provincia": 21
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 62,
+  "fields": {
+    "nombre": "Rosario",
+    "provincia": 21
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 63,
+  "fields": {
+    "nombre": "Rafaela",
+    "provincia": 21
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 64,
+  "fields": {
+    "nombre": "Venado Tuerto",
+    "provincia": 21
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 65,
+  "fields": {
+    "nombre": "Santiago del Estero",
+    "provincia": 22
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 66,
+  "fields": {
+    "nombre": "La Banda",
+    "provincia": 22
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 67,
+  "fields": {
+    "nombre": "Termas de Río Hondo",
+    "provincia": 22
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 68,
+  "fields": {
+    "nombre": "Ushuaia",
+    "provincia": 23
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 69,
+  "fields": {
+    "nombre": "Río Grande",
+    "provincia": 23
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 70,
+  "fields": {
+    "nombre": "Tolhuin",
+    "provincia": 23
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 71,
+  "fields": {
+    "nombre": "San Miguel de Tucumán",
+    "provincia": 24
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 72,
+  "fields": {
+    "nombre": "Tafí Viejo",
+    "provincia": 24
+  }
+},
+{
+  "model": "location.ciudad",
+  "pk": 73,
+  "fields": {
+    "nombre": "Yerba Buena",
+    "provincia": 24
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 1,
+  "fields": {
+    "direccion": "Av. Siempre Viva 742",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 2,
+  "fields": {
+    "direccion": "Av. Colón 1000",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 3,
+  "fields": {
+    "direccion": "Bv. San Juan 123",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 4,
+  "fields": {
+    "direccion": "Av. Sabattini 2500",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 5,
+  "fields": {
+    "direccion": "Av. Colón 1000",
+    "ciudad": 15
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 6,
+  "fields": {
+    "direccion": "Av. Colón 098",
+    "ciudad": 15
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 7,
+  "fields": {
+    "direccion": "Manzana 39 Lote 06 Bario Cañuelas Country Golf",
+    "ciudad": 21
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 8,
+  "fields": {
+    "direccion": "Manzana 39 Lote 06 ",
+    "ciudad": 21
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 9,
+  "fields": {
+    "direccion": "Av. Siempre Viva 742",
+    "ciudad": 20
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 10,
+  "fields": {
+    "direccion": "Av. Colón 1234",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 11,
+  "fields": {
+    "direccion": "San Martín 567",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 12,
+  "fields": {
+    "direccion": "Belgrano 890",
+    "ciudad": 62
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 13,
+  "fields": {
+    "direccion": "Rivadavia 234",
+    "ciudad": 1
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 14,
+  "fields": {
+    "direccion": "Av. Cárcano 456",
+    "ciudad": 18
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 15,
+  "fields": {
+    "direccion": "San Jerónimo 789",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 16,
+  "fields": {
+    "direccion": "Duarte Quirós 321",
+    "ciudad": 17
+  }
+},
+{
+  "model": "location.direccion",
+  "pk": 17,
+  "fields": {
+    "direccion": "Caseros 654",
+    "ciudad": 62
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 19,
+  "fields": {
+    "conversacion": 3,
+    "emisor": [
+      "cliente_demo"
+    ],
+    "contenido": "Hola",
+    "creado_en": "2025-09-09T01:11:54.723Z",
+    "leido_por": [
+      [
+        "cuidador_demo"
+      ]
+    ]
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 20,
+  "fields": {
+    "conversacion": 3,
+    "emisor": [
+      "cuidador_demo"
+    ],
+    "contenido": "hola",
+    "creado_en": "2025-09-12T16:01:40.745Z",
+    "leido_por": [
+      [
+        "cliente_demo"
+      ]
+    ]
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 21,
+  "fields": {
+    "conversacion": 3,
+    "emisor": [
+      "cuidador_demo"
+    ],
+    "contenido": "ee",
+    "creado_en": "2025-09-12T16:04:05.946Z",
+    "leido_por": [
+      [
+        "cliente_demo"
+      ]
+    ]
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 22,
+  "fields": {
+    "conversacion": 3,
+    "emisor": [
+      "cliente_demo"
+    ],
+    "contenido": "Testing",
+    "creado_en": "2025-09-12T16:05:34.117Z",
+    "leido_por": [
+      [
+        "cuidador_demo"
+      ]
+    ]
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 23,
+  "fields": {
+    "conversacion": 4,
+    "emisor": [
+      "cuidador_demo"
+    ],
+    "contenido": "hola",
+    "creado_en": "2025-09-12T16:06:45.744Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 24,
+  "fields": {
+    "conversacion": 3,
+    "emisor": [
+      "cliente_demo"
+    ],
+    "contenido": "hola",
+    "creado_en": "2025-09-16T01:59:22.852Z",
+    "leido_por": [
+      [
+        "cuidador_demo"
+      ]
+    ]
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 25,
+  "fields": {
+    "conversacion": 5,
+    "emisor": [
+      "ana_martinez"
+    ],
+    "contenido": "Hola Patricia, gracias por aceptar mi solicitud. ¿Podrías venir mañana a las 9 AM?",
+    "creado_en": "2025-10-17T02:26:17.401Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 26,
+  "fields": {
+    "conversacion": 5,
+    "emisor": [
+      "patricia_lopez"
+    ],
+    "contenido": "Hola Ana, por supuesto. Mañana a las 9 AM estaré ahí. ¿Necesitas que traiga algo especial?",
+    "creado_en": "2025-10-17T02:26:17.407Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 27,
+  "fields": {
+    "conversacion": 5,
+    "emisor": [
+      "ana_martinez"
+    ],
+    "contenido": "Solo necesito ayuda con mi medicación de la mañana. Gracias por tu profesionalismo.",
+    "creado_en": "2025-10-17T02:26:17.413Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 28,
+  "fields": {
+    "conversacion": 5,
+    "emisor": [
+      "patricia_lopez"
+    ],
+    "contenido": "Perfecto, Ana. Nos vemos mañana. Que tengas una buena noche.",
+    "creado_en": "2025-10-17T02:26:17.419Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 29,
+  "fields": {
+    "conversacion": 6,
+    "emisor": [
+      "carlos_rodriguez"
+    ],
+    "contenido": "Jorge, ¿cómo va mi progreso con la rehabilitación?",
+    "creado_en": "2025-10-17T02:26:17.433Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 30,
+  "fields": {
+    "conversacion": 6,
+    "emisor": [
+      "jorge_mendez"
+    ],
+    "contenido": "Hola Carlos, muy bien! Has mejorado mucho la movilidad de la cadera. Seguimos con los ejercicios.",
+    "creado_en": "2025-10-17T02:26:17.440Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 31,
+  "fields": {
+    "conversacion": 6,
+    "emisor": [
+      "carlos_rodriguez"
+    ],
+    "contenido": "Excelente, gracias por tu dedicación. ¿Cuándo es la próxima sesión?",
+    "creado_en": "2025-10-17T02:26:17.446Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 32,
+  "fields": {
+    "conversacion": 6,
+    "emisor": [
+      "jorge_mendez"
+    ],
+    "contenido": "El jueves a las 3 PM. Te confirmo mañana.",
+    "creado_en": "2025-10-17T02:26:17.452Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 33,
+  "fields": {
+    "conversacion": 7,
+    "emisor": [
+      "maria_gonzalez"
+    ],
+    "contenido": "Silvia, mi hijo está muy contento con las actividades que haces. ¿Podrías venir más seguido?",
+    "creado_en": "2025-10-17T02:26:17.463Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 34,
+  "fields": {
+    "conversacion": 7,
+    "emisor": [
+      "silvia_fernandez"
+    ],
+    "contenido": "Me alegra mucho saberlo! Tu hijo es muy especial. Podemos coordinar más sesiones.",
+    "creado_en": "2025-10-17T02:26:17.470Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.mensaje",
+  "pk": 35,
+  "fields": {
+    "conversacion": 7,
+    "emisor": [
+      "maria_gonzalez"
+    ],
+    "contenido": "Perfecto, te escribo para coordinar los horarios.",
+    "creado_en": "2025-10-17T02:26:17.475Z",
+    "leido_por": []
+  }
+},
+{
+  "model": "chat.conversacion",
+  "pk": 3,
+  "fields": {
+    "cliente": [
+      "cliente_demo"
+    ],
+    "cuidador": [
+      "cuidador_demo"
+    ],
+    "creado_en": "2025-09-09T00:54:39.924Z",
+    "actualizado_en": "2025-09-16T01:59:22.857Z"
+  }
+},
+{
+  "model": "chat.conversacion",
+  "pk": 4,
+  "fields": {
+    "cliente": [
+      "cliente_demo2"
+    ],
+    "cuidador": [
+      "cuidador_demo"
+    ],
+    "creado_en": "2025-09-12T16:06:41.908Z",
+    "actualizado_en": "2025-09-12T16:06:45.752Z"
+  }
+},
+{
+  "model": "chat.conversacion",
+  "pk": 5,
+  "fields": {
+    "cliente": [
+      "ana_martinez"
+    ],
+    "cuidador": [
+      "patricia_lopez"
+    ],
+    "creado_en": "2025-10-17T02:26:17.394Z",
+    "actualizado_en": "2025-10-17T02:26:17.394Z"
+  }
+},
+{
+  "model": "chat.conversacion",
+  "pk": 6,
+  "fields": {
+    "cliente": [
+      "carlos_rodriguez"
+    ],
+    "cuidador": [
+      "jorge_mendez"
+    ],
+    "creado_en": "2025-10-17T02:26:17.426Z",
+    "actualizado_en": "2025-10-17T02:26:17.426Z"
+  }
+},
+{
+  "model": "chat.conversacion",
+  "pk": 7,
+  "fields": {
+    "cliente": [
+      "maria_gonzalez"
+    ],
+    "cuidador": [
+      "silvia_fernandez"
+    ],
+    "creado_en": "2025-10-17T02:26:17.458Z",
+    "actualizado_en": "2025-10-17T02:26:17.458Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "13f6cc3231a64bccb3ec1ffde0daf585",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjQzNzk5NywiaWF0IjoxNzU1ODMzMTk3LCJqdGkiOiIxM2Y2Y2MzMjMxYTY0YmNjYjNlYzFmZmRlMGRhZjU4NSIsInVzZXJfaWQiOjN9.PJp2_y50r6Cmr5gJ1Y0GxOStkqN_JZo4ubyMnlqBl8g",
+    "created_at": "2025-08-22T03:26:37.351Z",
+    "expires_at": "2025-08-29T03:26:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c097a117fb144ed585b51832a241b40b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjU5ODY4NiwiaWF0IjoxNzU1OTkzODg2LCJqdGkiOiJjMDk3YTExN2ZiMTQ0ZWQ1ODViNTE4MzJhMjQxYjQwYiIsInVzZXJfaWQiOjN9.zJXmhEU9gx9v_vbigcluuzTpnIQWAOpGEa1qv6hfuT8",
+    "created_at": "2025-08-24T00:04:46.212Z",
+    "expires_at": "2025-08-31T00:04:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c9933aa46751462fbba8eee2d4136177",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjYwMDUzNywiaWF0IjoxNzU1OTk1NzM3LCJqdGkiOiJjOTkzM2FhNDY3NTE0NjJmYmJhOGVlZTJkNDEzNjE3NyIsInVzZXJfaWQiOjN9.1RLSairabYd0fau0locx-PR54FvH8N229rlMDoJZmk0",
+    "created_at": "2025-08-24T00:35:37.316Z",
+    "expires_at": "2025-08-31T00:35:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "0d78fd6bc3f04d228c053d5c81d4a210",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjY4MDY4MSwiaWF0IjoxNzU2MDc1ODgxLCJqdGkiOiIwZDc4ZmQ2YmMzZjA0ZDIyOGMwNTNkNWM4MWQ0YTIxMCIsInVzZXJfaWQiOjN9.V-6qVKGFbsdRY20WYE2FfVxwOTPWOxZoUYvUo3mIqs8",
+    "created_at": "2025-08-24T22:51:21.371Z",
+    "expires_at": "2025-08-31T22:51:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e3e9d17dcef94d56ab4b7bdd4325603a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjY4MjYxNSwiaWF0IjoxNzU2MDc3ODE1LCJqdGkiOiJlM2U5ZDE3ZGNlZjk0ZDU2YWI0YjdiZGQ0MzI1NjAzYSIsInVzZXJfaWQiOjN9.8UFFWvNWzYgs--_AHEVIXnXCcbSXNzOkGXcoNJzMp18",
+    "created_at": "2025-08-24T23:23:35.516Z",
+    "expires_at": "2025-08-31T23:23:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "cb2530e9da28411aa8c2ad79468a2f05",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjY4NDQ0NCwiaWF0IjoxNzU2MDc5NjQ0LCJqdGkiOiJjYjI1MzBlOWRhMjg0MTFhYThjMmFkNzk0NjhhMmYwNSIsInVzZXJfaWQiOjN9.A7rfHCJvQS622dr9L2vARLrLXeYtG7GlJeJ0vw3A5Co",
+    "created_at": "2025-08-24T23:54:04.826Z",
+    "expires_at": "2025-08-31T23:54:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "0d87ec7a82474fbaa3056d28b22327cd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg1NTIwOSwiaWF0IjoxNzU2MjUwNDA5LCJqdGkiOiIwZDg3ZWM3YTgyNDc0ZmJhYTMwNTZkMjhiMjIzMjdjZCIsInVzZXJfaWQiOjN9.9Lhbd62lvX45Rz__Xp0GZeFGwiWkVM2KTibHFdFv8Fo",
+    "created_at": "2025-08-26T23:20:09.206Z",
+    "expires_at": "2025-09-02T23:20:09Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "5f145b5bf33a4cdb951b87dcdac4d11a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg1ODAzOCwiaWF0IjoxNzU2MjUzMjM4LCJqdGkiOiI1ZjE0NWI1YmYzM2E0Y2RiOTUxYjg3ZGNkYWM0ZDExYSIsInVzZXJfaWQiOjN9.ns5HXz-HidgRnAhjF47I9G3_wecxQxQ-G4ZC0h9R1cE",
+    "created_at": "2025-08-27T00:07:18.552Z",
+    "expires_at": "2025-09-03T00:07:18Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "acfeb52a092d49c2bba6a18ded106086",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg2MDE3NywiaWF0IjoxNzU2MjU1Mzc3LCJqdGkiOiJhY2ZlYjUyYTA5MmQ0OWMyYmJhNmExOGRlZDEwNjA4NiIsInVzZXJfaWQiOjN9.GJm1btOWnMlrknmAdbJp1ldiosSx40xdI9X1YIyfkSU",
+    "created_at": "2025-08-27T00:42:57.300Z",
+    "expires_at": "2025-09-03T00:42:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "0bf21b6c6ef54796a6ec1d6595adeb73",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg2Mjk2NiwiaWF0IjoxNzU2MjU4MTY2LCJqdGkiOiIwYmYyMWI2YzZlZjU0Nzk2YTZlYzFkNjU5NWFkZWI3MyIsInVzZXJfaWQiOjN9.VmcsU9stytrJPRUFx6Nofid20gKlcQa7C_2DJteMoMI",
+    "created_at": "2025-08-27T01:29:26.346Z",
+    "expires_at": "2025-09-03T01:29:26Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "dffc4fde16e64c90909a76647f3ade15",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg2NDgzMywiaWF0IjoxNzU2MjYwMDMzLCJqdGkiOiJkZmZjNGZkZTE2ZTY0YzkwOTA5YTc2NjQ3ZjNhZGUxNSIsInVzZXJfaWQiOjN9.HHVgVrRfJZHjVnBvKblgQeJLu2I1p76qNVkqiykl55k",
+    "created_at": "2025-08-27T02:00:33.109Z",
+    "expires_at": "2025-09-03T02:00:33Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "2123f7087fb94197ac06e4f9841cf8e4",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg2Njg3MiwiaWF0IjoxNzU2MjYyMDcyLCJqdGkiOiIyMTIzZjcwODdmYjk0MTk3YWMwNmU0Zjk4NDFjZjhlNCIsInVzZXJfaWQiOjN9.hapHYmMmNcKKX1vexKsw9n2qa-bBCJ_gS2ukltji52M",
+    "created_at": "2025-08-27T02:34:32.060Z",
+    "expires_at": "2025-09-03T02:34:32Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "2d75e268ebf84987a72f9655f8ea83ed",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Njg2ODg5NywiaWF0IjoxNzU2MjY0MDk3LCJqdGkiOiIyZDc1ZTI2OGViZjg0OTg3YTcyZjk2NTVmOGVhODNlZCIsInVzZXJfaWQiOjN9.7uoLhzp_kJrU6wgWJpy-JrEt2xz7VsW0smXQ6Al6x-4",
+    "created_at": "2025-08-27T03:08:17.172Z",
+    "expires_at": "2025-09-03T03:08:17Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "d3f60d42ea3247febf03409ae1b0908e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzA5NjgwMSwiaWF0IjoxNzU2NDkyMDAxLCJqdGkiOiJkM2Y2MGQ0MmVhMzI0N2ZlYmYwMzQwOWFlMWIwOTA4ZSIsInVzZXJfaWQiOjN9.cLUHvTc3hU0taqEHQL8Yw9gI_5Muv4x0BEOPRKqtJXg",
+    "created_at": "2025-08-29T18:26:41.020Z",
+    "expires_at": "2025-09-05T18:26:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "3099756a3d5f4c049b4729e2714e0b63",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzA5ODA1MCwiaWF0IjoxNzU2NDkzMjUwLCJqdGkiOiIzMDk5NzU2YTNkNWY0YzA0OWI0NzI5ZTI3MTRlMGI2MyIsInVzZXJfaWQiOjN9.gixrB3hV4X1eJ8P9fn5t_ps8tfW0VJW1TGtJH_ajzPE",
+    "created_at": "2025-08-29T18:47:30.231Z",
+    "expires_at": "2025-09-05T18:47:30Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 16,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "0ca80dde5d5c4f85855da444c8c349e7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2NzEwMCwiaWF0IjoxNzU2ODYyMzAwLCJqdGkiOiIwY2E4MGRkZTVkNWM0Zjg1ODU1ZGE0NDRjOGMzNDllNyIsInVzZXJfaWQiOjN9.5v28GlcAf4DyNG6JAdf-NGNSTdhY04fZXbo5Y5_Pgek",
+    "created_at": "2025-09-03T01:18:20.854Z",
+    "expires_at": "2025-09-10T01:18:20Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 17,
+  "fields": {
+    "user": null,
+    "jti": "7aefcc93ebe24573bfe5ea18e5140af7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2NzU1NCwiaWF0IjoxNzU2ODYyNzU0LCJqdGkiOiI3YWVmY2M5M2ViZTI0NTczYmZlNWVhMThlNTE0MGFmNyIsInVzZXJfaWQiOjd9.RKlwRxHw3rTOAvpfQraMDF__qe_nKnQLjz549y0_gts",
+    "created_at": "2025-09-03T01:25:54.515Z",
+    "expires_at": "2025-09-10T01:25:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 18,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "19bd3fc17978405aa04d9ab05e3feba2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2NzcyMSwiaWF0IjoxNzU2ODYyOTIxLCJqdGkiOiIxOWJkM2ZjMTc5Nzg0MDVhYTA0ZDlhYjA1ZTNmZWJhMiIsInVzZXJfaWQiOjN9.5KxRgsTP311EOHFNJWMhYVQ-9NAct6cjzRGk3Bjpp6o",
+    "created_at": "2025-09-03T01:28:41.785Z",
+    "expires_at": "2025-09-10T01:28:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 19,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e401c65c561d4eda855d95d7ec451d79",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2Nzc0NSwiaWF0IjoxNzU2ODYyOTQ1LCJqdGkiOiJlNDAxYzY1YzU2MWQ0ZWRhODU1ZDk1ZDdlYzQ1MWQ3OSIsInVzZXJfaWQiOjN9.bzg-Y4GNG03ayfqHgXIITU1StUPCOFUdGvvDPUp3DJY",
+    "created_at": "2025-09-03T01:29:05.830Z",
+    "expires_at": "2025-09-10T01:29:05Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 20,
+  "fields": {
+    "user": null,
+    "jti": "7b38cc9dd5b94b73952399cfdc032e6a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2Nzc1MywiaWF0IjoxNzU2ODYyOTUzLCJqdGkiOiI3YjM4Y2M5ZGQ1Yjk0YjczOTUyMzk5Y2ZkYzAzMmU2YSIsInVzZXJfaWQiOjd9.7FR74BHfXA8bgr6MTp5hK4A1r7sb3VyVAiPgq955tsE",
+    "created_at": "2025-09-03T01:29:13.042Z",
+    "expires_at": "2025-09-10T01:29:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 21,
+  "fields": {
+    "user": null,
+    "jti": "e39f1e4aed704228a34762bd0eb5706c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2Nzc4NiwiaWF0IjoxNzU2ODYyOTg2LCJqdGkiOiJlMzlmMWU0YWVkNzA0MjI4YTM0NzYyYmQwZWI1NzA2YyIsInVzZXJfaWQiOjd9.VMBF1CbpaLXJn6BRHs87X_11MgFlZV42JTB6xC2F9Zo",
+    "created_at": "2025-09-03T01:29:46.672Z",
+    "expires_at": "2025-09-10T01:29:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 22,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b2d1a792e72843959e3e7b0ae534ef5d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2Nzc5MSwiaWF0IjoxNzU2ODYyOTkxLCJqdGkiOiJiMmQxYTc5MmU3Mjg0Mzk1OWUzZTdiMGFlNTM0ZWY1ZCIsInVzZXJfaWQiOjN9.GXfWLrewh73QaPOGMziD31fLF-bFAG186Nm609nD5xA",
+    "created_at": "2025-09-03T01:29:51.063Z",
+    "expires_at": "2025-09-10T01:29:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 23,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e1556f53bd224c23a2430658d5c66427",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2NzkzMSwiaWF0IjoxNzU2ODYzMTMxLCJqdGkiOiJlMTU1NmY1M2JkMjI0YzIzYTI0MzA2NThkNWM2NjQyNyIsInVzZXJfaWQiOjN9.CrAh50n_22DY087q4cCJQTKrC3EaWStj4Z0qB7BHf0s",
+    "created_at": "2025-09-03T01:32:11.557Z",
+    "expires_at": "2025-09-10T01:32:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 24,
+  "fields": {
+    "user": null,
+    "jti": "9a2e26a9ce5642b2ac7249bfb7c71699",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2ODI2NywiaWF0IjoxNzU2ODYzNDY3LCJqdGkiOiI5YTJlMjZhOWNlNTY0MmIyYWM3MjQ5YmZiN2M3MTY5OSIsInVzZXJfaWQiOjd9.LvirP6UA4Bh8QJdTBCUWkwXNs6mgbKx0EVabpQ9psR4",
+    "created_at": "2025-09-03T01:37:47.896Z",
+    "expires_at": "2025-09-10T01:37:47Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 25,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b9451b37a5364375a5caf487c49914f8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2ODM0MCwiaWF0IjoxNzU2ODYzNTQwLCJqdGkiOiJiOTQ1MWIzN2E1MzY0Mzc1YTVjYWY0ODdjNDk5MTRmOCIsInVzZXJfaWQiOjN9.cOWZ4e6bRtXM3pmC2O7-TrP7qLJOKogd4JcG3f1KaUU",
+    "created_at": "2025-09-03T01:39:00.235Z",
+    "expires_at": "2025-09-10T01:39:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 26,
+  "fields": {
+    "user": null,
+    "jti": "208e11e55aa8467aa4690719b6eee3c7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2ODM1NCwiaWF0IjoxNzU2ODYzNTU0LCJqdGkiOiIyMDhlMTFlNTVhYTg0NjdhYTQ2OTA3MTliNmVlZTNjNyIsInVzZXJfaWQiOjd9.erp0zf63RMDYqUPWdhVb1hULPb5UBd0D2fTn7d8DwRY",
+    "created_at": "2025-09-03T01:39:14.339Z",
+    "expires_at": "2025-09-10T01:39:14Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 27,
+  "fields": {
+    "user": null,
+    "jti": "539ba478546a48dfa8cc383294359c33",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ2ODUwOCwiaWF0IjoxNzU2ODYzNzA4LCJqdGkiOiI1MzliYTQ3ODU0NmE0OGRmYThjYzM4MzI5NDM1OWMzMyIsInVzZXJfaWQiOjd9.wLb8m1D_OjglxNB3YBdW4tT27RIr4eKyuV2P_Q8l_OQ",
+    "created_at": "2025-09-03T01:41:48.213Z",
+    "expires_at": "2025-09-10T01:41:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 28,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "5eb60689c3074011a7535275bd150426",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3MTYzOSwiaWF0IjoxNzU2ODY2ODM5LCJqdGkiOiI1ZWI2MDY4OWMzMDc0MDExYTc1MzUyNzViZDE1MDQyNiIsInVzZXJfaWQiOjN9.y8zECDuIlNWL0Jagt1Jz_pNE9C_JMdUDr4YaLlcmIVA",
+    "created_at": "2025-09-03T02:33:59.580Z",
+    "expires_at": "2025-09-10T02:33:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 29,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "09c5ca6f0d5d4bac8ed26af690df7866",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3MTY0NCwiaWF0IjoxNzU2ODY2ODQ0LCJqdGkiOiIwOWM1Y2E2ZjBkNWQ0YmFjOGVkMjZhZjY5MGRmNzg2NiIsInVzZXJfaWQiOjN9.F4fRrvky1QwYupQx8fdt3sd5qdK49Kq0Ko6ApJrlXaE",
+    "created_at": "2025-09-03T02:34:04.263Z",
+    "expires_at": "2025-09-10T02:34:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 30,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "9db29eaf0c4140c5b9c465f773fa9700",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3NTY1OSwiaWF0IjoxNzU2ODcwODU5LCJqdGkiOiI5ZGIyOWVhZjBjNDE0MGM1YjljNDY1Zjc3M2ZhOTcwMCIsInVzZXJfaWQiOjN9.niSXfIwsvawX6xV8tT3oN7WojqjSHq7f5xlinWKxXFY",
+    "created_at": "2025-09-03T03:40:59.907Z",
+    "expires_at": "2025-09-10T03:40:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 31,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "1fc9e9e006cb4f2d841d84e4090e1548",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3NTY2NCwiaWF0IjoxNzU2ODcwODY0LCJqdGkiOiIxZmM5ZTllMDA2Y2I0ZjJkODQxZDg0ZTQwOTBlMTU0OCIsInVzZXJfaWQiOjN9.NwIIup2LxdiraIQ3U6qY3vyJ7j_uitBr-p7NAquAE4g",
+    "created_at": "2025-09-03T03:41:04.219Z",
+    "expires_at": "2025-09-10T03:41:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 32,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "f38e4781bf9f497f90ce1ec643614567",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3NTk1MywiaWF0IjoxNzU2ODcxMTUzLCJqdGkiOiJmMzhlNDc4MWJmOWY0OTdmOTBjZTFlYzY0MzYxNDU2NyIsInVzZXJfaWQiOjN9.e-uCBuHCOfq_zOFtq35zrEl8FC5JcridjFBax1hzcEI",
+    "created_at": "2025-09-03T03:45:53.499Z",
+    "expires_at": "2025-09-10T03:45:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 33,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "abae015257224090897c7a4316b8525d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3NTk4MSwiaWF0IjoxNzU2ODcxMTgxLCJqdGkiOiJhYmFlMDE1MjU3MjI0MDkwODk3YzdhNDMxNmI4NTI1ZCIsInVzZXJfaWQiOjN9.-rrzoG3UkloNMZ7cfF6JTyH4X3scGEjArpzt3_uFviU",
+    "created_at": "2025-09-03T03:46:21.599Z",
+    "expires_at": "2025-09-10T03:46:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 34,
+  "fields": {
+    "user": null,
+    "jti": "e48b05aa830c445a970ac24f4ee91637",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzQ3NjA2NCwiaWF0IjoxNzU2ODcxMjY0LCJqdGkiOiJlNDhiMDVhYTgzMGM0NDVhOTcwYWMyNGY0ZWU5MTYzNyIsInVzZXJfaWQiOjd9.kQsQ4PbVxj1x-ofWbn4JIe_hEm42-GOLXfJZPnUjNhg",
+    "created_at": "2025-09-03T03:47:44.427Z",
+    "expires_at": "2025-09-10T03:47:44Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 35,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b7f6b8f7106b43c1bcdc5d893f37f1c2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzcxOTk4MCwiaWF0IjoxNzU3MTE1MTgwLCJqdGkiOiJiN2Y2YjhmNzEwNmI0M2MxYmNkYzVkODkzZjM3ZjFjMiIsInVzZXJfaWQiOjN9.KjwfnXu1CjdBg5UpKaXew8Ja70T8G6E1IIKzbuscL-4",
+    "created_at": "2025-09-05T23:33:00.835Z",
+    "expires_at": "2025-09-12T23:33:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 36,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e46ce83af2fc404aa19664b45a550229",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzcyMzYwNiwiaWF0IjoxNzU3MTE4ODA2LCJqdGkiOiJlNDZjZTgzYWYyZmM0MDRhYTE5NjY0YjQ1YTU1MDIyOSIsInVzZXJfaWQiOjN9.opLd3I2OthJGWZvWeNOCGhwwAhx857Yr5LBxpTSouOI",
+    "created_at": "2025-09-06T00:33:26.246Z",
+    "expires_at": "2025-09-13T00:33:26Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 37,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "1621d7e8314c4e2b8c14a9c4b1cf33a5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzcyNDY3MiwiaWF0IjoxNzU3MTE5ODcyLCJqdGkiOiIxNjIxZDdlODMxNGM0ZTJiOGMxNGE5YzRiMWNmMzNhNSIsInVzZXJfaWQiOjN9.RWtGsEC91fXc0Tkk7AuFVOgXyg7BJldmeKWBEfc_RhU",
+    "created_at": "2025-09-06T00:51:12.735Z",
+    "expires_at": "2025-09-13T00:51:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 38,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "1c797997aed24336a48b49907efd35d0",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzcyNjI1MSwiaWF0IjoxNzU3MTIxNDUxLCJqdGkiOiIxYzc5Nzk5N2FlZDI0MzM2YTQ4YjQ5OTA3ZWZkMzVkMCIsInVzZXJfaWQiOjJ9.WgiJFbmtaSb8wIYjnWjBLhvPsBMJJY2woLe2x6j8NFA",
+    "created_at": "2025-09-06T01:17:31.001Z",
+    "expires_at": "2025-09-13T01:17:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 39,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d2bce5aeefdf4a80ba32fb363e052de7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5MjI1NywiaWF0IjoxNzU3MTg3NDU3LCJqdGkiOiJkMmJjZTVhZWVmZGY0YTgwYmEzMmZiMzYzZTA1MmRlNyIsInVzZXJfaWQiOjJ9.7GkurWGwFEpnlA1jrBPBuiL17fLyLOnDwuvn8nodnZA",
+    "created_at": "2025-09-06T19:37:37.728Z",
+    "expires_at": "2025-09-13T19:37:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 40,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c0c1432509124ef08699edb9321a0862",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5Mjc4OCwiaWF0IjoxNzU3MTg3OTg4LCJqdGkiOiJjMGMxNDMyNTA5MTI0ZWYwODY5OWVkYjkzMjFhMDg2MiIsInVzZXJfaWQiOjN9.TXpOXe57UiuXW91y0WORcJ-p4Ttu9ypcY4MAm6nwMB0",
+    "created_at": "2025-09-06T19:46:28.843Z",
+    "expires_at": "2025-09-13T19:46:28Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 41,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "bb4ebe67fb714d8db493cdf7bd33c28c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5MzY3NSwiaWF0IjoxNzU3MTg4ODc1LCJqdGkiOiJiYjRlYmU2N2ZiNzE0ZDhkYjQ5M2NkZjdiZDMzYzI4YyIsInVzZXJfaWQiOjN9.ZnqtY-RA1ESKCnKHn3ADKl3-Ta1aVzeXf4qUYQpJ_C0",
+    "created_at": "2025-09-06T20:01:15.150Z",
+    "expires_at": "2025-09-13T20:01:15Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 42,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "e03e9bdb18f947dd9d08ed6bbfad3bbe",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5MzY4MCwiaWF0IjoxNzU3MTg4ODgwLCJqdGkiOiJlMDNlOWJkYjE4Zjk0N2RkOWQwOGVkNmJiZmFkM2JiZSIsInVzZXJfaWQiOjJ9.WJWClpwQ_ZxwIayyRYBqohpZKy3v_-yVxgaheZ6EFgw",
+    "created_at": "2025-09-06T20:01:20.908Z",
+    "expires_at": "2025-09-13T20:01:20Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 43,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d8d18f785dca43d49c5028d48bd984c5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5NjY5MiwiaWF0IjoxNzU3MTkxODkyLCJqdGkiOiJkOGQxOGY3ODVkY2E0M2Q0OWM1MDI4ZDQ4YmQ5ODRjNSIsInVzZXJfaWQiOjJ9.Bf26JqojRY61DEBd8veSuzpwvvjS3yM64cqfA9UggQI",
+    "created_at": "2025-09-06T20:51:32.643Z",
+    "expires_at": "2025-09-13T20:51:32Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 44,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "d22134a570a74245b1e51703becac4c9",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5Njk3OSwiaWF0IjoxNzU3MTkyMTc5LCJqdGkiOiJkMjIxMzRhNTcwYTc0MjQ1YjFlNTE3MDNiZWNhYzRjOSIsInVzZXJfaWQiOjN9.yIt9OxTKD-ESsF_I7MkLYU0LmAZcVBDSfYgMGf5hOmE",
+    "created_at": "2025-09-06T20:56:19.215Z",
+    "expires_at": "2025-09-13T20:56:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 45,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "9f566128425c45029ac6955bf4924f3b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5NzAxNywiaWF0IjoxNzU3MTkyMjE3LCJqdGkiOiI5ZjU2NjEyODQyNWM0NTAyOWFjNjk1NWJmNDkyNGYzYiIsInVzZXJfaWQiOjJ9.vs_ZxQRWlEHwevIsebSWJeKUjuCQ-mEeQY_6BbFlcWM",
+    "created_at": "2025-09-06T20:56:57.280Z",
+    "expires_at": "2025-09-13T20:56:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 46,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e87bf4b9a0bc49418d031cb8f89beef7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzc5ODU4NCwiaWF0IjoxNzU3MTkzNzg0LCJqdGkiOiJlODdiZjRiOWEwYmM0OTQxOGQwMzFjYjhmODliZWVmNyIsInVzZXJfaWQiOjN9.G1zc6mJoVN1y13A13qL7qVUSOCl-IQTVJ3IPL65hPxg",
+    "created_at": "2025-09-06T21:23:04.596Z",
+    "expires_at": "2025-09-13T21:23:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 47,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "188f4f1805b345c7a8e94f8a507c9988",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwMzk1OSwiaWF0IjoxNzU3MTk5MTU5LCJqdGkiOiIxODhmNGYxODA1YjM0NWM3YThlOTRmOGE1MDdjOTk4OCIsInVzZXJfaWQiOjN9.ZJTf3Hh5nua81dZe8MBzxXKIqicNsOk-dFbsYBN3wRs",
+    "created_at": "2025-09-06T22:52:39.677Z",
+    "expires_at": "2025-09-13T22:52:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 48,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "327f2545286c42d38111a35215a6d4f3",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNDIzNywiaWF0IjoxNzU3MTk5NDM3LCJqdGkiOiIzMjdmMjU0NTI4NmM0MmQzODExMWEzNTIxNWE2ZDRmMyIsInVzZXJfaWQiOjJ9.BSAlkfQ4RTWhp95qXQNB6JCgdzJ68jQZCsG0jP-Iwm4",
+    "created_at": "2025-09-06T22:57:17.587Z",
+    "expires_at": "2025-09-13T22:57:17Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 49,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "20d0e6b320cc420d9da5cc155218d746",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjU1MSwiaWF0IjoxNzU3MjAxNzUxLCJqdGkiOiIyMGQwZTZiMzIwY2M0MjBkOWRhNWNjMTU1MjE4ZDc0NiIsInVzZXJfaWQiOjJ9.jwQ62p1CDMJp2bkaCUvsggZIw9sBs1m0H2aXh_a6l00",
+    "created_at": "2025-09-06T23:35:51.097Z",
+    "expires_at": "2025-09-13T23:35:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 50,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "ad268a47ba2f4c43be95db17d14288dc",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjU3MiwiaWF0IjoxNzU3MjAxNzcyLCJqdGkiOiJhZDI2OGE0N2JhMmY0YzQzYmU5NWRiMTdkMTQyODhkYyIsInVzZXJfaWQiOjJ9.S67bKDwUx16HSUuNOGdbqSF8ZdcGjRbrltAxw1L_axs",
+    "created_at": "2025-09-06T23:36:12.709Z",
+    "expires_at": "2025-09-13T23:36:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 51,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "6f1e0e06e01d4d6c8ceab8b159e27fb1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjYwNSwiaWF0IjoxNzU3MjAxODA1LCJqdGkiOiI2ZjFlMGUwNmUwMWQ0ZDZjOGNlYWI4YjE1OWUyN2ZiMSIsInVzZXJfaWQiOjN9.n1LNdfc1oXi3QdiSGUcXf-bBRpCDbbeupWRdf8RLCS8",
+    "created_at": "2025-09-06T23:36:45.543Z",
+    "expires_at": "2025-09-13T23:36:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 52,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "c2bc05e4474544aa9c956c4e163c0577",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjcxNiwiaWF0IjoxNzU3MjAxOTE2LCJqdGkiOiJjMmJjMDVlNDQ3NDU0NGFhOWM5NTZjNGUxNjNjMDU3NyIsInVzZXJfaWQiOjJ9.X14IyuypG1A8vK7uQMmYMZBXXtnC9OCOwqtuZQP0Hcs",
+    "created_at": "2025-09-06T23:38:36.330Z",
+    "expires_at": "2025-09-13T23:38:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 53,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "6c743483a0f04bff88ed308bc681616c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjc2MywiaWF0IjoxNzU3MjAxOTYzLCJqdGkiOiI2Yzc0MzQ4M2EwZjA0YmZmODhlZDMwOGJjNjgxNjE2YyIsInVzZXJfaWQiOjN9.eGOtTttWmEgg0XiRylFFmVvW3l9n0VgPeUFE_qZt-Go",
+    "created_at": "2025-09-06T23:39:23.930Z",
+    "expires_at": "2025-09-13T23:39:23Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 54,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "69c576b5e21d42f5ab360456848bfce2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjkxNCwiaWF0IjoxNzU3MjAyMTE0LCJqdGkiOiI2OWM1NzZiNWUyMWQ0MmY1YWIzNjA0NTY4NDhiZmNlMiIsInVzZXJfaWQiOjJ9.P7WNgV3_WuzBBl2YDoZIXcwtUyDPvZm4gMg4RXqfp_s",
+    "created_at": "2025-09-06T23:41:54.393Z",
+    "expires_at": "2025-09-13T23:41:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 55,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "bbeabf76787648139c76a33ed683008e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNjk2MCwiaWF0IjoxNzU3MjAyMTYwLCJqdGkiOiJiYmVhYmY3Njc4NzY0ODEzOWM3NmEzM2VkNjgzMDA4ZSIsInVzZXJfaWQiOjJ9.bLO2ClsB7Gx8AeT8zH1eYHyfX8LK0cQpPFKJqnnRoG4",
+    "created_at": "2025-09-06T23:42:40.175Z",
+    "expires_at": "2025-09-13T23:42:40Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 56,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b628e52a832749eda27dcd7cf402c461",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzA5NCwiaWF0IjoxNzU3MjAyMjk0LCJqdGkiOiJiNjI4ZTUyYTgzMjc0OWVkYTI3ZGNkN2NmNDAyYzQ2MSIsInVzZXJfaWQiOjN9.s3o5CPXxytOjp9jwVf-GdXrCDZuJUR3uYXL9Q1YUhVQ",
+    "created_at": "2025-09-06T23:44:54.869Z",
+    "expires_at": "2025-09-13T23:44:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 57,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "ef743472b9e74c219de55877ebb978de",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzI3MSwiaWF0IjoxNzU3MjAyNDcxLCJqdGkiOiJlZjc0MzQ3MmI5ZTc0YzIxOWRlNTU4NzdlYmI5NzhkZSIsInVzZXJfaWQiOjJ9.rfbkxsWle6tYlaAcRjoC2JzcsA_Zs-8tP8Lq0bsXc4k",
+    "created_at": "2025-09-06T23:47:51.437Z",
+    "expires_at": "2025-09-13T23:47:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 58,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "eafb5c8cfd20405ab60bbc4de725ba0c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzQ4NCwiaWF0IjoxNzU3MjAyNjg0LCJqdGkiOiJlYWZiNWM4Y2ZkMjA0MDVhYjYwYmJjNGRlNzI1YmEwYyIsInVzZXJfaWQiOjN9.6vyANZaoHm0eBwaxqxzIQzNxUymYV_1oEeYQtRdOQ9I",
+    "created_at": "2025-09-06T23:51:24.225Z",
+    "expires_at": "2025-09-13T23:51:24Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 59,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "72e72992c0a34813874f82b760ab7112",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzQ5NSwiaWF0IjoxNzU3MjAyNjk1LCJqdGkiOiI3MmU3Mjk5MmMwYTM0ODEzODc0ZjgyYjc2MGFiNzExMiIsInVzZXJfaWQiOjN9.w-vUbzcTHuZRoOIxkMkuo9Pv4lt9ESUCosLsGjsaP_Y",
+    "created_at": "2025-09-06T23:51:35.359Z",
+    "expires_at": "2025-09-13T23:51:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 60,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "eddbe0fccf9e49d7a17a724d2bed7083",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzU0NiwiaWF0IjoxNzU3MjAyNzQ2LCJqdGkiOiJlZGRiZTBmY2NmOWU0OWQ3YTE3YTcyNGQyYmVkNzA4MyIsInVzZXJfaWQiOjJ9.dDyKwfBY_Jcu9EbV216quSyWMn_mYH7r8F0rP4ArGqw",
+    "created_at": "2025-09-06T23:52:26.893Z",
+    "expires_at": "2025-09-13T23:52:26Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 61,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7cb6a3830dda49d58cca1460f8ac2e68",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzU3MywiaWF0IjoxNzU3MjAyNzczLCJqdGkiOiI3Y2I2YTM4MzBkZGE0OWQ1OGNjYTE0NjBmOGFjMmU2OCIsInVzZXJfaWQiOjJ9.5Ou-R3fhTSq7-b4xrUZvgcjC9jtDKo_0U_NdN0Yg4h8",
+    "created_at": "2025-09-06T23:52:53.045Z",
+    "expires_at": "2025-09-13T23:52:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 62,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "92276d757b5c4e1a818409401f28d923",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwNzcxOSwiaWF0IjoxNzU3MjAyOTE5LCJqdGkiOiI5MjI3NmQ3NTdiNWM0ZTFhODE4NDA5NDAxZjI4ZDkyMyIsInVzZXJfaWQiOjN9.h_nETJ7HESzdCe_pPrTURsZVBxaWxVPFhBpm1NeSjkA",
+    "created_at": "2025-09-06T23:55:19.326Z",
+    "expires_at": "2025-09-13T23:55:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 63,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "35f9892ea9fa41f5a36cc9e3c55a57ff",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwODA4NiwiaWF0IjoxNzU3MjAzMjg2LCJqdGkiOiIzNWY5ODkyZWE5ZmE0MWY1YTM2Y2M5ZTNjNTVhNTdmZiIsInVzZXJfaWQiOjN9.WfA8CFQJLKU_XlGSdbOcF_vfZI1_fON3hdeEAh0cOcY",
+    "created_at": "2025-09-07T00:01:26.730Z",
+    "expires_at": "2025-09-14T00:01:26Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 64,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "a576d276999141328676c669d812b444",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NzgwODY1OSwiaWF0IjoxNzU3MjAzODU5LCJqdGkiOiJhNTc2ZDI3Njk5OTE0MTMyODY3NmM2NjlkODEyYjQ0NCIsInVzZXJfaWQiOjN9.W2u3W5OzneAKtO8x7S7spUydgitwWKq8eHhPFvtcI-A",
+    "created_at": "2025-09-07T00:10:59.778Z",
+    "expires_at": "2025-09-14T00:10:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 65,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "4ce0cd17fc3b41d6af94b3bae59af9d1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4MzU3MSwiaWF0IjoxNzU3Mzc4NzcxLCJqdGkiOiI0Y2UwY2QxN2ZjM2I0MWQ2YWY5NGIzYmFlNTlhZjlkMSIsInVzZXJfaWQiOjN9.wDklDC-7tiW-HnMOdoXoTKJzA2NdxwyI30ufZzRtQPM",
+    "created_at": "2025-09-09T00:46:11.911Z",
+    "expires_at": "2025-09-16T00:46:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 66,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "aec5999a3fa64f05bc05562dd91105e8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NDU2MSwiaWF0IjoxNzU3Mzc5NzYxLCJqdGkiOiJhZWM1OTk5YTNmYTY0ZjA1YmMwNTU2MmRkOTExMDVlOCIsInVzZXJfaWQiOjJ9.gInVd0xjOmDbU955jAxXUrAjIemt5ZMhJdePItKVk_s",
+    "created_at": "2025-09-09T01:02:41.294Z",
+    "expires_at": "2025-09-16T01:02:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 67,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e6d84c58965941ddb678c675d3fd05f8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NDk2MSwiaWF0IjoxNzU3MzgwMTYxLCJqdGkiOiJlNmQ4NGM1ODk2NTk0MWRkYjY3OGM2NzVkM2ZkMDVmOCIsInVzZXJfaWQiOjN9.-ukwwCeC7dETqB8E5d9uVLZV4Ll9LOd2raTWufRMfXQ",
+    "created_at": "2025-09-09T01:09:21.947Z",
+    "expires_at": "2025-09-16T01:09:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 68,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7806d98b57eb478a930b19b3ca1bfc76",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NDk4OCwiaWF0IjoxNzU3MzgwMTg4LCJqdGkiOiI3ODA2ZDk4YjU3ZWI0NzhhOTMwYjE5YjNjYTFiZmM3NiIsInVzZXJfaWQiOjJ9.xuekMt_5RIjzC5qMNUsDayxZvhAmDooqsxgUnbO96e4",
+    "created_at": "2025-09-09T01:09:48.852Z",
+    "expires_at": "2025-09-16T01:09:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 69,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "59f025136fc64808a530d730316f3902",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NTEyMCwiaWF0IjoxNzU3MzgwMzIwLCJqdGkiOiI1OWYwMjUxMzZmYzY0ODA4YTUzMGQ3MzAzMTZmMzkwMiIsInVzZXJfaWQiOjN9.lBnfJaNXy4_ZeK1783Dds6Foa2vGo4bow5AuknYNMH0",
+    "created_at": "2025-09-09T01:12:00.847Z",
+    "expires_at": "2025-09-16T01:12:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 70,
+  "fields": {
+    "user": [
+      "cliente_demo2"
+    ],
+    "jti": "be521b75be054ebfb7dbf9e6708a0d51",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NTE1MiwiaWF0IjoxNzU3MzgwMzUyLCJqdGkiOiJiZTUyMWI3NWJlMDU0ZWJmYjdkYmY5ZTY3MDhhMGQ1MSIsInVzZXJfaWQiOjR9.xmsofz_kwdKT5E15v7f1TJMXBm9WQTLCSV42aJq1lzw",
+    "created_at": "2025-09-09T01:12:32.387Z",
+    "expires_at": "2025-09-16T01:12:32Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 71,
+  "fields": {
+    "user": [
+      "cuidador_demo2"
+    ],
+    "jti": "9b7a5078599b41eb955980c792d45449",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NTE2NSwiaWF0IjoxNzU3MzgwMzY1LCJqdGkiOiI5YjdhNTA3ODU5OWI0MWViOTU1OTgwYzc5MmQ0NTQ0OSIsInVzZXJfaWQiOjV9.xFLBtTyFVkXX24UGsRg8c1cZz0osqbf0ibWz-YBhXTw",
+    "created_at": "2025-09-09T01:12:45.749Z",
+    "expires_at": "2025-09-16T01:12:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 72,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "190ae1eba21942aa83a68f813efc9c21",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NjM2OCwiaWF0IjoxNzU3MzgxNTY4LCJqdGkiOiIxOTBhZTFlYmEyMTk0MmFhODNhNjhmODEzZWZjOWMyMSIsInVzZXJfaWQiOjN9.5dsAqRjZEA6PLbjbguNHuEnvlFCYePMWVghRQVotysk",
+    "created_at": "2025-09-09T01:32:48.472Z",
+    "expires_at": "2025-09-16T01:32:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 73,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f8c24244e3fc4e9d9d3f087261145f92",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1Nzk4NzQ5MSwiaWF0IjoxNzU3MzgyNjkxLCJqdGkiOiJmOGMyNDI0NGUzZmM0ZTlkOWQzZjA4NzI2MTE0NWY5MiIsInVzZXJfaWQiOjJ9.s2AWTYg4rMTiXKX_ElNb5t9GkML0RVMdVJ2LmFpolGs",
+    "created_at": "2025-09-09T01:51:31.273Z",
+    "expires_at": "2025-09-16T01:51:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 74,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "33fbf4495b2142b9abb2999f4de98486",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5NzQzMiwiaWF0IjoxNzU3NjkyNjMyLCJqdGkiOiIzM2ZiZjQ0OTViMjE0MmI5YWJiMjk5OWY0ZGU5ODQ4NiIsInVzZXJfaWQiOjJ9.SJp_HU3kjZsWqbjKZ2IMRnfcK_r3iJwwJQtosTgx0Hw",
+    "created_at": "2025-09-12T15:57:12.548Z",
+    "expires_at": "2025-09-19T15:57:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 75,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "06f8d92e6d874efab80e21782b5fd458",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5NzUyNCwiaWF0IjoxNzU3NjkyNzI0LCJqdGkiOiIwNmY4ZDkyZTZkODc0ZWZhYjgwZTIxNzgyYjVmZDQ1OCIsInVzZXJfaWQiOjJ9.pNn7MCcWv6gZgg1WcroOEHorpAo5or2DC5xz5Qw1RjM",
+    "created_at": "2025-09-12T15:58:44.255Z",
+    "expires_at": "2025-09-19T15:58:44Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 76,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "e332a9a7340840489677cdc61a461412",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5NzY2NywiaWF0IjoxNzU3NjkyODY3LCJqdGkiOiJlMzMyYTlhNzM0MDg0MDQ4OTY3N2NkYzYxYTQ2MTQxMiIsInVzZXJfaWQiOjJ9.g21j845EV0AhI-lhq_Q09f5uTxI3ftVNNVmeSg79u20",
+    "created_at": "2025-09-12T16:01:07.651Z",
+    "expires_at": "2025-09-19T16:01:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 77,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "4a44ba5ae3584fdcbe9de66fd0db9806",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5NzY3OSwiaWF0IjoxNzU3NjkyODc5LCJqdGkiOiI0YTQ0YmE1YWUzNTg0ZmRjYmU5ZGU2NmZkMGRiOTgwNiIsInVzZXJfaWQiOjN9.1Rvvw-a9savqZSzXcQfL4--xTjIP3SFY7KANuEc5-ME",
+    "created_at": "2025-09-12T16:01:19.563Z",
+    "expires_at": "2025-09-19T16:01:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 78,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "2a5b88f3d17a4975a1e3f989cc5386fd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5Nzc1NywiaWF0IjoxNzU3NjkyOTU3LCJqdGkiOiIyYTViODhmM2QxN2E0OTc1YTFlM2Y5ODljYzUzODZmZCIsInVzZXJfaWQiOjJ9.kXH5AsyHLCpLKgle2IMb57d6t2lgQybz4I92VtFITxs",
+    "created_at": "2025-09-12T16:02:37.686Z",
+    "expires_at": "2025-09-19T16:02:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 79,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "9c57d34e84e5444d94588e760762fbd6",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5NzgxMiwiaWF0IjoxNzU3NjkzMDEyLCJqdGkiOiI5YzU3ZDM0ZTg0ZTU0NDRkOTQ1ODhlNzYwNzYyZmJkNiIsInVzZXJfaWQiOjN9.ARxQ3TAHKX0BeQjueRgaqznIX6jzB-YCwkNS4p7zCNk",
+    "created_at": "2025-09-12T16:03:32.530Z",
+    "expires_at": "2025-09-19T16:03:32Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 80,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7f727278cfd64f9dbb11ae581a95c51f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5Nzg1MCwiaWF0IjoxNzU3NjkzMDUwLCJqdGkiOiI3ZjcyNzI3OGNmZDY0ZjlkYmIxMWFlNTgxYTk1YzUxZiIsInVzZXJfaWQiOjJ9.qo9668ba_PWcQAz1LSsj8d7Ylr9ZjCHAudqU0VMQxxc",
+    "created_at": "2025-09-12T16:04:10.621Z",
+    "expires_at": "2025-09-19T16:04:10Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 81,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "a561fbda759f4b4fb1366748bc80dc2c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5Nzk0MSwiaWF0IjoxNzU3NjkzMTQxLCJqdGkiOiJhNTYxZmJkYTc1OWY0YjRmYjEzNjY3NDhiYzgwZGMyYyIsInVzZXJfaWQiOjN9.Zm14kXtxm814StHCaK32ngjEM9hbRiwSe_ygwKHEO7I",
+    "created_at": "2025-09-12T16:05:41.360Z",
+    "expires_at": "2025-09-19T16:05:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 82,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a42bb293d96d488685e45fd694d6b067",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5ODI5MiwiaWF0IjoxNzU3NjkzNDkyLCJqdGkiOiJhNDJiYjI5M2Q5NmQ0ODg2ODVlNDVmZDY5NGQ2YjA2NyIsInVzZXJfaWQiOjJ9.jcKUuk_IC7KmrVf0t6CeokXpsWWi3YGjnTchPk-qpC4",
+    "created_at": "2025-09-12T16:11:32.169Z",
+    "expires_at": "2025-09-19T16:11:32Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 83,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e611032244274a9d83567278f924839e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5OTc2NiwiaWF0IjoxNzU3Njk0OTY2LCJqdGkiOiJlNjExMDMyMjQ0Mjc0YTlkODM1NjcyNzhmOTI0ODM5ZSIsInVzZXJfaWQiOjN9.X4Rq7PrnNIa-8T4oqqaVl8yX5uCpnhnVlE-y1JHoYHo",
+    "created_at": "2025-09-12T16:36:06.856Z",
+    "expires_at": "2025-09-19T16:36:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 84,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7620b9c2a37e44dd818d79525213a82f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODI5OTgxNiwiaWF0IjoxNzU3Njk1MDE2LCJqdGkiOiI3NjIwYjljMmEzN2U0NGRkODE4ZDc5NTI1MjEzYTgyZiIsInVzZXJfaWQiOjJ9.i9xm1YOirN3QRJI6ksKA6nn3gcO9nBwTi6Or5BirlEM",
+    "created_at": "2025-09-12T16:36:56.110Z",
+    "expires_at": "2025-09-19T16:36:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 85,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a94f6b94a48c46bc9cedfd7a85532a40",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwMTkxOSwiaWF0IjoxNzU3Njk3MTE5LCJqdGkiOiJhOTRmNmI5NGE0OGM0NmJjOWNlZGZkN2E4NTUzMmE0MCIsInVzZXJfaWQiOjJ9.VP_6hn1hSiHbzS5585v2LRb5VUL5wlE2C95-j0Sd9Bc",
+    "created_at": "2025-09-12T17:11:59.572Z",
+    "expires_at": "2025-09-19T17:11:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 86,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d80491e1421940d2ab178ff8c5165a26",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwMzczMywiaWF0IjoxNzU3Njk4OTMzLCJqdGkiOiJkODA0OTFlMTQyMTk0MGQyYWIxNzhmZjhjNTE2NWEyNiIsInVzZXJfaWQiOjJ9.uPhr3SHBMk-2xGM1mt1yNkPNkv4FU2pqgz1DE-pJJt4",
+    "created_at": "2025-09-12T17:42:13.970Z",
+    "expires_at": "2025-09-19T17:42:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 87,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "82dd5f3da20942678534e921c0eaf010",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwODIwMywiaWF0IjoxNzU3NzAzNDAzLCJqdGkiOiI4MmRkNWYzZGEyMDk0MjY3ODUzNGU5MjFjMGVhZjAxMCIsInVzZXJfaWQiOjJ9.sr2DLNJIn7QPuY_zPPqqhna2EKAscLWIVFn-d9xE-0E",
+    "created_at": "2025-09-12T18:56:43.656Z",
+    "expires_at": "2025-09-19T18:56:43Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 88,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f3c370571f8041f9b22474fb456806b5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwODcyOSwiaWF0IjoxNzU3NzAzOTI5LCJqdGkiOiJmM2MzNzA1NzFmODA0MWY5YjIyNDc0ZmI0NTY4MDZiNSIsInVzZXJfaWQiOjJ9.gEXMS39xqwHELSXQ0T0sozSkbRMHuQ3Dxk3JuQNmIGM",
+    "created_at": "2025-09-12T19:05:29.161Z",
+    "expires_at": "2025-09-19T19:05:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 89,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "cdcb5f0111c04f56af9b3823ea7cc561",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwODk0NywiaWF0IjoxNzU3NzA0MTQ3LCJqdGkiOiJjZGNiNWYwMTExYzA0ZjU2YWY5YjM4MjNlYTdjYzU2MSIsInVzZXJfaWQiOjJ9.eP5cf8uXErML5OI4TsKloOMPk-v9LUhZapXcXMRY0FU",
+    "created_at": "2025-09-12T19:09:07.676Z",
+    "expires_at": "2025-09-19T19:09:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 90,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ad9a371e4ac242abbeac11e25c763247",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMwOTg1NiwiaWF0IjoxNzU3NzA1MDU2LCJqdGkiOiJhZDlhMzcxZTRhYzI0MmFiYmVhYzExZTI1Yzc2MzI0NyIsInVzZXJfaWQiOjN9.pFleuzcMY5f3oBcCv-dVXzZ72WbQaLN7QTRwfodiZWA",
+    "created_at": "2025-09-12T19:24:16.740Z",
+    "expires_at": "2025-09-19T19:24:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 91,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "409ef4e28a834e8297f31e7c51646e0b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMxMDIxNiwiaWF0IjoxNzU3NzA1NDE2LCJqdGkiOiI0MDllZjRlMjhhODM0ZTgyOTdmMzFlN2M1MTY0NmUwYiIsInVzZXJfaWQiOjJ9.JjLRYuvA0UIUEIO9lEYir9LhJ5rgP90NJvXm9oOTSq4",
+    "created_at": "2025-09-12T19:30:16.781Z",
+    "expires_at": "2025-09-19T19:30:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 92,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ea7f9a425dc64c93b2244c50e663b2c2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMxMDU3MiwiaWF0IjoxNzU3NzA1NzcyLCJqdGkiOiJlYTdmOWE0MjVkYzY0YzkzYjIyNDRjNTBlNjYzYjJjMiIsInVzZXJfaWQiOjN9.wQIXEKzpy1F-w6kCEOHvfRU0iAFQYc6EkX9mVR0Hwlc",
+    "created_at": "2025-09-12T19:36:12.197Z",
+    "expires_at": "2025-09-19T19:36:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 93,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ad27cde5a6a249149208d4ac9f64f4ca",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMxMTExMSwiaWF0IjoxNzU3NzA2MzExLCJqdGkiOiJhZDI3Y2RlNWE2YTI0OTE0OTIwOGQ0YWM5ZjY0ZjRjYSIsInVzZXJfaWQiOjN9.-poCnvmYhJd6HZptnqet9H7tTv9fcGqeVC_ndGK47pQ",
+    "created_at": "2025-09-12T19:45:11.403Z",
+    "expires_at": "2025-09-19T19:45:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 94,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "ec5d45c8e55d43909ef9bd0c7b1c4831",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODMxMTExNiwiaWF0IjoxNzU3NzA2MzE2LCJqdGkiOiJlYzVkNDVjOGU1NWQ0MzkwOWVmOWJkMGM3YjFjNDgzMSIsInVzZXJfaWQiOjJ9.C5EGZABITuWDL0owHjYpp_UGI64x77jXJv4na8ALI1M",
+    "created_at": "2025-09-12T19:45:16.110Z",
+    "expires_at": "2025-09-19T19:45:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 95,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "4745f7fdc833490882da82106e8a37af",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODU5MjE3MywiaWF0IjoxNzU3OTg3MzczLCJqdGkiOiI0NzQ1ZjdmZGM4MzM0OTA4ODJkYTgyMTA2ZThhMzdhZiIsInVzZXJfaWQiOjJ9.TAmr79LUGxLoxjXiN60nhCgeTJy63A4LjqlY081iCLE",
+    "created_at": "2025-09-16T01:49:33.725Z",
+    "expires_at": "2025-09-23T01:49:33Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 96,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "d09785c1b87b45408b711481003942de",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODU5Mjc2NywiaWF0IjoxNzU3OTg3OTY3LCJqdGkiOiJkMDk3ODVjMWI4N2I0NTQwOGI3MTE0ODEwMDM5NDJkZSIsInVzZXJfaWQiOjN9.H90IAL4QxdlUiv4s3n6YyPD0opyQyw9Grq0ZrW5YWSw",
+    "created_at": "2025-09-16T01:59:27.895Z",
+    "expires_at": "2025-09-23T01:59:27Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 97,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "3873e247af524eb3bc42ab0c799a1bca",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODY1NDY1OCwiaWF0IjoxNzU4MDQ5ODU4LCJqdGkiOiIzODczZTI0N2FmNTI0ZWIzYmM0MmFiMGM3OTlhMWJjYSIsInVzZXJfaWQiOjN9.4m6PogNQs7Cu8KTzQTsmzyg4bs62zdEIHjKVNv-PZZU",
+    "created_at": "2025-09-16T19:10:58.723Z",
+    "expires_at": "2025-09-23T19:10:58Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 98,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "fc28a054472749cfa4ef040a475610df",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1ODY1NDY2NywiaWF0IjoxNzU4MDQ5ODY3LCJqdGkiOiJmYzI4YTA1NDQ3Mjc0OWNmYTRlZjA0MGE0NzU2MTBkZiIsInVzZXJfaWQiOjJ9.6mcmO0m6I2t9Mj__AqbWZuitwCWiqpCIiolw81A4Qaw",
+    "created_at": "2025-09-16T19:11:07.941Z",
+    "expires_at": "2025-09-23T19:11:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 99,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a6db8fb613ca4760b30b96ebdc4b6636",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NTEzNCwiaWF0IjoxNzU4NTkwMzM0LCJqdGkiOiJhNmRiOGZiNjEzY2E0NzYwYjMwYjk2ZWJkYzRiNjYzNiIsInVzZXJfaWQiOjJ9.mqD_gemn2wm4AIkBjbv0pHrfKS8fya45hewnimdOzvw",
+    "created_at": "2025-09-23T01:18:54.529Z",
+    "expires_at": "2025-09-30T01:18:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 100,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "6c1fb2f5c36a4cc1ba8081e8e7418ee4",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NjMwNCwiaWF0IjoxNzU4NTkxNTA0LCJqdGkiOiI2YzFmYjJmNWMzNmE0Y2MxYmE4MDgxZThlNzQxOGVlNCIsInVzZXJfaWQiOjF9.3SQ52_uh97U0qL8bIJVN_qyoPFcAn7yq-bswLc2otjs",
+    "created_at": "2025-09-23T01:38:24.645Z",
+    "expires_at": "2025-09-30T01:38:24Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 101,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d4c8df6019384ae58ebddaffd6891385",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NjkwNSwiaWF0IjoxNzU4NTkyMTA1LCJqdGkiOiJkNGM4ZGY2MDE5Mzg0YWU1OGViZGRhZmZkNjg5MTM4NSIsInVzZXJfaWQiOjJ9.2hL2Cinft5TESyo_0qbWUotXmLyV2BUdx7SObhng_q4",
+    "created_at": "2025-09-23T01:48:25.032Z",
+    "expires_at": "2025-09-30T01:48:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 102,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "82c24f967c214fc8a7401066f394e8ab",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NzEzNiwiaWF0IjoxNzU4NTkyMzM2LCJqdGkiOiI4MmMyNGY5NjdjMjE0ZmM4YTc0MDEwNjZmMzk0ZThhYiIsInVzZXJfaWQiOjN9.mlnE8IVoO8u1Uk87rIJSGGEAJOWw2VcSu0jJTdqqcl4",
+    "created_at": "2025-09-23T01:52:16.456Z",
+    "expires_at": "2025-09-30T01:52:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 103,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "5f24074323f44f20bbeba3847591b8eb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NzQ0MiwiaWF0IjoxNzU4NTkyNjQyLCJqdGkiOiI1ZjI0MDc0MzIzZjQ0ZjIwYmJlYmEzODQ3NTkxYjhlYiIsInVzZXJfaWQiOjJ9.0QeXOSvuhRANQ7YP3DMqifbdter-qmNJY-ejVawNi1A",
+    "created_at": "2025-09-23T01:57:22.998Z",
+    "expires_at": "2025-09-30T01:57:22Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 104,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "5239b1e11322480ba75bbaf81b8f1ca7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NzY2NSwiaWF0IjoxNzU4NTkyODY1LCJqdGkiOiI1MjM5YjFlMTEzMjI0ODBiYTc1YmJhZjgxYjhmMWNhNyIsInVzZXJfaWQiOjN9.MNjtv9K3ux8e8mWHf2q1uqtELPN0U3pMLTIS8pc7eSo",
+    "created_at": "2025-09-23T02:01:05.431Z",
+    "expires_at": "2025-09-30T02:01:05Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 105,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "cde8c0ef195c4087a4cc3f7d32ea8ace",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NzczNSwiaWF0IjoxNzU4NTkyOTM1LCJqdGkiOiJjZGU4YzBlZjE5NWM0MDg3YTRjYzNmN2QzMmVhOGFjZSIsInVzZXJfaWQiOjF9.AQWbirWJQTNpE4uk2wvVdkW4W4RVJo2V-fV7vgxoPtQ",
+    "created_at": "2025-09-23T02:02:15.264Z",
+    "expires_at": "2025-09-30T02:02:15Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 106,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "e3af3ebc39664effb200d350a04d2a51",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5Nzc3NywiaWF0IjoxNzU4NTkyOTc3LCJqdGkiOiJlM2FmM2ViYzM5NjY0ZWZmYjIwMGQzNTBhMDRkMmE1MSIsInVzZXJfaWQiOjF9.Z3m7D0xuDPSd3Zd5c8SmPk6BuqViwOtWWI3yjProDOo",
+    "created_at": "2025-09-23T02:02:57.061Z",
+    "expires_at": "2025-09-30T02:02:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 107,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "f9fb779fbdd84029995da42c155e933a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5NzgwNSwiaWF0IjoxNzU4NTkzMDA1LCJqdGkiOiJmOWZiNzc5ZmJkZDg0MDI5OTk1ZGE0MmMxNTVlOTMzYSIsInVzZXJfaWQiOjF9.9hWp6EpZSHRKAgr0g8msW2o9g7RUv1b9s9PwIIt4u9s",
+    "created_at": "2025-09-23T02:03:25.604Z",
+    "expires_at": "2025-09-30T02:03:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 108,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "06b14558d9354998917f20bfb5098390",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTE5ODAwNiwiaWF0IjoxNzU4NTkzMjA2LCJqdGkiOiIwNmIxNDU1OGQ5MzU0OTk4OTE3ZjIwYmZiNTA5ODM5MCIsInVzZXJfaWQiOjF9.UCKVu8aIsJCY6zF97bbGWMUIzPsw5tmpVmzABJHRn2g",
+    "created_at": "2025-09-23T02:06:46.987Z",
+    "expires_at": "2025-09-30T02:06:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 109,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "e705908375c44e0c9c5241bab59a006b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTIwMzMzMCwiaWF0IjoxNzU4NTk4NTMwLCJqdGkiOiJlNzA1OTA4Mzc1YzQ0ZTBjOWM1MjQxYmFiNTlhMDA2YiIsInVzZXJfaWQiOjF9.lZy97WB5AHJqkSEsNfeTElNnd062GNqytEH11UhyF2Q",
+    "created_at": "2025-09-23T03:35:30.105Z",
+    "expires_at": "2025-09-30T03:35:30Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 110,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a6b0266de21b4b2ea324daf236955728",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTIwMzUxMSwiaWF0IjoxNzU4NTk4NzExLCJqdGkiOiJhNmIwMjY2ZGUyMWI0YjJlYTMyNGRhZjIzNjk1NTcyOCIsInVzZXJfaWQiOjJ9.57OIr5hictlEQ1lEsc1C9lg48l5GIbxfBMEEIuy9u20",
+    "created_at": "2025-09-23T03:38:31.738Z",
+    "expires_at": "2025-09-30T03:38:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 111,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "73ad2aba75ae494bb08d8759155092f9",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTIwMzUzMywiaWF0IjoxNzU4NTk4NzMzLCJqdGkiOiI3M2FkMmFiYTc1YWU0OTRiYjA4ZDg3NTkxNTUwOTJmOSIsInVzZXJfaWQiOjF9.5LS0tu8uueMdm6O1tP4EIkT4yQZ-fdLyts72QSmnGOQ",
+    "created_at": "2025-09-23T03:38:53.273Z",
+    "expires_at": "2025-09-30T03:38:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 112,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "c5cdb4ce899b4e4e88034422168e9bfb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTIwMzU3MSwiaWF0IjoxNzU4NTk4NzcxLCJqdGkiOiJjNWNkYjRjZTg5OWI0ZTRlODgwMzQ0MjIxNjhlOWJmYiIsInVzZXJfaWQiOjJ9.2b8fYKvsYaCd5n6UhkX3CzZ3wlIXx-xZuUQQLPGKfns",
+    "created_at": "2025-09-23T03:39:31.139Z",
+    "expires_at": "2025-09-30T03:39:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 113,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "c59a7ebdc7e8421083f9ce18a1fc1aac",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTI4MjA1OSwiaWF0IjoxNzU4Njc3MjU5LCJqdGkiOiJjNTlhN2ViZGM3ZTg0MjEwODNmOWNlMThhMWZjMWFhYyIsInVzZXJfaWQiOjJ9.DAzqjo0ECv--VXEFH3dtUoBREnmQB3yU9EdUUf8UxBU",
+    "created_at": "2025-09-24T01:27:39.053Z",
+    "expires_at": "2025-10-01T01:27:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 114,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "2df705adf46544d6b320b28ad548bf30",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTI4MjUxMSwiaWF0IjoxNzU4Njc3NzExLCJqdGkiOiIyZGY3MDVhZGY0NjU0NGQ2YjMyMGIyOGFkNTQ4YmYzMCIsInVzZXJfaWQiOjF9.KTD1c3aAv7QhCLTqjMhXUBBW_jHssCXtSTJhbjZVsHE",
+    "created_at": "2025-09-24T01:35:11.881Z",
+    "expires_at": "2025-10-01T01:35:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 115,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "da0dab62127348bdb49a06021105c386",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ1NTk0NCwiaWF0IjoxNzU4ODUxMTQ0LCJqdGkiOiJkYTBkYWI2MjEyNzM0OGJkYjQ5YTA2MDIxMTA1YzM4NiIsInVzZXJfaWQiOjJ9.1Ti8f-OR4VwKgBkn1h3PdW0hksi2vHKmUQN1WfeW0uA",
+    "created_at": "2025-09-26T01:45:44.996Z",
+    "expires_at": "2025-10-03T01:45:44Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 116,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "afb018cce22748f3b8ac411cd408bfb2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ1ODI3NiwiaWF0IjoxNzU4ODUzNDc2LCJqdGkiOiJhZmIwMThjY2UyMjc0OGYzYjhhYzQxMWNkNDA4YmZiMiIsInVzZXJfaWQiOjJ9.Lt43uCOCxAPV3882coemgLxEAJoIBYLWSJO-9R8lBiQ",
+    "created_at": "2025-09-26T02:24:36.024Z",
+    "expires_at": "2025-10-03T02:24:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 117,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "6ef5b624f1634777a60b27525d281878",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MDQ5MSwiaWF0IjoxNzU4ODU1NjkxLCJqdGkiOiI2ZWY1YjYyNGYxNjM0Nzc3YTYwYjI3NTI1ZDI4MTg3OCIsInVzZXJfaWQiOjJ9.dNsPxKWWHx40gXUmGyB7Lvgi6phvh5GoErYEYOEdo4o",
+    "created_at": "2025-09-26T03:01:31.285Z",
+    "expires_at": "2025-10-03T03:01:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 118,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "33859f64bccb45caa009334a70bcd461",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MTQwOSwiaWF0IjoxNzU4ODU2NjA5LCJqdGkiOiIzMzg1OWY2NGJjY2I0NWNhYTAwOTMzNGE3MGJjZDQ2MSIsInVzZXJfaWQiOjN9.CTJYeROHEl4YLy_2Jv9i2AGom-Q1yQ-JKc1Bha_BDew",
+    "created_at": "2025-09-26T03:16:49.378Z",
+    "expires_at": "2025-10-03T03:16:49Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 119,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "afd2bf44fda14e25873c70de3ba342ee",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MTUwNywiaWF0IjoxNzU4ODU2NzA3LCJqdGkiOiJhZmQyYmY0NGZkYTE0ZTI1ODczYzcwZGUzYmEzNDJlZSIsInVzZXJfaWQiOjJ9.kmWQz3VdPwrvc0dRsJrUB3iYDEgmdITFOsWicLSJ1K0",
+    "created_at": "2025-09-26T03:18:27.009Z",
+    "expires_at": "2025-10-03T03:18:27Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 120,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "fa4cb74882394d479d849d788b3a8b0b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MTU5NCwiaWF0IjoxNzU4ODU2Nzk0LCJqdGkiOiJmYTRjYjc0ODgyMzk0ZDQ3OWQ4NDlkNzg4YjNhOGIwYiIsInVzZXJfaWQiOjN9.h95NbURLbMi2ATTjB3kPfm18S1rikhwBGSUHg8-GB2c",
+    "created_at": "2025-09-26T03:19:54.217Z",
+    "expires_at": "2025-10-03T03:19:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 121,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f987fa6ace0f44108680eadc403b1e1a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MzEwMiwiaWF0IjoxNzU4ODU4MzAyLCJqdGkiOiJmOTg3ZmE2YWNlMGY0NDEwODY4MGVhZGM0MDNiMWUxYSIsInVzZXJfaWQiOjJ9.8FCTwQpJHaFMtDUOucRjXA5RUd_WJ6HHN0FnhK3pyfY",
+    "created_at": "2025-09-26T03:45:02.358Z",
+    "expires_at": "2025-10-03T03:45:02Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 122,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d984cf4adef4483991ac09d144e06b9d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2Mzc4NCwiaWF0IjoxNzU4ODU4OTg0LCJqdGkiOiJkOTg0Y2Y0YWRlZjQ0ODM5OTFhYzA5ZDE0NGUwNmI5ZCIsInVzZXJfaWQiOjJ9.xN1piZUPygjB-jamFnb_NNHvZQmWv0dEYS8p2G2lSW4",
+    "created_at": "2025-09-26T03:56:24.003Z",
+    "expires_at": "2025-10-03T03:56:24Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 123,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "9461a496d2e148789f1ee5843d5fa91c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1OTQ2MzgzOCwiaWF0IjoxNzU4ODU5MDM4LCJqdGkiOiI5NDYxYTQ5NmQyZTE0ODc4OWYxZWU1ODQzZDVmYTkxYyIsInVzZXJfaWQiOjN9.7CqLegH6CU-MzkpdPO8GbZrLE5jjrWiZ9SrwAO0C20k",
+    "created_at": "2025-09-26T03:57:18.620Z",
+    "expires_at": "2025-10-03T03:57:18Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 124,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ef2b0223bf0e4651a1b885f4da6fa387",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzQ2MSwiaWF0IjoxNzU5NDUyNjYxLCJqdGkiOiJlZjJiMDIyM2JmMGU0NjUxYTFiODg1ZjRkYTZmYTM4NyIsInVzZXJfaWQiOjN9.pRIJoxBG1FRBa7UKGBBMaqXXfgVuxtjcLoMJ3gfouNI",
+    "created_at": "2025-10-03T00:51:01.823Z",
+    "expires_at": "2025-10-10T00:51:01Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 125,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "79eac9d3ba7a45fc8c8eb3c7fcec16d2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzQ4MSwiaWF0IjoxNzU5NDUyNjgxLCJqdGkiOiI3OWVhYzlkM2JhN2E0NWZjOGM4ZWIzYzdmY2VjMTZkMiIsInVzZXJfaWQiOjF9.LnDbIOta7_D9-BzOGNDryZlG8PwKMXtj1HqkhbNkIEM",
+    "created_at": "2025-10-03T00:51:21.260Z",
+    "expires_at": "2025-10-10T00:51:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 126,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "55c829358b484fc2bed956a4102044bc",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzQ5OCwiaWF0IjoxNzU5NDUyNjk4LCJqdGkiOiI1NWM4MjkzNThiNDg0ZmMyYmVkOTU2YTQxMDIwNDRiYyIsInVzZXJfaWQiOjJ9.oAMvhdk-nJ9Em8_S1n7ZNAhipiXV8sVv7pNi0TZJXYA",
+    "created_at": "2025-10-03T00:51:38.894Z",
+    "expires_at": "2025-10-10T00:51:38Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 127,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "8c5dabb8eb364395b4304a63540d6aef",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzUwNywiaWF0IjoxNzU5NDUyNzA3LCJqdGkiOiI4YzVkYWJiOGViMzY0Mzk1YjQzMDRhNjM1NDBkNmFlZiIsInVzZXJfaWQiOjN9.Ax3iSzp0hJthjkS4TGG4qRd8FPDUpd4MqVF3ApPDmyE",
+    "created_at": "2025-10-03T00:51:47.532Z",
+    "expires_at": "2025-10-10T00:51:47Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 128,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "1126af6a2b9241dd870412dcdd7a30c6",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzUyNCwiaWF0IjoxNzU5NDUyNzI0LCJqdGkiOiIxMTI2YWY2YTJiOTI0MWRkODcwNDEyZGNkZDdhMzBjNiIsInVzZXJfaWQiOjF9.nF1HwyPG6I2yNKc-8UyI3rl1lKYLqyOYFzgQUo7lMH8",
+    "created_at": "2025-10-03T00:52:04.750Z",
+    "expires_at": "2025-10-10T00:52:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 129,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "e37e90ec29294598a2dd6fb56a17dce5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzUzMSwiaWF0IjoxNzU5NDUyNzMxLCJqdGkiOiJlMzdlOTBlYzI5Mjk0NTk4YTJkZDZmYjU2YTE3ZGNlNSIsInVzZXJfaWQiOjJ9.Zo7D744hbs2ZyG20a8V9m5UiOZyXqU260oyYeTX1XAk",
+    "created_at": "2025-10-03T00:52:11.570Z",
+    "expires_at": "2025-10-10T00:52:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 130,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "1132a8bab60946bda398fd24f62d333f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA1NzUzOSwiaWF0IjoxNzU5NDUyNzM5LCJqdGkiOiIxMTMyYThiYWI2MDk0NmJkYTM5OGZkMjRmNjJkMzMzZiIsInVzZXJfaWQiOjN9.YnvVZFncc29DBR1FrKkpHnPRj7I2u2YfU4Clpo7Vr2o",
+    "created_at": "2025-10-03T00:52:19.914Z",
+    "expires_at": "2025-10-10T00:52:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 131,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ba26657150734e7490980d1a8ce711c5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MDU4OSwiaWF0IjoxNzU5NDU1Nzg5LCJqdGkiOiJiYTI2NjU3MTUwNzM0ZTc0OTA5ODBkMWE4Y2U3MTFjNSIsInVzZXJfaWQiOjN9.A3zygd_JsXBkQ1fxcrZ-54ipcSm5nT3vIaFybVgt1Xg",
+    "created_at": "2025-10-03T01:43:09.253Z",
+    "expires_at": "2025-10-10T01:43:09Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 132,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "5c106a5733b349f485f99f72c6777668",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MTAyMiwiaWF0IjoxNzU5NDU2MjIyLCJqdGkiOiI1YzEwNmE1NzMzYjM0OWY0ODVmOTlmNzJjNjc3NzY2OCIsInVzZXJfaWQiOjJ9.lvM55q3M9ZJotDem7pb5q_HDe_WP2Zge3o6nN4i9nyk",
+    "created_at": "2025-10-03T01:50:22.516Z",
+    "expires_at": "2025-10-10T01:50:22Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 133,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "509667bc7221414ab1a7a99bd7557f86",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MTM1MCwiaWF0IjoxNzU5NDU2NTUwLCJqdGkiOiI1MDk2NjdiYzcyMjE0MTRhYjFhN2E5OWJkNzU1N2Y4NiIsInVzZXJfaWQiOjN9.qRL3ySfTdt7hv0_Szg_GumhA4j8CMS8Z1lT_d3sVcys",
+    "created_at": "2025-10-03T01:55:50.051Z",
+    "expires_at": "2025-10-10T01:55:50Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 134,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a9074b839d32426c8ed5db72b0b678d3",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MTQwNSwiaWF0IjoxNzU5NDU2NjA1LCJqdGkiOiJhOTA3NGI4MzlkMzI0MjZjOGVkNWRiNzJiMGI2NzhkMyIsInVzZXJfaWQiOjJ9.6jtoxCtcQ63GGBndf1DkFofwEIZNqNSFAnVklBHz_WY",
+    "created_at": "2025-10-03T01:56:45.630Z",
+    "expires_at": "2025-10-10T01:56:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 135,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "a8974dc34d2a4e029ff3005ce49cb04b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MTYzOCwiaWF0IjoxNzU5NDU2ODM4LCJqdGkiOiJhODk3NGRjMzRkMmE0ZTAyOWZmMzAwNWNlNDljYjA0YiIsInVzZXJfaWQiOjN9.nV5nIGPz-4o2rYuEDEXDvcGilD-TSM8MR75-NOXqCt4",
+    "created_at": "2025-10-03T02:00:38.320Z",
+    "expires_at": "2025-10-10T02:00:38Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 136,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "69efe0af71ee4f02bbd5f5e2f661c21d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2MzgyNSwiaWF0IjoxNzU5NDU5MDI1LCJqdGkiOiI2OWVmZTBhZjcxZWU0ZjAyYmJkNWY1ZTJmNjYxYzIxZCIsInVzZXJfaWQiOjJ9.lQq43ekpdT8cok3YsaXrXQ0xlwaSI4A5QgIBjoupgd4",
+    "created_at": "2025-10-03T02:37:05.986Z",
+    "expires_at": "2025-10-10T02:37:05Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 137,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "c3bef3f6e456486498160b63ddf46d02",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDA2NTY1NiwiaWF0IjoxNzU5NDYwODU2LCJqdGkiOiJjM2JlZjNmNmU0NTY0ODY0OTgxNjBiNjNkZGY0NmQwMiIsInVzZXJfaWQiOjJ9.0aujpeMm1GZzCpg3k720xMNkRBQaP6BHrGG1WKV60DU",
+    "created_at": "2025-10-03T03:07:36.470Z",
+    "expires_at": "2025-10-10T03:07:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 138,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a8c7c3714b6c46c9a904bb17027dd4e5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwMzU3MywiaWF0IjoxNzU5NTk4NzczLCJqdGkiOiJhOGM3YzM3MTRiNmM0NmM5YTkwNGJiMTcwMjdkZDRlNSIsInVzZXJfaWQiOjJ9.5TBYRPpD1vsxHT8gcXagg7PaCOj9On_tEODamqa8kaI",
+    "created_at": "2025-10-04T17:26:13.709Z",
+    "expires_at": "2025-10-11T17:26:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 139,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "fe947c9b8b324e0eb194e5aad264393b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwMzY4MiwiaWF0IjoxNzU5NTk4ODgyLCJqdGkiOiJmZTk0N2M5YjhiMzI0ZTBlYjE5NGU1YWFkMjY0MzkzYiIsInVzZXJfaWQiOjN9._En4QNbCSiHf4CdUlQCXDh_yvO5QiesrTbKjQ7yUnhU",
+    "created_at": "2025-10-04T17:28:02.557Z",
+    "expires_at": "2025-10-11T17:28:02Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 140,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "62d49b05ce5e4c968c5cb31063dbf86e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwMzcyNCwiaWF0IjoxNzU5NTk4OTI0LCJqdGkiOiI2MmQ0OWIwNWNlNWU0Yzk2OGM1Y2IzMTA2M2RiZjg2ZSIsInVzZXJfaWQiOjN9.sSU0yogD3r8Ql3Iu0RzdkBHsB3EuGwwH6GYkUpi2HCo",
+    "created_at": "2025-10-04T17:28:44.801Z",
+    "expires_at": "2025-10-11T17:28:44Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 141,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "6cd8df885bb94e3aa6a7df106f2b6b6f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwNTE1OCwiaWF0IjoxNzU5NjAwMzU4LCJqdGkiOiI2Y2Q4ZGY4ODViYjk0ZTNhYTZhN2RmMTA2ZjJiNmI2ZiIsInVzZXJfaWQiOjJ9.mrCAleLE4t4z1hClkWKrFy-ZdVgDAL14rol38vCk3IQ",
+    "created_at": "2025-10-04T17:52:38.505Z",
+    "expires_at": "2025-10-11T17:52:38Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 142,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b995f0ba05bb4446afc9f81b7f6a2e99",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwNTIzNiwiaWF0IjoxNzU5NjAwNDM2LCJqdGkiOiJiOTk1ZjBiYTA1YmI0NDQ2YWZjOWY4MWI3ZjZhMmU5OSIsInVzZXJfaWQiOjN9.eyyvD_HqX22bn2oq_HBgY4d6R-s8FIMFOErUI4INe3c",
+    "created_at": "2025-10-04T17:53:56.803Z",
+    "expires_at": "2025-10-11T17:53:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 143,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "8310987085bc463da813606afa335421",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwNTI2MCwiaWF0IjoxNzU5NjAwNDYwLCJqdGkiOiI4MzEwOTg3MDg1YmM0NjNkYTgxMzYwNmFmYTMzNTQyMSIsInVzZXJfaWQiOjN9.wTTGBzU5udxdkc0-7-oKzq0DAyn9oEBdmhjQQwoqt2w",
+    "created_at": "2025-10-04T17:54:20.490Z",
+    "expires_at": "2025-10-11T17:54:20Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 144,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "8e58f9d9ffde40b2900a50931628fb9a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwNTI3OCwiaWF0IjoxNzU5NjAwNDc4LCJqdGkiOiI4ZTU4ZjlkOWZmZGU0MGIyOTAwYTUwOTMxNjI4ZmI5YSIsInVzZXJfaWQiOjJ9.paTr014zoPWmPVEbHcAmm8j0oyBe_XWzHgq9ZnV54XM",
+    "created_at": "2025-10-04T17:54:38.105Z",
+    "expires_at": "2025-10-11T17:54:38Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 145,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "9fefbb11b15d466ea2e9bfaa971c47ae",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDIwNTMxNywiaWF0IjoxNzU5NjAwNTE3LCJqdGkiOiI5ZmVmYmIxMWIxNWQ0NjZlYTJlOWJmYWE5NzFjNDdhZSIsInVzZXJfaWQiOjN9.nbzeKiAAPu6k-pu5nT8IHCqlPo-2rgw0a16uEb2sEE0",
+    "created_at": "2025-10-04T17:55:17.155Z",
+    "expires_at": "2025-10-11T17:55:17Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 146,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "5ef4ec9fc13e4f60bca99764370f43ff",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzA0MiwiaWF0IjoxNzYwMTM4MjQyLCJqdGkiOiI1ZWY0ZWM5ZmMxM2U0ZjYwYmNhOTk3NjQzNzBmNDNmZiIsInVzZXJfaWQiOjN9.d1Mqu1yQ8E4XP_g-ZNDeYnxNSBpHQr4uX5fF1tN_A3Y",
+    "created_at": "2025-10-10T23:17:22.671Z",
+    "expires_at": "2025-10-17T23:17:22Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 147,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "4cc591fba0f244709d374037491d4a2f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzA1MSwiaWF0IjoxNzYwMTM4MjUxLCJqdGkiOiI0Y2M1OTFmYmEwZjI0NDcwOWQzNzQwMzc0OTFkNGEyZiIsInVzZXJfaWQiOjF9.J1eZgguRAuuvKdMWHPdfFS0tsjCQd-SG9m85pZ3-qIM",
+    "created_at": "2025-10-10T23:17:31.874Z",
+    "expires_at": "2025-10-17T23:17:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 148,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "80e41d56ba824318b8ff73e1753780da",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzA2NywiaWF0IjoxNzYwMTM4MjY3LCJqdGkiOiI4MGU0MWQ1NmJhODI0MzE4YjhmZjczZTE3NTM3ODBkYSIsInVzZXJfaWQiOjJ9.Fm61Ry5OXsIdSFtsSPnAWaX70-VSWgzZY_9YdcyTVlI",
+    "created_at": "2025-10-10T23:17:47.457Z",
+    "expires_at": "2025-10-17T23:17:47Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 149,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c2941d9f993742c89212e46a05e9b094",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzA3OCwiaWF0IjoxNzYwMTM4Mjc4LCJqdGkiOiJjMjk0MWQ5Zjk5Mzc0MmM4OTIxMmU0NmEwNWU5YjA5NCIsInVzZXJfaWQiOjN9.anZgN0-JqVugJb68s3MEHzR5enujl3KvZWbQ7v5JOGo",
+    "created_at": "2025-10-10T23:17:58.576Z",
+    "expires_at": "2025-10-17T23:17:58Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 150,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "82b123b8f1164039891e393a3633ed52",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzU1MywiaWF0IjoxNzYwMTM4NzUzLCJqdGkiOiI4MmIxMjNiOGYxMTY0MDM5ODkxZTM5M2EzNjMzZWQ1MiIsInVzZXJfaWQiOjJ9.ogaXOuusQDd1wgstDb_pUS1Q5t4KIKQcaeVbODgohm0",
+    "created_at": "2025-10-10T23:25:53.272Z",
+    "expires_at": "2025-10-17T23:25:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 151,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "91f3f459c42a4f56bb37822f6d282899",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0MzYxMSwiaWF0IjoxNzYwMTM4ODExLCJqdGkiOiI5MWYzZjQ1OWM0MmE0ZjU2YmIzNzgyMmY2ZDI4Mjg5OSIsInVzZXJfaWQiOjN9.DNA87fo5-f94ZnSfBR3dqnLsi1yzj-dAX0XrvMFXt5I",
+    "created_at": "2025-10-10T23:26:51.305Z",
+    "expires_at": "2025-10-17T23:26:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 152,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f04fc265ce81406787ab2c7824a258f3",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0NDM1NCwiaWF0IjoxNzYwMTM5NTU0LCJqdGkiOiJmMDRmYzI2NWNlODE0MDY3ODdhYjJjNzgyNGEyNThmMyIsInVzZXJfaWQiOjJ9.xoquwO_dVWfiClfUmiCWk-sEr9RJxIlLSlEBr7bdpaQ",
+    "created_at": "2025-10-10T23:39:14.557Z",
+    "expires_at": "2025-10-17T23:39:14Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 153,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "0ab31e376e4d4790853cad40abcad9a2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0NDM5NSwiaWF0IjoxNzYwMTM5NTk1LCJqdGkiOiIwYWIzMWUzNzZlNGQ0NzkwODUzY2FkNDBhYmNhZDlhMiIsInVzZXJfaWQiOjN9.LB-K-jkrztsFBZr-EwuHc12sxKopYqyS9x3SyO3Y7Gc",
+    "created_at": "2025-10-10T23:39:55.552Z",
+    "expires_at": "2025-10-17T23:39:55Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 154,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "bd4121afbd094b5e928488e7cb35b6bb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0NjY2MSwiaWF0IjoxNzYwMTQxODYxLCJqdGkiOiJiZDQxMjFhZmJkMDk0YjVlOTI4NDg4ZTdjYjM1YjZiYiIsInVzZXJfaWQiOjJ9.3PymA4cK_azy_oBpXztXVZ4cqM8U9ddL0R0HbMbDBgE",
+    "created_at": "2025-10-11T00:17:41.201Z",
+    "expires_at": "2025-10-18T00:17:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 155,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "9ee0c8583741490c9b7a50cef5ad2e0d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0Njk2OCwiaWF0IjoxNzYwMTQyMTY4LCJqdGkiOiI5ZWUwYzg1ODM3NDE0OTBjOWI3YTUwY2VmNWFkMmUwZCIsInVzZXJfaWQiOjN9.BmyPnh_-708I466IeXMBWtN1nnIgaVpSs0A8pdUUlJQ",
+    "created_at": "2025-10-11T00:22:48.992Z",
+    "expires_at": "2025-10-18T00:22:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 156,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d664cb42aab84448beb69e6d5d3a4cfe",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0Njk4MywiaWF0IjoxNzYwMTQyMTgzLCJqdGkiOiJkNjY0Y2I0MmFhYjg0NDQ4YmViNjllNmQ1ZDNhNGNmZSIsInVzZXJfaWQiOjJ9.t2MQ5suIDSEhH5ItWZ3lDSg3xJ_WXjyhr1N21nCHYTU",
+    "created_at": "2025-10-11T00:23:03.018Z",
+    "expires_at": "2025-10-18T00:23:03Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 157,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "64a5199caaab4e4fba35d62bc91d9725",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0NzI0MiwiaWF0IjoxNzYwMTQyNDQyLCJqdGkiOiI2NGE1MTk5Y2FhYWI0ZTRmYmEzNWQ2MmJjOTFkOTcyNSIsInVzZXJfaWQiOjN9.-g1UT04qEbWsfIPQKEOv5lhoK0RG3eTb3eyFVIeqizA",
+    "created_at": "2025-10-11T00:27:22.262Z",
+    "expires_at": "2025-10-18T00:27:22Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 158,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "46762c8a0585452a829bf7fd2a9a0c07",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0Nzg2MywiaWF0IjoxNzYwMTQzMDYzLCJqdGkiOiI0Njc2MmM4YTA1ODU0NTJhODI5YmY3ZmQyYTlhMGMwNyIsInVzZXJfaWQiOjN9.Rv-nKAqp6YfZJlcy9pBk0OIEoPWqkm5gJKYW4uasexs",
+    "created_at": "2025-10-11T00:37:43.832Z",
+    "expires_at": "2025-10-18T00:37:43Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 159,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "8a14f08a315242c6bcaf1400086cc92f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc0NzkxNywiaWF0IjoxNzYwMTQzMTE3LCJqdGkiOiI4YTE0ZjA4YTMxNTI0MmM2YmNhZjE0MDAwODZjYzkyZiIsInVzZXJfaWQiOjJ9.jvsLZmvb8L6P0BfEhweGPjaeDgFR3j_MaGyhctTzyAM",
+    "created_at": "2025-10-11T00:38:37.493Z",
+    "expires_at": "2025-10-18T00:38:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 160,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "a742d27852f444759d4e5d6baccad2b3",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzE4NywiaWF0IjoxNzYwMTUyMzg3LCJqdGkiOiJhNzQyZDI3ODUyZjQ0NDc1OWQ0ZTVkNmJhY2NhZDJiMyIsInVzZXJfaWQiOjJ9.aLFVuufLbPl1F_6xTzJ16felXqtzf6Qnh6gbUmmXoYA",
+    "created_at": "2025-10-11T03:13:07.312Z",
+    "expires_at": "2025-10-18T03:13:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 161,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "11e4fe6a5d9b450fa5f9a85604aa056f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzIzNSwiaWF0IjoxNzYwMTUyNDM1LCJqdGkiOiIxMWU0ZmU2YTVkOWI0NTBmYTVmOWE4NTYwNGFhMDU2ZiIsInVzZXJfaWQiOjN9.Bk2V5bx5fXogUG-uXTS4ZGisqraWeu_gqFqf4PIfAoQ",
+    "created_at": "2025-10-11T03:13:55.754Z",
+    "expires_at": "2025-10-18T03:13:55Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 162,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "65c1d8c6c51b4cefbc158749a930dbfb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzI0MSwiaWF0IjoxNzYwMTUyNDQxLCJqdGkiOiI2NWMxZDhjNmM1MWI0Y2VmYmMxNTg3NDlhOTMwZGJmYiIsInVzZXJfaWQiOjF9.ge9ABuIr1lMIIlJgySK7GGUV2QBkAKAlSx_mDzg--m8",
+    "created_at": "2025-10-11T03:14:01.237Z",
+    "expires_at": "2025-10-18T03:14:01Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 163,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "70d6ba82df2a4eb2acccf9e9987f4fb7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzU2MSwiaWF0IjoxNzYwMTUyNzYxLCJqdGkiOiI3MGQ2YmE4MmRmMmE0ZWIyYWNjY2Y5ZTk5ODdmNGZiNyIsInVzZXJfaWQiOjJ9.5h3JbWGegpInPDgeKhz5HxldFCigNsEp_V_SpB9XYp4",
+    "created_at": "2025-10-11T03:19:21.283Z",
+    "expires_at": "2025-10-18T03:19:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 164,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "37a421c84f8c48f99fe47a19487ce770",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzU3NSwiaWF0IjoxNzYwMTUyNzc1LCJqdGkiOiIzN2E0MjFjODRmOGM0OGY5OWZlNDdhMTk0ODdjZTc3MCIsInVzZXJfaWQiOjF9.Gf2Ftrqz40x21xYIVyBkdmf1aFu_hNtDad-1qah92jE",
+    "created_at": "2025-10-11T03:19:35.737Z",
+    "expires_at": "2025-10-18T03:19:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 165,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "ca46884bf93b453391d54ca42a5d8ecc",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1NzU5NCwiaWF0IjoxNzYwMTUyNzk0LCJqdGkiOiJjYTQ2ODg0YmY5M2I0NTMzOTFkNTRjYTQyYTVkOGVjYyIsInVzZXJfaWQiOjJ9.3Zu5vi6Y1Op94oXjFS6sZkx4QLccju75EKoM4K4sUXI",
+    "created_at": "2025-10-11T03:19:54.748Z",
+    "expires_at": "2025-10-18T03:19:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 166,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "a6b6693e7eab467e97dccc0467afe80c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1Nzg1OCwiaWF0IjoxNzYwMTUzMDU4LCJqdGkiOiJhNmI2NjkzZTdlYWI0NjdlOTdkY2NjMDQ2N2FmZTgwYyIsInVzZXJfaWQiOjF9.W8ExBCdyAsJHR4A14LCmbRSNPVi82DDBVyZo7L7yUYE",
+    "created_at": "2025-10-11T03:24:18.395Z",
+    "expires_at": "2025-10-18T03:24:18Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 167,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "8a8e2eaa1fcf4457ba9f172b5c389c0f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1Nzg5NywiaWF0IjoxNzYwMTUzMDk3LCJqdGkiOiI4YThlMmVhYTFmY2Y0NDU3YmE5ZjE3MmI1YzM4OWMwZiIsInVzZXJfaWQiOjJ9.oEBjR_GYXoEgIt4i4YlTkYMYPb-Pph5dk8IQboZ8kkI",
+    "created_at": "2025-10-11T03:24:57.696Z",
+    "expires_at": "2025-10-18T03:24:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 168,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "fc0637b12c9e4bbd88e7e41382d8a62b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1ODA3MSwiaWF0IjoxNzYwMTUzMjcxLCJqdGkiOiJmYzA2MzdiMTJjOWU0YmJkODhlN2U0MTM4MmQ4YTYyYiIsInVzZXJfaWQiOjF9.j7HpH5JTCCPkpPhKQNqukgnV9io65Erx_FKDdEP6uJM",
+    "created_at": "2025-10-11T03:27:51.459Z",
+    "expires_at": "2025-10-18T03:27:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 169,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "d0390920a5ca476683c1d1d8b6cae38e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1ODA3NiwiaWF0IjoxNzYwMTUzMjc2LCJqdGkiOiJkMDM5MDkyMGE1Y2E0NzY2ODNjMWQxZDhiNmNhZTM4ZSIsInVzZXJfaWQiOjJ9.VyAN-rFLPNN9v7-sR4S8NdtTRunrJjqyX6j4G6Op_kk",
+    "created_at": "2025-10-11T03:27:56.860Z",
+    "expires_at": "2025-10-18T03:27:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 170,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "d25ef6c67fa04ddbaa52b3978342e0ca",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDc1OTc4NSwiaWF0IjoxNzYwMTU0OTg1LCJqdGkiOiJkMjVlZjZjNjdmYTA0ZGRiYWE1MmIzOTc4MzQyZTBjYSIsInVzZXJfaWQiOjN9.UP_hwQEv8HePoV_8F5R-wfzPi3qYzeOqNR-gARNK-Pg",
+    "created_at": "2025-10-11T03:56:25.258Z",
+    "expires_at": "2025-10-18T03:56:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 171,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c96a9d65cc5c492da630334221c7c9ba",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDkwNzQ4OCwiaWF0IjoxNzYwMzAyNjg4LCJqdGkiOiJjOTZhOWQ2NWNjNWM0OTJkYTYzMDMzNDIyMWM3YzliYSIsInVzZXJfaWQiOjN9.WZ9KvQEP8UJTRIWR2uvR6a_cRCQy4NfjviywhKH2-XU",
+    "created_at": "2025-10-12T20:58:08.927Z",
+    "expires_at": "2025-10-19T20:58:08Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 172,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "e1a09d89163b4d55b5438622bcb17982",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDkwNzQ5OCwiaWF0IjoxNzYwMzAyNjk4LCJqdGkiOiJlMWEwOWQ4OTE2M2I0ZDU1YjU0Mzg2MjJiY2IxNzk4MiIsInVzZXJfaWQiOjN9.dtObgogEMAFjOILw_t0bhUskVvqOMY2X--IdcZ1R218",
+    "created_at": "2025-10-12T20:58:18.845Z",
+    "expires_at": "2025-10-19T20:58:18Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 173,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "c87796505a7d4a76a8c4f21f416577ea",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDkwNzY1MiwiaWF0IjoxNzYwMzAyODUyLCJqdGkiOiJjODc3OTY1MDVhN2Q0YTc2YThjNGYyMWY0MTY1NzdlYSIsInVzZXJfaWQiOjF9.WMvlrhoYlJM1qRUH7r9pWtMgde32M5BSCDdSyb8LrjM",
+    "created_at": "2025-10-12T21:00:52.999Z",
+    "expires_at": "2025-10-19T21:00:52Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 174,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "48f1b0f08d97439bb0b3816694943a75",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MDkwODU4NywiaWF0IjoxNzYwMzAzNzg3LCJqdGkiOiI0OGYxYjBmMDhkOTc0MzliYjBiMzgxNjY5NDk0M2E3NSIsInVzZXJfaWQiOjJ9.WTVijvL2lCWx8SbHeRV2m-93is5Nckkn59ZTXl-WKCE",
+    "created_at": "2025-10-12T21:16:27.053Z",
+    "expires_at": "2025-10-19T21:16:27Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 175,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7cc455aad09f41d493c2340769c9a553",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTAxODA0OSwiaWF0IjoxNzYwNDEzMjQ5LCJqdGkiOiI3Y2M0NTVhYWQwOWY0MWQ0OTNjMjM0MDc2OWM5YTU1MyIsInVzZXJfaWQiOjJ9.iSQoyqwJ-2r_TQnQo9k7NeC_NR6KbTcNtiGHpl3qB_Q",
+    "created_at": "2025-10-14T03:40:49.004Z",
+    "expires_at": "2025-10-21T03:40:49Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 176,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "c52df224c4594fc58334420bd33a53ca",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTAxODI2OCwiaWF0IjoxNzYwNDEzNDY4LCJqdGkiOiJjNTJkZjIyNGM0NTk0ZmM1ODMzNDQyMGJkMzNhNTNjYSIsInVzZXJfaWQiOjN9.39mc9qUHUNj3tIj-50-sCxHqEbkVwNoWHlu8Wh-adUw",
+    "created_at": "2025-10-14T03:44:28.305Z",
+    "expires_at": "2025-10-21T03:44:28Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 177,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "ea20423d58f044e486c7d0d42f31839d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTAyMDE5OSwiaWF0IjoxNzYwNDE1Mzk5LCJqdGkiOiJlYTIwNDIzZDU4ZjA0NGU0ODZjN2QwZDQyZjMxODM5ZCIsInVzZXJfaWQiOjN9.3uO6iOefo5LeqReU6TLUbRr2RF7XRgRHT_sQYU-CWRA",
+    "created_at": "2025-10-14T04:16:39.907Z",
+    "expires_at": "2025-10-21T04:16:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 178,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "7455dd53777343e587598310946a593c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTAyMDM1MywiaWF0IjoxNzYwNDE1NTUzLCJqdGkiOiI3NDU1ZGQ1Mzc3NzM0M2U1ODc1OTgzMTA5NDZhNTkzYyIsInVzZXJfaWQiOjJ9.A9VS60zvc0WQMjK_M5bTt77toIoPR-EZqH7uO3JFXrE",
+    "created_at": "2025-10-14T04:19:13.424Z",
+    "expires_at": "2025-10-21T04:19:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 179,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "6133770bc4104ae7a8308ac95d81ed66",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTI3MjgxMywiaWF0IjoxNzYwNjY4MDEzLCJqdGkiOiI2MTMzNzcwYmM0MTA0YWU3YTgzMDhhYzk1ZDgxZWQ2NiIsInVzZXJfaWQiOjJ9.YwGtf7TOJQpnSwoQ9xVOb5xrXu755uUZkEAKpOr5xnA",
+    "created_at": "2025-10-17T02:26:53.241Z",
+    "expires_at": "2025-10-24T02:26:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 180,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "629785d555714cf4a07e4c436510bf9d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTI3ODA0NywiaWF0IjoxNzYwNjczMjQ3LCJqdGkiOiI2Mjk3ODVkNTU1NzE0Y2Y0YTA3ZTRjNDM2NTEwYmY5ZCIsInVzZXJfaWQiOjJ9.KlhBKq7aAzjoqJb9sHL6QfHrzJXBhak68cDgNWtOSbA",
+    "created_at": "2025-10-17T03:54:07.395Z",
+    "expires_at": "2025-10-24T03:54:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 181,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "3550cc7dfc4d476b80a391b502f787e2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYwMzkzNCwiaWF0IjoxNzYwOTk5MTM0LCJqdGkiOiIzNTUwY2M3ZGZjNGQ0NzZiODBhMzkxYjUwMmY3ODdlMiIsInVzZXJfaWQiOjJ9.ZuER3ZZzfHuRVYcAH5mEj40L0Au84CF80roGf0cWQi4",
+    "created_at": "2025-10-20T22:25:34.159Z",
+    "expires_at": "2025-10-27T22:25:34Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 182,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "289c5ee2b9a646afa4b7b40d4ab332bf",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYwNDUxNiwiaWF0IjoxNzYwOTk5NzE2LCJqdGkiOiIyODljNWVlMmI5YTY0NmFmYTRiN2I0MGQ0YWIzMzJiZiIsInVzZXJfaWQiOjN9.VlFtLVBAsMFPwXJdZzoMf5HUw2_7eejnyatuCbrOz0Y",
+    "created_at": "2025-10-20T22:35:16.074Z",
+    "expires_at": "2025-10-27T22:35:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 183,
+  "fields": {
+    "user": [
+      "polRivarola"
+    ],
+    "jti": "3d704441f6d0410b8b31c968e2dd7ec5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYwNDg1MywiaWF0IjoxNzYxMDAwMDUzLCJqdGkiOiIzZDcwNDQ0MWY2ZDA0MTBiOGIzMWM5NjhlMmRkN2VjNSIsInVzZXJfaWQiOjF9.Lh5THFvnNMUPZ54YOOaP06O6AhP4oUeWXNZF-rbXibU",
+    "created_at": "2025-10-20T22:40:53.905Z",
+    "expires_at": "2025-10-27T22:40:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 184,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "0430cd63697547edb00110ecce60c1be",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYyMDcyNCwiaWF0IjoxNzYxMDE1OTI0LCJqdGkiOiIwNDMwY2Q2MzY5NzU0N2VkYjAwMTEwZWNjZTYwYzFiZSIsInVzZXJfaWQiOjJ9.r3b6JStDLM2ZtSUr_4vhqg-p7Pd2OiOHp11rq1lKH68",
+    "created_at": "2025-10-21T03:05:24.811Z",
+    "expires_at": "2025-10-28T03:05:24Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 185,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "3392270e0f4742c893cce93f0aecd0c7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYyMjU2MCwiaWF0IjoxNzYxMDE3NzYwLCJqdGkiOiIzMzkyMjcwZTBmNDc0MmM4OTNjY2U5M2YwYWVjZDBjNyIsInVzZXJfaWQiOjJ9.lkrRC9NJvmHAhhkOEbjzuJbsiM4tcmR-4lW9wT9h6tw",
+    "created_at": "2025-10-21T03:36:00.603Z",
+    "expires_at": "2025-10-28T03:36:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 186,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "84007792ad204e9198b7c56b88c88508",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYyMzU3NiwiaWF0IjoxNzYxMDE4Nzc2LCJqdGkiOiI4NDAwNzc5MmFkMjA0ZTkxOThiN2M1NmI4OGM4ODUwOCIsInVzZXJfaWQiOjJ9.4YERUlbtmFNLLtW3BisRcVE8edDkvd8Y2bcSWwhUC_k",
+    "created_at": "2025-10-21T03:52:56.876Z",
+    "expires_at": "2025-10-28T03:52:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 187,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b7e660ca9871400eb755a99f7f99db31",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYyNDA3MywiaWF0IjoxNzYxMDE5MjczLCJqdGkiOiJiN2U2NjBjYTk4NzE0MDBlYjc1NWE5OWY3Zjk5ZGIzMSIsInVzZXJfaWQiOjN9.ouo5L-ixhmrueEYh03-_djWuT6gi4wXMERAKFFJIV78",
+    "created_at": "2025-10-21T04:01:13.671Z",
+    "expires_at": "2025-10-28T04:01:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 188,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "b648b128114d4994b846f2ab545c0e5e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTYyNDI0OSwiaWF0IjoxNzYxMDE5NDQ5LCJqdGkiOiJiNjQ4YjEyODExNGQ0OTk0Yjg0NmYyYWI1NDVjMGU1ZSIsInVzZXJfaWQiOjJ9.iRY8DsBz0we_Va9Xg5vQxrqYOUS0BbKoIidHfNkNvEM",
+    "created_at": "2025-10-21T04:04:09.876Z",
+    "expires_at": "2025-10-28T04:04:09Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 189,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "b15cdd2b42db4410baca1b8f3ee99552",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjMwNTgzOCwiaWF0IjoxNzYxNzAxMDM4LCJqdGkiOiJiMTVjZGQyYjQyZGI0NDEwYmFjYTFiOGYzZWU5OTU1MiIsInVzZXJfaWQiOjJ9.87SHwf0VwNN71PzvfBXSDgpSDkk43ocYmA7c1AwgoDk",
+    "created_at": "2025-10-29T01:23:58.816Z",
+    "expires_at": "2025-11-05T01:23:58Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 190,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "dc6022f9a72f42ab9f000c9fcbfb1d03",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTU3NCwiaWF0IjoxNzYyMDMwNzc0LCJqdGkiOiJkYzYwMjJmOWE3MmY0MmFiOWYwMDBjOWZjYmZiMWQwMyIsInVzZXJfaWQiOjJ9.hs79js2UCwlom1AJb-BrzCMZRqdD2QsyUcLNoKrxiw8",
+    "created_at": "2025-11-01T20:59:34.964Z",
+    "expires_at": "2025-11-08T20:59:34Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 191,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f5f4b046bce948bcbba1acddda2376cd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTczOSwiaWF0IjoxNzYyMDMwOTM5LCJqdGkiOiJmNWY0YjA0NmJjZTk0OGJjYmJhMWFjZGRkYTIzNzZjZCIsInVzZXJfaWQiOjJ9.HcsPys413Vg0A01I3Nqp_owqkt5jiAKK4FtIYVo-qzI",
+    "created_at": "2025-11-01T21:02:19.999Z",
+    "expires_at": "2025-11-08T21:02:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 192,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "e86c207ac1d349b399c8055c03d511f8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTc0OSwiaWF0IjoxNzYyMDMwOTQ5LCJqdGkiOiJlODZjMjA3YWMxZDM0OWIzOTljODA1NWMwM2Q1MTFmOCIsInVzZXJfaWQiOjJ9.w9oWudYZFe4RADTpGWmE9SSqxt9hBiAKGYJNwYA9sVs",
+    "created_at": "2025-11-01T21:02:29.381Z",
+    "expires_at": "2025-11-08T21:02:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 193,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "3baf0d3687be4cfb99a69ba92955cb6f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTc1NCwiaWF0IjoxNzYyMDMwOTU0LCJqdGkiOiIzYmFmMGQzNjg3YmU0Y2ZiOTlhNjliYTkyOTU1Y2I2ZiIsInVzZXJfaWQiOjN9.Y2LpGT3QklUM8cTJF28esuCuhVOZN7J3Zh-wkzQRdpg",
+    "created_at": "2025-11-01T21:02:34.958Z",
+    "expires_at": "2025-11-08T21:02:34Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 194,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "be5f07800e874564afcbca706e0a1634",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTc3NiwiaWF0IjoxNzYyMDMwOTc2LCJqdGkiOiJiZTVmMDc4MDBlODc0NTY0YWZjYmNhNzA2ZTBhMTYzNCIsInVzZXJfaWQiOjJ9.9ryr-1tIiIZCmTADsHqKvIcZeD3FObQFGI1GtLlIM3U",
+    "created_at": "2025-11-01T21:02:56.562Z",
+    "expires_at": "2025-11-08T21:02:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 195,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "66230372f5714b798cfa3c2114e8c08a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNTc4MiwiaWF0IjoxNzYyMDMwOTgyLCJqdGkiOiI2NjIzMDM3MmY1NzE0Yjc5OGNmYTNjMjExNGU4YzA4YSIsInVzZXJfaWQiOjN9.ThQ1bZcyMaZpFfvXnSqPnwvawo1XqpMBmRDfdIaiZFs",
+    "created_at": "2025-11-01T21:03:02.475Z",
+    "expires_at": "2025-11-08T21:03:02Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 196,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "6113e25006ba4db8814d717ba337357e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzNjE1MSwiaWF0IjoxNzYyMDMxMzUxLCJqdGkiOiI2MTEzZTI1MDA2YmE0ZGI4ODE0ZDcxN2JhMzM3MzU3ZSIsInVzZXJfaWQiOjJ9.MC7cU0n1Na5ifkxqBtqavofRelEB6XIlBINaRTbLszw",
+    "created_at": "2025-11-01T21:09:11.218Z",
+    "expires_at": "2025-11-08T21:09:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 197,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "f6e0721d5a204119a31e1923bc14c8bd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzODEyMywiaWF0IjoxNzYyMDMzMzIzLCJqdGkiOiJmNmUwNzIxZDVhMjA0MTE5YTMxZTE5MjNiYzE0YzhiZCIsInVzZXJfaWQiOjJ9.h-hUKRxHeZIMS5GLL7WYO4H99SwV_WYpr7jCGE_g77k",
+    "created_at": "2025-11-01T21:42:03.540Z",
+    "expires_at": "2025-11-08T21:42:03Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 198,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "5085dc99bdd34e3f8d88fa4f4fec9ba1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTE5NiwiaWF0IjoxNzYyMDM0Mzk2LCJqdGkiOiI1MDg1ZGM5OWJkZDM0ZTNmOGQ4OGZhNGY0ZmVjOWJhMSIsInVzZXJfaWQiOjN9.PsBlkvGd0GqdvAy4-TkN4Lgafi_tBYBoSak-6raU1Uo",
+    "created_at": "2025-11-01T21:59:56.502Z",
+    "expires_at": "2025-11-08T21:59:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 199,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "04dd7e7e85e1493194a1f22c7e03e26f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTIwNCwiaWF0IjoxNzYyMDM0NDA0LCJqdGkiOiIwNGRkN2U3ZTg1ZTE0OTMxOTRhMWYyMmM3ZTAzZTI2ZiIsInVzZXJfaWQiOjN9.K2FQhJeLNfCuCNk-88CKdAOMI0K8NPPjewrLBPzIEZM",
+    "created_at": "2025-11-01T22:00:04.926Z",
+    "expires_at": "2025-11-08T22:00:04Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 200,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "283044bd94734cb5a9cb898565f502a8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTIxMSwiaWF0IjoxNzYyMDM0NDExLCJqdGkiOiIyODMwNDRiZDk0NzM0Y2I1YTljYjg5ODU2NWY1MDJhOCIsInVzZXJfaWQiOjJ9.muyLGuytlz7GeubviKxrxZ9fnxRzyCGhBq26sGcSm-I",
+    "created_at": "2025-11-01T22:00:11.984Z",
+    "expires_at": "2025-11-08T22:00:11Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 201,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "b67305b506a64b19978475cf64680d3f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTY5OSwiaWF0IjoxNzYyMDM0ODk5LCJqdGkiOiJiNjczMDViNTA2YTY0YjE5OTc4NDc1Y2Y2NDY4MGQzZiIsInVzZXJfaWQiOjN9.LPlRZbDw4CRE7WdvChmkMqDLTinCHeqJdHx4WSW7oUY",
+    "created_at": "2025-11-01T22:08:19.821Z",
+    "expires_at": "2025-11-08T22:08:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 202,
+  "fields": {
+    "user": [
+      "cuidador_demo"
+    ],
+    "jti": "6063c17de84d4f98866be78b49974537",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTc4NSwiaWF0IjoxNzYyMDM0OTg1LCJqdGkiOiI2MDYzYzE3ZGU4NGQ0Zjk4ODY2YmU3OGI0OTk3NDUzNyIsInVzZXJfaWQiOjN9.-MGrPVMQMWzZgzylIhbuxAYGgjWC788x1C9bw9o7xT4",
+    "created_at": "2025-11-01T22:09:45.831Z",
+    "expires_at": "2025-11-08T22:09:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 203,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "5f6a2e0253394c6fad8ab133ef7ff35b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjYzOTc5MSwiaWF0IjoxNzYyMDM0OTkxLCJqdGkiOiI1ZjZhMmUwMjUzMzk0YzZmYWQ4YWIxMzNlZjdmZjM1YiIsInVzZXJfaWQiOjJ9.oL6gwCFYdUnNlXHHfFrZn4M-Eh7vRlEXaZk3CGoaGtw",
+    "created_at": "2025-11-01T22:09:51.000Z",
+    "expires_at": "2025-11-08T22:09:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 204,
+  "fields": {
+    "user": [
+      "cliente_demo"
+    ],
+    "jti": "c520a2ea8bb24118b32338683a97c51b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjY0MTg1MSwiaWF0IjoxNzYyMDM3MDUxLCJqdGkiOiJjNTIwYTJlYThiYjI0MTE4YjMyMzM4NjgzYTk3YzUxYiIsInVzZXJfaWQiOjJ9.9rzniRIacLFkR4gbMPaGBdQH_NuNfUti7L057cTSuCo",
+    "created_at": "2025-11-01T22:44:11.847Z",
+    "expires_at": "2025-11-08T22:44:11Z"
+  }
+}
+]

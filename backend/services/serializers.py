@@ -83,9 +83,7 @@ class ServicioSerializer(serializers.ModelSerializer):
     def get_en_curso(self, obj):
         now = timezone.now()
         en_curso = obj.aceptado and (obj.fecha_inicio <= now <= obj.fecha_fin)
-        
-        print("en_curso");
-        print(en_curso);
+
         return en_curso;
 
     def _get_calif(self, obj, who):

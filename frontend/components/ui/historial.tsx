@@ -280,7 +280,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                           EN CURSO
                         </Badge>
                       )}
-                      {s.fecha_inicio > nowISO && (
+                      {s.fecha_inicio > nowISO && s.aceptado && (
                         <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-blue-100 text-blue-700">
                           FUTURO
                         </Badge>
