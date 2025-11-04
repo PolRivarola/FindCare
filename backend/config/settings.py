@@ -12,9 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables
+load_dotenv()
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -85,20 +90,36 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'tfg-findcare-db',
-    #     'USER': 'tfg_findcare_db_user',
-    #     'PASSWORD': '41k6aq9WaE3rS30weJT4K1BnQspZpKUT',
-    #     'HOST': 'dpg-d1g2t6vgi27c73edoel0-a.render.com',
-    #     'PORT': '5432',
-    # }
-        'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # Supabase/PostgreSQL connection
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
     }
-}
+    # Ensure PostgreSQL engine is explicitly set
+    DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
+    # Add SSL options for Supabase
+    if "OPTIONS" not in DATABASES["default"]:
+        DATABASES["default"]["OPTIONS"] = {}
+    DATABASES["default"]["OPTIONS"]["sslmode"] = "require"
+    
+    # Note: For Supabase, use Session Pooler connection string if you're on IPv4-only network
+    # The direct connection (port 5432) is IPv6-only and may not work on all networks
+    # Session Pooler uses port 6543 (transaction mode) or 5432 (session mode with pooler)
+else:
+    # Fallback to SQLite for local development
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
