@@ -23,7 +23,7 @@ from users.admin_views import AdminStatsView, AdminFlaggedRatingsView, AdminRati
 from location.views import CiudadViewSet, DireccionViewSet, ProvinciaViewSet
 from chat.views import ConversacionViewSet, MensajeViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
-from users.views_auth import LoginView, LogoutView
+from users.views_auth import LoginView, LogoutView, PasswordRecoveryRequestView, PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 from services.views import (
@@ -62,6 +62,8 @@ urlpatterns = [
     path("api/auth/login/", LoginView.as_view(), name="auth_login"),
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="auth_refresh"),
     path("api/auth/logout/", LogoutView.as_view(), name="auth_logout"),
+    path("api/auth/recover-password/", PasswordRecoveryRequestView.as_view(), name="auth_recover_password"),
+    path("api/auth/reset-password/", PasswordResetConfirmView.as_view(), name="auth_reset_password"),
     path("api/users/me/", MeView.as_view(), name="users_me"),
     path("api/perfil/<int:pk>/",  PerfilPublicoView.as_view(), name="perfil_publico"),  
     path("api/cuidador/perfil/", CuidadorPerfilView.as_view(), name="cuidador_perfil"),

@@ -260,6 +260,7 @@ export default function Registro() {
                     categoriasDisponibles={categoriasDisponibles}
                     loading={loadingCatalogos}
                     onSubmit={handleRegistroCliente}
+                    mode="create"
                     title="Registro Cliente"
                   />
                 ) : ( 

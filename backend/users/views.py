@@ -53,7 +53,7 @@ class TipoClienteViewSet(viewsets.ReadOnlyModelViewSet):
 class RegistroClienteView(CreateAPIView):
     queryset = Cliente.objects.all()
     serializer_class = RegistroClienteSerializer
-    permission_classes = [AllowAny] # Permite registro sin autenticación
+    permission_classes = [AllowAny]
 
 class RegistroCuidadorView(CreateAPIView):
     queryset = Cuidador.objects.all()
@@ -75,17 +75,14 @@ class CuidadorSearchView(ListAPIView):
     def get_queryset(self):
         queryset = Cuidador.objects.select_related('usuario', 'usuario__direccion', 'usuario__direccion__ciudad', 'usuario__direccion__ciudad__provincia').prefetch_related('tipos_cliente')
         
-        # Filter by provincia
         provincia_id = self.request.query_params.get('provincia')
         if provincia_id:
             queryset = queryset.filter(usuario__direccion__ciudad__provincia__id=provincia_id)
         
-        # Filter by ciudad
         ciudad_id = self.request.query_params.get('ciudad')
         if ciudad_id:
             queryset = queryset.filter(usuario__direccion__ciudad__id=ciudad_id)
         
-        # Filter by minimum experience
         min_experiencia = self.request.query_params.get('min_experiencia')
         if min_experiencia:
             try:
@@ -93,7 +90,6 @@ class CuidadorSearchView(ListAPIView):
             except ValueError:
                 pass
         
-        # Filter by specialty (tipos_cliente)
         especialidad_ids = self.request.query_params.getlist('especialidad')
         if especialidad_ids:
             queryset = queryset.filter(tipos_cliente__id__in=especialidad_ids).distinct()

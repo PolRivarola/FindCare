@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DateInput } from "@/components/ui/DateInput";
 import { Calendar, Clock, MapPin, FileText, User } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface SolicitarServicioModalProps {
   open: boolean;
@@ -34,12 +35,83 @@ export function SolicitarServicioModal({
     fecha_inicio: "",
     fecha_fin: "",
     hora: "",
-    ubicacion: "",
     foto: "",
     descripcion: "",
     dias_semanales: [] as string[],
   });
   const [errors, setErrors] = useState<string[]>([]);
+
+  // Map Spanish day names to JavaScript day numbers
+  const dayNameToNumber: Record<string, number> = {
+    'Domingo': 0,
+    'Lunes': 1,
+    'Martes': 2,
+    'Miércoles': 3,
+    'Jueves': 4,
+    'Viernes': 5,
+    'Sábado': 6,
+  };
+
+  // Calculate which days are enabled based on date range
+  const enabledDays = useMemo((): Set<string> => {
+    const enabled = new Set<string>();
+    
+    if (!formData.fecha_inicio || !formData.fecha_fin) {
+      return enabled;
+    }
+
+    // Parse dates explicitly to avoid timezone issues
+    // fecha_inicio format: "YYYY-MM-DD"
+    const parseLocalDate = (dateString: string): Date => {
+      const [year, month, day] = dateString.split('-').map(Number);
+      return new Date(year, month - 1, day); // month is 0-indexed in Date constructor
+    };
+
+    const startDate = parseLocalDate(formData.fecha_inicio);
+    const endDate = parseLocalDate(formData.fecha_fin);
+
+    if (startDate >= endDate) {
+      return enabled;
+    }
+
+    // Iterate through each day in the range
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      const dayNumber = currentDate.getDay();
+      
+      // Find the Spanish day name that matches this day number
+      const dayName = Object.keys(dayNameToNumber).find(
+        name => dayNameToNumber[name] === dayNumber
+      );
+      
+      if (dayName) {
+        enabled.add(dayName);
+      }
+      
+      // Move to next day
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return enabled;
+  }, [formData.fecha_inicio, formData.fecha_fin]);
+
+  // Clear invalid selected days when date range changes
+  useEffect(() => {
+    if (formData.fecha_inicio && formData.fecha_fin) {
+      setFormData((prev) => {
+        const validDays = prev.dias_semanales.filter((dia) =>
+          enabledDays.has(dia)
+        );
+        if (validDays.length !== prev.dias_semanales.length) {
+          return { ...prev, dias_semanales: validDays };
+        }
+        return prev;
+      });
+    } else {
+      // If dates are cleared, clear selected days
+      setFormData((prev) => ({ ...prev, dias_semanales: [] }));
+    }
+  }, [enabledDays]);
 
   // Clear errors when form data changes and validation passes
   useEffect(() => {
@@ -55,18 +127,11 @@ export function SolicitarServicioModal({
     const validationErrors: string[] = [];
     
     if (!formData.fecha_inicio || !formData.fecha_fin) {
-      return validationErrors; // Let the required field validation handle this
+      return validationErrors; 
     }
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day
     
     const startDate = new Date(formData.fecha_inicio);
     const endDate = new Date(formData.fecha_fin);
-    
-    if (startDate <= today) {
-      validationErrors.push("La fecha de inicio debe ser posterior a hoy");
-    }
     
     if (startDate >= endDate) {
       validationErrors.push("La fecha de inicio debe ser anterior a la fecha de fin");
@@ -91,7 +156,6 @@ export function SolicitarServicioModal({
       fecha_inicio: "",
       fecha_fin: "",
       hora: "",
-      ubicacion: "",
       foto: "",
       descripcion: "",
       dias_semanales: [],
@@ -163,17 +227,17 @@ export function SolicitarServicioModal({
                 <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
                 Fecha de Inicio
               </Label>
-              <Input
+              <DateInput
                 id="fecha_inicio"
-                type="date"
                 value={formData.fecha_inicio}
                 min={new Date().toISOString().split('T')[0]}
-                onChange={(e) =>
+                onChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
-                    fecha_inicio: e.target.value,
+                    fecha_inicio: value,
                   }))
                 }
+                placeholder="DD/MM/YYYY"
                 className="focus-visible:ring-2 focus-visible:ring-purple-600"
               />
             </div>
@@ -182,17 +246,17 @@ export function SolicitarServicioModal({
                 <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
                 Fecha de Fin
               </Label>
-              <Input
+              <DateInput
                 id="fecha_fin"
-                type="date"
                 value={formData.fecha_fin}
-                min={formData.fecha_inicio || new Date().toISOString().split('T')[0]}
-                onChange={(e) =>
+                min={formData.fecha_inicio}
+                onChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
-                    fecha_fin: e.target.value,
+                    fecha_fin: value,
                   }))
                 }
+                placeholder="DD/MM/YYYY"
                 className="focus-visible:ring-2 focus-visible:ring-purple-600"
               />
             </div>
@@ -246,50 +310,58 @@ export function SolicitarServicioModal({
               Días de la Semana
             </Label>
             <div className="grid grid-cols-2 gap-3">
-              {diasSemanales.map((dia) => (
-                <div key={dia.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50">
-                  <Checkbox
-                    id={dia.id.toString()}
-                    checked={formData.dias_semanales.includes(dia.nombre)}
-                    onCheckedChange={(checked) => {
-                      setFormData((prev) => {
-                        const dias = checked
-                          ? [...prev.dias_semanales, dia.nombre]
-                          : prev.dias_semanales.filter((d) => d !== dia.nombre);
-                        return { ...prev, dias_semanales: dias };
-                      });
-                    }}
-                  />
-                  <label
-                    htmlFor={dia.id.toString()}
-                    className="text-sm text-gray-700 cursor-pointer flex-1"
+              {diasSemanales.map((dia) => {
+                const isEnabled = enabledDays.has(dia.nombre);
+                const isSelected = formData.dias_semanales.includes(dia.nombre);
+                
+                return (
+                  <div 
+                    key={dia.id} 
+                    className={`flex items-center gap-3 p-3 border rounded-lg transition-colors ${
+                      isEnabled 
+                        ? 'hover:bg-gray-50 cursor-pointer' 
+                        : 'opacity-50 bg-gray-50 cursor-not-allowed'
+                    }`}
                   >
-                    {dia.nombre}
-                  </label>
-                </div>
-              ))}
+                    <Checkbox
+                      id={dia.id.toString()}
+                      checked={isSelected}
+                      disabled={!isEnabled}
+                      onCheckedChange={(checked) => {
+                        if (!isEnabled) return;
+                        setFormData((prev) => {
+                          const dias = checked
+                            ? [...prev.dias_semanales, dia.nombre]
+                            : prev.dias_semanales.filter((d) => d !== dia.nombre);
+                          return { ...prev, dias_semanales: dias };
+                        });
+                      }}
+                    />
+                    <label
+                      htmlFor={dia.id.toString()}
+                      className={`text-sm flex-1 ${
+                        isEnabled 
+                          ? 'text-gray-700 cursor-pointer' 
+                          : 'text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      {dia.nombre}
+                      {!isEnabled && formData.fecha_inicio && formData.fecha_fin && (
+                        <span className="text-xs text-gray-400 ml-1">(fuera del rango)</span>
+                      )}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
+            {formData.fecha_inicio && formData.fecha_fin && enabledDays.size === 0 && (
+              <p className="text-sm text-amber-600 mt-2">
+                ⚠️ El rango de fechas seleccionado no incluye ningún día. Ajusta las fechas.
+              </p>
+            )}
           </div>
 
-          {/* Ubicación */}
-          <div>
-            <Label htmlFor="ubicacion" className="text-sm font-medium text-gray-700 mb-2 block">
-              <MapPin className="h-4 w-4 inline mr-2 text-purple-600" />
-              Ubicación del Servicio
-            </Label>
-            <Input
-              id="ubicacion"
-              value={formData.ubicacion}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  ubicacion: e.target.value,
-                }))
-              }
-              placeholder="Dirección donde se prestará el servicio"
-              className="focus-visible:ring-2 focus-visible:ring-purple-600"
-            />
-          </div>
+
 
           {/* Descripción */}
           <div>
@@ -351,7 +423,7 @@ export function SolicitarServicioModal({
             </Button>
             <Button
               onClick={handleSubmit}
-              disabled={loading || formData.servicio.length === 0 || !formData.fecha_inicio || !formData.fecha_fin || !formData.hora || !formData.ubicacion || formData.dias_semanales.length === 0}
+              disabled={loading || formData.servicio.length === 0 || !formData.fecha_inicio || !formData.fecha_fin || !formData.hora || formData.dias_semanales.length === 0}
               className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 disabled:opacity-50"
             >
               {loading ? "Enviando..." : "Enviar Solicitud"}

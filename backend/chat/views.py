@@ -62,12 +62,9 @@ class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=["get"], url_path="unread")
     def unread(self, request):
         user = request.user
-        # count of messages not sent by user and not marked read by user
         total = Mensaje.objects.filter(
             Q(conversacion__cliente=user) | Q(conversacion__cuidador=user)
         ).exclude(emisor=user).exclude(leido_por=user).count()
-        print("total")
-        print(total)
         return Response({"has_unread": total > 0, "count": total})
 
     @action(detail=True, methods=["get", "post"], url_path="mensajes")
@@ -98,7 +95,6 @@ class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
             data = list(reversed(ser.data))  # mostrar cronológicamente en el cliente
             return paginator.get_paginated_response(data)
 
-        # POST
         contenido = (request.data.get("content") or request.data.get("contenido") or "").strip()
         if not contenido:
             return Response({"detail": "content es requerido"}, status=400)

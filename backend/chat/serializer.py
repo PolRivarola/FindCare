@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
 from .models import Conversacion, Mensaje
-from users.models import Usuario  # tu user
+from users.models import Usuario
 
 class ConversacionListSerializer(serializers.ModelSerializer):
     nombre = serializers.SerializerMethodField()

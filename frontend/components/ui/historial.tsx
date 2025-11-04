@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CircleUserRound, Star, MessageCircle, FileText } from "lucide-react";
+import { CircleUserRound, Star, MessageCircle, FileText, User, Clock } from "lucide-react";
 import { formatDate } from "@/lib/utils/dateFormat";
 
 import { Card } from "@/components/ui/card";
@@ -62,6 +62,7 @@ type Props = { tipoUsuario: "cliente" | "cuidador" };
 export function HistorialServicios({ tipoUsuario }: Props) {
   const user = useUser();
   const [rows, setRows] = useState<ServicioRead[]>([]);
+  const [pendingRows, setPendingRows] = useState<ServicioRead[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [pagination, setPagination] = useState({ page: 1, hasNext: false });
@@ -87,6 +88,14 @@ export function HistorialServicios({ tipoUsuario }: Props) {
 
     (async () => {
       try {
+        const base =
+          tipoUsuario === "cuidador"
+            ? { receptor_id: user.id }
+            : { cliente_id: user.id };
+
+        // Fetch accepted services (existing logic)
+        const acceptedParams: Record<string, string | number> = {
+          aceptado: "true", // string en lugar de boolean
         const params: Record<string, string | number> = {
           aceptado: "true",
           ordering: "-fecha_inicio",
@@ -95,6 +104,21 @@ export function HistorialServicios({ tipoUsuario }: Props) {
             : { cliente_id: user.id }),
         };
 
+        const acceptedData = await apiGet<ServicioRead[]>("/servicios", acceptedParams);
+
+        if (!ac.signal.aborted) setRows(acceptedData);
+
+        // For cliente users, also fetch pending services
+        if (tipoUsuario === "cliente") {
+          const pendingParams: Record<string, string | number> = {
+            aceptado: "false", // pending services
+            ordering: "-fecha_inicio",
+            cliente_id: user.id,
+          };
+
+          const pendingData = await apiGet<ServicioRead[]>("/servicios", pendingParams);
+
+          if (!ac.signal.aborted) setPendingRows(pendingData);
         paramsRef.current = params;
 
         const data = await apiGet<PaginatedResponse<ServicioRead>>("/servicios", params);
@@ -237,18 +261,21 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 px-2 sm:px-4 md:px-0">
       <PageTitle>Historial de Servicios</PageTitle>
 
       {loading ? (
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {[1, 2].map((i) => (
-            <Skeleton key={i} className="h-28 w-full rounded-lg bg-gray-300" />
+            <Skeleton key={i} className="h-24 md:h-28 w-full rounded-lg bg-gray-300" />
           ))}
         </div>
       ) : (
-        <div className="space-y-4">
-          {rows.map((s) => {
+        <div className="space-y-3 md:space-y-4">
+          {/* Combine accepted and pending services, sort by date */}
+          {[...rows, ...pendingRows]
+            .sort((a, b) => new Date(b.fecha_inicio).getTime() - new Date(a.fecha_inicio).getTime())
+            .map((s) => {
             const contraparte = getContraparte(s);
             const miCalif = getMiCalificacion(s);
             const perfilHref =
@@ -259,20 +286,25 @@ export function HistorialServicios({ tipoUsuario }: Props) {
             return (
               <Card
                 key={s.id}
-                className="p-6 flex justify-between items-center"
+                className="p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
               >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 md:gap-6 w-full sm:w-auto">
                   {contraparte.foto_perfil ? (
-                  <img src={contraparte.foto_perfil} alt={`Foto de ${nombre(contraparte)}`} className="h-12 w-12 rounded-full mx-auto mb-4 object-cover border-2 border-blue-200" />
+                  <img src={contraparte.foto_perfil} alt={`Foto de ${nombre(contraparte)}`} className="h-12 w-12 md:h-16 md:w-16 rounded-full object-cover border-2 border-blue-200 flex-shrink-0" />
                   ) : (
-                    <CircleUserRound className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                    <CircleUserRound className="h-12 w-12 md:h-16 md:w-16 text-blue-600 flex-shrink-0" />
                   )}
-                  <div>
-                    <p className="text-xl font-semibold">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-base md:text-xl font-semibold truncate">
                       {nombre(contraparte)}
                     </p>
-                    <p className="text-l text-gray-500">
+                    <p className="text-sm md:text-base text-gray-500 mt-1">
                       {formatDate(s.fecha_inicio.slice(0, 10))} - {formatDate(s.fecha_fin.slice(0, 10))}
+                      {!s.aceptado && tipoUsuario === "cliente" && (
+                        <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-yellow-100 text-yellow-700">
+                          PENDIENTE
+                        </Badge>
+                      )}
                       {s.en_curso && (
                         <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-green-100 text-green-700">
                           EN CURSO
@@ -287,32 +319,57 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-base w-96 justify-start">
-                  <Button 
-                    variant="outline" 
-                    onClick={() => abrirDetalleModal(s)}
-                    className="flex items-center gap-2"
-                  >
-                    <FileText className="h-4 w-4" />
-                    Detalles
-                  </Button>
+                <div className="flex items-center gap-2 md:gap-3 text-sm md:text-base w-[240px] justify-start flex-wrap">
+                  <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          onClick={() => abrirDetalleModal(s)}
+                          className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center hover:text-purple-600 hover:border-purple-600"
+                        >
+                          <FileText className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Detalles</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <Link href={perfilHref}>
-                    <Button variant="outline">Ver perfil</Button>
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center hover:text-purple-600 hover:border-purple-600"
+                          >
+                            <User className="h-4 w-4 " />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Ver perfil</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </Link>
                   
-                  {s.en_curso || s.fecha_inicio > nowISO ? (
+                  {!s.aceptado && tipoUsuario === "cliente" ? (
+                    // For pending services, only show details and profile buttons
+                    <div className="h-9 min-w-[80px] flex items-center justify-center">
+                      <Clock className="h-4 w-4 text-gray-400 mr-1" />
+                      <span className="text-gray-400 text-xs">Esperando respuesta</span>
+                    </div>
+                  ) : s.en_curso || s.fecha_inicio > nowISO ? (
                     <TooltipProvider delayDuration={100}>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
-                            variant="ghost"
-                            size="icon"
+                            variant="outline"
+                            size="sm"
                             onClick={() => abrirChat(s)}
-                            
-                            
-                            className="text-purple-600 hover:text-green-600 w-full"
+                            className="flex items-center gap-1 md:gap-2 text-purple-600 hover:text-green-600 h-9 px-2 md:px-4 border-purple-200 hover:border-green-300 min-w-[80px] justify-center"
                           >
-                            <MessageCircle className="!h-8 !w-8" />
+                            <MessageCircle className="h-4 w-4" />
+                            <span className="hidden xs:inline">Chat</span>
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>Abrir chat</TooltipContent>
@@ -322,13 +379,13 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="flex items-center text-yellow-500 cursor-default">
+                          <button className="flex items-center justify-center text-yellow-500 cursor-default h-9 px-2 md:px-4 border border-gray-200 rounded-md bg-gray-50 min-w-[80px]">
                             <StarRating 
                               rating={miCalif.puntuacion} 
-                              size="lg"
+                              size="md"
                               className="text-yellow-500"
                             />
-                          </div>
+                          </button>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p className="max-w-xs">
@@ -341,13 +398,18 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                     </TooltipProvider>
                   ) : s.puede_calificar ? (
                     <Button
-                      className="text-base px-4 py-2"
-                      onClick={() => abrirModal(s.id, nombre(contraparte))}
                       variant="gradient"
+                      size="sm"
+                      onClick={() => abrirModal(s.id, nombre(contraparte))}
+                      className="text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center"
                     >
                       Calificar
                     </Button>
-                  ) : null}
+                  ) : (
+                    <div className="h-9 min-w-[80px] flex items-center justify-center">
+                      <span className="text-gray-400 text-xs">—</span>
+                    </div>
+                  )}
                 </div>
               </Card>
             );

@@ -12,6 +12,8 @@ class Usuario(AbstractUser):
     descripcion_min = models.CharField(max_length=255, blank=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
+    password_reset_token = models.CharField(max_length=255, blank=True, null=True)
+    password_reset_token_expires = models.DateTimeField(null=True, blank=True)
 
 class TipoCliente(models.Model):
     nombre = models.CharField(max_length=100)

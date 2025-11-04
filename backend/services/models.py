@@ -16,7 +16,7 @@ class Servicio(models.Model):
 
 class Calificacion(models.Model):
     servicio = models.ForeignKey("Servicio", on_delete=models.CASCADE, related_name="calificaciones")
-    autor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)  # cliente o cuidador
+    autor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     receptor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="calificaciones_recibidas")
     puntuacion = models.PositiveSmallIntegerField()
     comentario = models.TextField(blank=True, null=True)

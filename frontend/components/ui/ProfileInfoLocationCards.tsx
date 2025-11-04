@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DateInput } from "@/components/ui/DateInput";
 import { CalendarDays, MapPin, User } from "lucide-react";
 import React from "react";
 
@@ -78,7 +79,16 @@ export default function ProfileInfoLocationCards({ perfil, setPerfil, provincias
               Fecha de Nacimiento
               {showRequired && <span className="text-red-500 font-bold">*</span>}
             </label>
-            <Input type="date" value={perfil.fecha_nacimiento || ""} onChange={(e) => setPerfil({ ...perfil, fecha_nacimiento: e.target.value })} className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors" />
+            <DateInput
+              value={perfil.fecha_nacimiento || ""}
+              onChange={(value: any) => setPerfil({ ...perfil, fecha_nacimiento: value })}
+              placeholder="DD/MM/YYYY"
+              max={new Date().toISOString().split('T')[0]}
+              enableYearNavigation={true}
+              fromYear={1920}
+              toYear={new Date().getFullYear()}
+              className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
+            />
           </div>
 
           <div className="space-y-2"> 

@@ -2,23 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Heart, Search, MapPin, Star, Clock, Filter } from "lucide-react";
-import Link from "next/link";
-import PageTitle from "@/components/ui/title";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SolicitarServicioModal } from "@/components/ui/SolicitarServicioModal";
+import { FilterComponent } from "@/components/ui/FilterComponent";
+import { CuidadorCard } from "@/components/ui/CuidadorCard";
+import PageTitle from "@/components/ui/title";
+import { useCuidadoresSearch } from "@/hooks/useCuidadoresSearch";
+import { useServiceRequest } from "@/hooks/useServiceRequest";
 import { toast } from "sonner";
 import { apiGet, apiPost } from "@/lib/api";
 import { PaginatedResponse } from "@/lib/types";
@@ -26,7 +16,6 @@ import { PaginatedResponse } from "@/lib/types";
 export default function BuscarCuidadoresPage() {
   const [filters, setFilters] = useState({
     especialidad: [] as number[],
-    disponibilidad: "",
     experiencia: "",
   });
   const [orden, setOrden] = useState("");
@@ -49,29 +38,61 @@ export default function BuscarCuidadoresPage() {
   const [cuidadoresMeta, setCuidadoresMeta] = useState({ page: 1, count: 0, hasNext: false });
   const firstSearchRef = useRef(true);
 
+  const {
+    cuidadores,
+    loading,
+    serviciosDisponibles,
+    provincias,
+    ciudades,
+    diasSemanales,
+    horariosDiarios,
+    searchCuidadores,
+  } = useCuidadoresSearch();
+
+  const {
+    modalOpen,
+    selectedCuidador,
+    solicitudEnviada,
+    modalLoading,
+    openModal,
+    closeModal,
+    handleSolicitud,
+  } = useServiceRequest();
 
   const handleFilterChange = (field: string, value: string) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleEspecialidadChange = (especialidadId: number, checked: boolean) => {
-    setFilters((prev) => {
-      const nuevaEspecialidad = checked
-        ? [...prev.especialidad, especialidadId]
-        : prev.especialidad.filter((id) => id !== especialidadId);
-      return { ...prev, especialidad: nuevaEspecialidad };
+  const handleEspecialidadChange = (especialidad: number[]) => {
+    setFilters((prev) => ({ ...prev, especialidad }));
+  };
+
+  const handleProvinciaChange = (provincia: string) => {
+    setProvincia(provincia);
+    setCiudad(""); // Reset city when province changes
+  };
+
+  const handleCiudadChange = (ciudad: string) => {
+    setCiudad(ciudad);
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      especialidad: [],
+      experiencia: "",
     });
-  };
-
-  const handleProvinciaChange = (value: string) => {
-    setProvincia(value);
+    setProvincia("");
     setCiudad("");
+    setOrden("");
   };
 
-  const handleCiudadChange = (value: string) => {
-    setCiudad(value);
-  };
-
+  const performSearch = () => {
+    searchCuidadores({
+      filters,
+      orden,
+      provincia,
+      ciudad,
+    });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -160,7 +181,10 @@ export default function BuscarCuidadoresPage() {
     }
   };
 
+  // Auto-search when filters change
   useEffect(() => {
+    if (serviciosDisponibles.length > 0) {
+      performSearch();
     if (firstSearchRef.current) return;
     searchCuidadores(1, false);
   }, [provincia, ciudad, filters, orden]);
@@ -240,110 +264,94 @@ export default function BuscarCuidadoresPage() {
     } finally {
       setModalLoading(false);
     }
-  };
-
-  const openModal = (cuidador: any) => {
-    setSelectedCuidador(cuidador);
-    setModalOpen(true);
-  };
-
+  }, [filters, orden, provincia, ciudad, serviciosDisponibles]);
 
   return (
-    <div className=" mx-auto">
-      <div className="mb-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <PageTitle>Buscar Cuidadores</PageTitle>
-        <p className="text-gray-600">
-          Encuentra el cuidador perfecto para tus necesidades
-        </p>
-      </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+          {/* Filters */}
+          <div className="md:col-span-1">
+            <FilterComponent
+              serviciosDisponibles={serviciosDisponibles}
+              provincias={provincias}
+              ciudades={ciudades}
+              filters={filters}
+              provincia={provincia}
+              ciudad={ciudad}
+              onFilterChange={handleFilterChange}
+              onEspecialidadChange={handleEspecialidadChange}
+              onProvinciaChange={handleProvinciaChange}
+              onCiudadChange={handleCiudadChange}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Filtros */}
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Filter className="h-5 w-5 mr-2" />
-                Filtros
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label>Especialidades</Label>
-                <div className="space-y-2 mt-2">
-                  {serviciosDisponibles.map((servicio) => (
-                    <div key={servicio.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={servicio.id.toString()}
-                        checked={filters.especialidad.includes(servicio.id)}
-                        onCheckedChange={(checked) => handleEspecialidadChange(servicio.id, !!checked)}
-                      />
-                      <label htmlFor={servicio.id.toString()}>
-                        {servicio.nombre}
-                      </label>
+          {/* Results */}
+          <div className="md:col-span-3 space-y-6">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-gray-600">
+                Mostrando {cuidadores.length} cuidadores
+              </p>
+              <Select value={orden} onValueChange={(v) => setOrden(v)}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Ordenar por" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="-anios_experiencia">Más experiencia</SelectItem>
+                  <SelectItem value="anios_experiencia">Menos experiencia</SelectItem>
+                  <SelectItem value="usuario__first_name">Nombre A-Z</SelectItem>
+                  <SelectItem value="-usuario__first_name">Nombre Z-A</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {loading ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-white rounded-lg border p-6 animate-pulse">
+                    <div className="flex gap-6">
+                      <div className="w-24 h-24 bg-gray-300 rounded-full"></div>
+                      <div className="flex-1">
+                        <div className="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-300 rounded mb-4 w-2/3"></div>
+                        <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-300 rounded mb-4 w-1/2"></div>
+                        <div className="flex gap-3">
+                          <div className="h-10 bg-gray-300 rounded w-24"></div>
+                          <div className="h-10 bg-gray-300 rounded w-32"></div>
+                        </div>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-
-              <div>
-                <Label>Provincia</Label>
-                <Select value={provincia} onValueChange={handleProvinciaChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {provincias.map((prov) => (
-                      <SelectItem key={prov.id} value={prov.id.toString()}>
-                        {prov.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Ciudad</Label>
-                <Select
-                  value={ciudad}
-                  onValueChange={handleCiudadChange}
-                  disabled={!provincia}
+            ) : cuidadores.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">No se encontraron cuidadores con los filtros seleccionados</p>
+                <Button 
+                  variant="outline" 
+                  onClick={handleClearFilters}
+                  className="mt-4"
                 >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        provincia
-                          ? "Seleccionar"
-                          : "Primero selecciona una provincia"
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ciudades.map((city) => (
-                      <SelectItem key={city.id} value={city.id.toString()}>
-                        {city.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  Limpiar filtros
+                </Button>
               </div>
-
-              <div>
-                <Label>Experiencia Mínima</Label>
-                <Select
-                  onValueChange={(v) => handleFilterChange("experiencia", v)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1+ años</SelectItem>
-                    <SelectItem value="3">3+ años</SelectItem>
-                    <SelectItem value="5">5+ años</SelectItem>
-                    <SelectItem value="10">10+ años</SelectItem>
-                  </SelectContent>
-                </Select>
+            ) : (
+              <div className="space-y-4">
+                {cuidadores.map((cuidador) => (
+                  <CuidadorCard
+                    key={cuidador.id}
+                    cuidador={cuidador}
+                    solicitudEnviada={solicitudEnviada[cuidador.id] || false}
+                    onSolicitarServicio={() => openModal(cuidador)}
+                  />
+                ))}
               </div>
+            )}
+          </div>
 
               <Button
                 variant="outline"
@@ -477,17 +485,17 @@ export default function BuscarCuidadoresPage() {
             </>
           )}
         </div>
-      </div>
 
-      <SolicitarServicioModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        cuidador={selectedCuidador}
-        onSubmit={handleSolicitud}
-        loading={modalLoading}
-        diasSemanales={diasSemanales}
-        horariosDiarios={horariosDiarios}
-      />
+        <SolicitarServicioModal
+          open={modalOpen}
+          onClose={closeModal}
+          cuidador={selectedCuidador}
+          onSubmit={(formData) => handleSolicitud(formData, diasSemanales)}
+          loading={modalLoading}
+          diasSemanales={diasSemanales}
+          horariosDiarios={horariosDiarios}
+        />
+      </div>
     </div>
   );
 }

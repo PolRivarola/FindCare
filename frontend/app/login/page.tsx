@@ -169,7 +169,7 @@ export default function Login() {
 
               <div className="text-right">
                 <Link
-                  href="/recuperar"
+                  href="/recuperar-contrasena"
                   className="text-sm text-purple-600 hover:text-purple-700 transition-colors"
                 >
                   ¿Olvidaste tu contraseña?

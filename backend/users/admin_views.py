@@ -16,27 +16,20 @@ class AdminStatsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Check if user is admin (you might want to add proper admin permission check)
         if not request.user.is_staff:
             return Response({"detail": "Permission denied"}, status=403)
 
-        # Get total users
         total_usuarios = Usuario.objects.count()
         
-        # Get active cuidadores (users with cuidador profile)
         cuidadores_activos = Cuidador.objects.count()
         
-        # Get active clientes (users with cliente profile)
         clientes_activos = Cliente.objects.count()
         
-        # Get flagged ratings count
         calificaciones_pendientes = Calificacion.objects.filter(reportada=True).count()
         
-        # Get completed services
         servicios_completados = Servicio.objects.filter(aceptado=True).count()
         
-        # Calculate monthly revenue (placeholder - you might want to implement actual revenue tracking)
-        ingresos_mes = "$0"  # Placeholder
+        ingresos_mes = "$0"
 
         return Response({
             "totalUsuarios": total_usuarios,
@@ -56,11 +49,9 @@ class AdminFlaggedRatingsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Check if user is admin
         if not request.user.is_staff:
             return Response({"detail": "Permission denied"}, status=403)
 
-        # Get all flagged ratings with related user information
         flagged_ratings = Calificacion.objects.filter(
             reportada=True
         ).select_related(
@@ -69,7 +60,6 @@ class AdminFlaggedRatingsView(APIView):
 
         ratings_data = []
         for rating in flagged_ratings:
-            # Get cliente and cuidador names from the service
             servicio = rating.servicio
             cliente_nombre = f"{servicio.cliente.first_name} {servicio.cliente.last_name}".strip() or servicio.cliente.username
             cuidador_nombre = f"{servicio.receptor.first_name} {servicio.receptor.last_name}".strip() or servicio.receptor.username
@@ -82,7 +72,7 @@ class AdminFlaggedRatingsView(APIView):
                 "comentario": rating.comentario or "",
                 "fecha": rating.creado_en.strftime("%Y-%m-%d"),
                 "reportado": rating.motivo_reporte or "Sin motivo especificado",
-                "estado": "Pendiente",  # You might want to add a status field
+                "estado": "Pendiente",
             })
 
         return Response(ratings_data)
@@ -96,12 +86,11 @@ class AdminRatingActionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        # Check if user is admin
         if not request.user.is_staff:
             return Response({"detail": "Permission denied"}, status=403)
 
         rating_id = request.data.get('rating_id')
-        action = request.data.get('action')  # 'approve' or 'delete'
+        action = request.data.get('action')
 
         if not rating_id or not action:
             return Response({"detail": "rating_id and action are required"}, status=400)
@@ -112,13 +101,11 @@ class AdminRatingActionView(APIView):
             return Response({"detail": "Rating not found"}, status=404)
 
         if action == 'approve':
-            # Remove the flag
             rating.reportada = False
             rating.save()
             return Response({"message": "Rating approved successfully"})
         
         elif action == 'delete':
-            # Delete the rating
             rating.delete()
             return Response({"message": "Rating deleted successfully"})
         
