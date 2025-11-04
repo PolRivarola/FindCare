@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions
+from config.pagination import ConversationPagination, MessagePagination
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, NotFound
@@ -16,6 +17,7 @@ class IsParticipant(permissions.BasePermission):
 class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ConversacionListSerializer
+    pagination_class = ConversationPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -72,12 +74,26 @@ class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
             raise PermissionDenied("No participás en esta conversación.")
 
         if request.method.lower() == "get":
-            qs = conv.mensajes.select_related("emisor").all()
-            no_propios = qs.exclude(emisor=request.user)
-            for m in no_propios:
-                m.leido_por.add(request.user)
-            ser = MensajeSerializer(qs, many=True, context={"request": request})
-            return Response(ser.data)
+            qs = conv.mensajes.select_related("emisor").order_by("-creado_en")
+            paginator = MessagePagination()
+            page = paginator.paginate_queryset(qs, request, view=self)
+
+            if page is None:
+                page = list(qs)
+                for m in page:
+                    if m.emisor_id != request.user.id:
+                        m.leido_por.add(request.user)
+                ser = MensajeSerializer(page, many=True, context={"request": request})
+                data = list(reversed(ser.data))
+                return Response(data)
+
+            for m in page:
+                if m.emisor_id != request.user.id:
+                    m.leido_por.add(request.user)
+
+            ser = MensajeSerializer(page, many=True, context={"request": request})
+            data = list(reversed(ser.data))  # mostrar cronológicamente en el cliente
+            return paginator.get_paginated_response(data)
 
         contenido = (request.data.get("content") or request.data.get("contenido") or "").strip()
         if not contenido:
@@ -91,10 +107,11 @@ class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
 class MensajeViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = MensajeSerializer
+    pagination_class = MessagePagination
 
     def get_queryset(self):
         user = self.request.user
         return Mensaje.objects.filter(
             Q(conversacion__cliente=user) | Q(conversacion__cuidador=user)
-        ).select_related("emisor", "conversacion")
+        ).select_related("emisor", "conversacion").order_by("-creado_en")
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { CircleUserRound, Star, MessageCircle, FileText, User, Clock } from "lucide-react";
@@ -16,6 +16,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
 
 import { apiGet, apiPost } from "@/lib/api";
+import { PaginatedResponse } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import {
@@ -64,6 +65,9 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   const [pendingRows, setPendingRows] = useState<ServicioRead[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [pagination, setPagination] = useState({ page: 1, hasNext: false });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const paramsRef = useRef<Record<string, string | number>>({});
 
   // modal de calificación
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,6 +96,8 @@ export function HistorialServicios({ tipoUsuario }: Props) {
         // Fetch accepted services (existing logic)
         const acceptedParams: Record<string, string | number> = {
           aceptado: "true", // string en lugar de boolean
+        const params: Record<string, string | number> = {
+          aceptado: "true",
           ordering: "-fecha_inicio",
           ...(tipoUsuario === "cuidador"
             ? { receptor_id: user.id }
@@ -113,6 +119,13 @@ export function HistorialServicios({ tipoUsuario }: Props) {
           const pendingData = await apiGet<ServicioRead[]>("/servicios", pendingParams);
 
           if (!ac.signal.aborted) setPendingRows(pendingData);
+        paramsRef.current = params;
+
+        const data = await apiGet<PaginatedResponse<ServicioRead>>("/servicios", params);
+
+        if (!ac.signal.aborted) {
+          setRows(data.results);
+          setPagination({ page: 1, hasNext: Boolean(data.next) });
         }
       } catch {
         if (!ac.signal.aborted)
@@ -124,6 +137,23 @@ export function HistorialServicios({ tipoUsuario }: Props) {
 
     return () => ac.abort();
   }, [user, tipoUsuario, nowISO]);
+
+  const loadMore = async () => {
+    const nextPage = pagination.page + 1;
+    setLoadingMore(true);
+    try {
+      const response = await apiGet<PaginatedResponse<ServicioRead>>("/servicios", {
+        ...paramsRef.current,
+        page: nextPage,
+      });
+      setRows((prev) => [...prev, ...response.results]);
+      setPagination({ page: nextPage, hasNext: Boolean(response.next) });
+    } catch {
+      toast.error("No se pudieron cargar más servicios.");
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   // helpers UI
   const nombre = (u: UsuarioMini) =>
@@ -384,6 +414,14 @@ export function HistorialServicios({ tipoUsuario }: Props) {
               </Card>
             );
           })}
+
+          {pagination.hasNext && (
+            <div className="flex justify-center">
+              <Button variant="outline" onClick={loadMore} disabled={loadingMore}>
+                {loadingMore ? "Cargando..." : "Ver más"}
+              </Button>
+            </div>
+          )}
         </div>
       )}
 
