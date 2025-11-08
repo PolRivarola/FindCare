@@ -27,7 +27,11 @@ export default function BuscarCuidadoresPage() {
     ciudades,
     diasSemanales,
     horariosDiarios,
+    total,
+    hasMore,
+    loadingMore,
     searchCuidadores,
+    loadMoreCuidadores,
   } = useCuidadoresSearch();
 
   const {
@@ -110,7 +114,7 @@ export default function BuscarCuidadoresPage() {
           <div className="md:col-span-3 space-y-6">
             <div className="flex justify-between items-center mb-4">
               <p className="text-gray-600">
-                Mostrando {cuidadores.length} cuidadores
+                Mostrando {cuidadores.length} de {total} cuidadores
               </p>
               <Select value={orden} onValueChange={(v) => setOrden(v)}>
                 <SelectTrigger className="w-48">
@@ -157,16 +161,26 @@ export default function BuscarCuidadoresPage() {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
-                {cuidadores.map((cuidador) => (
-                  <CuidadorCard
-                    key={cuidador.id}
-                    cuidador={cuidador}
-                    solicitudEnviada={solicitudEnviada[cuidador.id] || false}
-                    onSolicitarServicio={() => openModal(cuidador)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="space-y-4">
+                  {cuidadores.map((cuidador) => (
+                    <CuidadorCard
+                      key={cuidador.id}
+                      cuidador={cuidador}
+                      solicitudEnviada={solicitudEnviada[cuidador.id] || false}
+                      onSolicitarServicio={() => openModal(cuidador)}
+                    />
+                  ))}
+                </div>
+
+                {hasMore && (
+                  <div className="flex justify-center pt-4">
+                    <Button variant="outline" onClick={loadMoreCuidadores} disabled={loadingMore}>
+                      {loadingMore ? "Cargando..." : "Cargar más"}
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

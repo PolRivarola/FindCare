@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 
 from .models import Conversacion, Mensaje
 from .serializer import ConversacionListSerializer, MensajeSerializer
+from .pagination import ConversationPagination, MessagePagination
 
 class IsParticipant(permissions.BasePermission):
     def has_object_permission(self, request, view, obj: Conversacion):
@@ -16,6 +17,7 @@ class IsParticipant(permissions.BasePermission):
 class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ConversacionListSerializer
+    pagination_class = ConversationPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -72,12 +74,17 @@ class ConversacionViewSet(viewsets.ReadOnlyModelViewSet):
             raise PermissionDenied("No participás en esta conversación.")
 
         if request.method.lower() == "get":
-            qs = conv.mensajes.select_related("emisor").all()
-            no_propios = qs.exclude(emisor=request.user)
-            for m in no_propios:
-                m.leido_por.add(request.user)
-            ser = MensajeSerializer(qs, many=True, context={"request": request})
-            return Response(ser.data)
+            paginator = MessagePagination()
+            qs = conv.mensajes.select_related("emisor").order_by("-creado_en")
+            page = paginator.paginate_queryset(qs, request, view=self)
+            mensajes = list(page)
+
+            for m in mensajes:
+                if m.emisor_id != request.user.id:
+                    m.leido_por.add(request.user)
+
+            ser = MensajeSerializer(mensajes, many=True, context={"request": request})
+            return paginator.get_paginated_response(ser.data)
 
         contenido = (request.data.get("content") or request.data.get("contenido") or "").strip()
         if not contenido:

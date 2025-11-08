@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ServicioDTO, Solicitud } from "@/lib/types";
+import { ServicioDTO, Solicitud, PaginatedResponse } from "@/lib/types";
 
 import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star, FileText } from "lucide-react";
 import Link from "next/link";
@@ -24,7 +24,9 @@ import { ReviewCard } from "@/components/ui/ReviewCard";
 import { useUser } from "@/context/UserContext";
 import { mapServiciosToUI } from "@/lib/mappers/servicios";
 import { SolicitudCard } from "@/components/ui/SolicitudCard";
+import { PaginationControls } from "@/components/PaginationControls";
 
+const REVIEWS_PAGE_SIZE = 3;
 
 export default function CuidadorDashboard() {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
@@ -32,6 +34,10 @@ export default function CuidadorDashboard() {
   const [modalOpenId, setModalOpenId] = useState<number | null>(null);
   const user = useUser();
   const [reviews, setReviews] = useState<any[]>([]);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [reviewsTotal, setReviewsTotal] = useState(0);
+  const [reviewsTotalPages, setReviewsTotalPages] = useState(0);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
   const [stats, setStats] = useState({
   serviciosCompletados: 0,
   calificacionPromedio: 0,
@@ -60,17 +66,16 @@ useEffect(() => {
         });
       }
       
-      const data = await apiGet<ServicioDTO[]>("/servicios/", {
+      const data = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios/", {
         receptor_id: uid,           
         aceptado: "false",          
         ordering: "-fecha_inicio",
+        page_size: 6,
       });
 
-      if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data) as unknown as Solicitud[]);
+      if (!ac.signal.aborted)
+        setSolicitudes(mapServiciosToUI(data.results) as unknown as Solicitud[]);
 
-      // cargar calificaciones recibidas por el cuidador
-      const califs = await apiGet<any[]>("/calificaciones", { receptor_id: uid });
-      if (!ac.signal.aborted) setReviews(califs);
     } catch {
       if (!ac.signal.aborted) {
         toast.error("Error al cargar datos");
@@ -82,6 +87,67 @@ useEffect(() => {
 
   return () => ac.abort();
 }, [user]);                      
+
+
+useEffect(() => {
+  if (!user) return;
+  let cancelled = false;
+
+  (async () => {
+    setReviewsLoading(true);
+    try {
+      const response = await apiGet<PaginatedResponse<any>>("/calificaciones", {
+        receptor_id: user.id,
+        page: reviewsPage,
+        page_size: REVIEWS_PAGE_SIZE,
+      });
+      if (cancelled) return;
+      const results = response.results || [];
+      const total = response.count ?? results.length ?? 0;
+      const totalPages = total === 0 ? 0 : Math.max(1, Math.ceil(total / REVIEWS_PAGE_SIZE));
+      if (totalPages > 0 && reviewsPage > totalPages) {
+        setReviewsPage(totalPages);
+        return;
+      }
+      setReviews(results);
+      setReviewsTotal(total);
+      setReviewsTotalPages(totalPages);
+    } catch {
+      if (!cancelled) {
+        toast.error("No se pudieron cargar las calificaciones");
+        setReviews([]);
+        setReviewsTotal(0);
+        setReviewsTotalPages(0);
+      }
+    } finally {
+      if (!cancelled) {
+        setReviewsLoading(false);
+      }
+    }
+  })();
+
+  return () => {
+    cancelled = true;
+  };
+}, [user, reviewsPage]);
+
+useEffect(() => {
+  setReviewsPage(1);
+}, [user?.id]);
+
+const handleReviewPageChange = (page: number) => {
+  if (reviewsTotalPages === 0) return;
+  const clamped = Math.max(1, Math.min(page, reviewsTotalPages));
+  if (clamped !== reviewsPage) {
+    setReviewsPage(clamped);
+  }
+};
+
+useEffect(() => {
+  if (reviewsTotalPages === 0 && reviewsPage !== 1) {
+    setReviewsPage(1);
+  }
+}, [reviewsTotalPages]);
 
 
   const aceptarSolicitud = (id: number) => {
@@ -311,31 +377,51 @@ useEffect(() => {
       </main>
       {/* Calificaciones recibidas */}
       <div className="p-6">
-        <Card>
+        <Card >
           <CardHeader>
             <CardTitle className="flex items-center">
               <Star className="h-5 w-5 mr-2" />
-              Calificaciones Recibidas
+              Opiniones Recibidas
             </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Mostrando {reviews.length} de {reviewsTotal} reseñas
+            </p>
           </CardHeader>
           <CardContent>
-            {reviews.length === 0 ? (
+            {reviewsLoading ? (
+              <div className="text-center text-sm text-muted-foreground">
+                Cargando calificaciones...
+              </div>
+            ) : reviews.length === 0 ? (
               <div className="text-gray-600">Aún no recibiste calificaciones.</div>
             ) : (
-              <div className="space-y-3">
-                {reviews.map((r) => (
-                  <ReviewCard
-                    key={r.id}
-                    id={r.id}
-                    rating={r.puntuacion}
-                    comment={r.comentario}
-                    date={r.creado_en}
-                    showReportButton={true}
-                    isReported={r.reportada}
-                    onReport={toggleReport}
+              <>
+                <div className="space-y-3">
+                  {reviews.map((r) => (
+                    <ReviewCard
+                      key={r.id}
+                      id={r.id}
+                      rating={r.puntuacion}
+                      comment={r.comentario}
+                      date={r.creado_en}
+                      showReportButton={true}
+                      isReported={r.reportada}
+                      onReport={toggleReport}
+                    />
+                  ))}
+                </div>
+                {reviewsTotalPages > 1 && (
+                  <PaginationControls
+                    page={reviewsPage}
+                    totalPages={reviewsTotalPages}
+                    count={reviewsTotal}
+                    pageSize={REVIEWS_PAGE_SIZE}
+                    onPageChange={handleReviewPageChange}
+                    disabled={reviewsLoading}
+                    className="mt-4"
                   />
-                ))}
-              </div>
+                )}
+              </>
             )}
           </CardContent>
         </Card>

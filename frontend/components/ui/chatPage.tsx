@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,12 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Send, MessageSquare } from "lucide-react";
 import { apiGet, apiPost } from "@/lib/api";
-import { Conversation, Message } from "@/lib/types";
+import { Conversation, Message, PaginatedResponse } from "@/lib/types";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 import PageTitle from "./title";
 import Link from "next/link";
+
+const CONVERSATION_PAGE_SIZE = 15;
+const MESSAGE_PAGE_SIZE = 10;
 
 export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cuidador" }) {
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
@@ -22,62 +25,199 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const conversationsContainerRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const [conversationPage, setConversationPage] = useState(1);
+  const [hasMoreConversations, setHasMoreConversations] = useState(false);
+  const [loadingMoreConversations, setLoadingMoreConversations] = useState(false);
+  const [messagePage, setMessagePage] = useState(1);
+  const [hasOlderMessages, setHasOlderMessages] = useState(false);
+  const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
   const search = useSearchParams();
   const router = useRouter();
+  const conversationParam = search.get("c");
   const { refreshUnreadStatus } = useUserContext();
+
+  const loadConversations = useCallback(
+    async (page: number, append = false) => {
+      if (append) {
+        setLoadingMoreConversations(true);
+      } else {
+        setLoadingConversations(true);
+      }
+      try {
+        const data = await apiGet<PaginatedResponse<Conversation>>("/conversaciones/", {
+          page,
+          page_size: CONVERSATION_PAGE_SIZE,
+        });
+        setConversations((prev) => (append ? [...prev, ...data.results] : data.results));
+        setConversationPage(page);
+        setHasMoreConversations(Boolean(data.next));
+        return data.results;
+      } catch {
+        if (append) {
+          toast.error("No se pudieron cargar más conversaciones.");
+        } else {
+          toast.error("No se pudieron cargar las conversaciones.");
+          setConversations([]);
+          setHasMoreConversations(false);
+          setConversationPage(1);
+        }
+        return [];
+      } finally {
+        if (append) {
+          setLoadingMoreConversations(false);
+        } else {
+          setLoadingConversations(false);
+        }
+      }
+    },
+    [toast]
+  );
+
+  const loadMessages = useCallback(
+    async (conversationId: number, page: number, append = false) => {
+      if (append) {
+        setLoadingOlderMessages(true);
+      } else {
+        setLoadingMessages(true);
+      }
+      try {
+        const data = await apiGet<PaginatedResponse<Message>>(`/conversaciones/${conversationId}/mensajes/`, {
+          page,
+          page_size: MESSAGE_PAGE_SIZE,
+        });
+        const ordered = [...data.results].reverse();
+        setMessages((prev) => (append ? [...ordered, ...prev] : ordered));
+        setMessagePage(page);
+        setHasOlderMessages(Boolean(data.next));
+        return ordered.length;
+      } catch {
+        if (append) {
+          toast.error("No se pudieron cargar más mensajes.");
+        } else {
+          toast.error("No se pudieron cargar los mensajes.");
+          setMessages([]);
+          setHasOlderMessages(false);
+          setMessagePage(1);
+        }
+        return 0;
+      } finally {
+        if (append) {
+          setLoadingOlderMessages(false);
+        } else {
+          setLoadingMessages(false);
+        }
+      }
+    },
+    [toast]
+  );
+
+  const handleConversationsScroll = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      if (!hasMoreConversations || loadingMoreConversations) return;
+      const target = event.currentTarget;
+      if (target.scrollTop + target.clientHeight >= target.scrollHeight - 48) {
+        loadConversations(conversationPage + 1, true);
+      }
+    },
+    [conversationPage, hasMoreConversations, loadingMoreConversations, loadConversations]
+  );
+
+  const handleMessagesScroll = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      if (
+        selectedChat == null ||
+        !hasOlderMessages ||
+        loadingOlderMessages
+      ) {
+        return;
+      }
+      const target = event.currentTarget;
+      if (target.scrollTop <= 40) {
+        const prevHeight = target.scrollHeight;
+        const prevTop = target.scrollTop;
+        loadMessages(selectedChat, messagePage + 1, true).then(() => {
+          requestAnimationFrame(() => {
+            if (messagesContainerRef.current) {
+              messagesContainerRef.current.scrollTop =
+                messagesContainerRef.current.scrollHeight - (prevHeight - prevTop);
+            }
+          });
+        });
+      }
+    },
+    [selectedChat, hasOlderMessages, loadingOlderMessages, loadMessages, messagePage]
+  );
 
   // CARGAR CONVERSACIONES
   useEffect(() => {
-    let abort = false;
-    setLoadingConversations(true);
+    let cancelled = false;
 
-    apiGet<Conversation[]>("/conversaciones/")
-      .then((data) => {
-        if (abort) return;
-        setConversations(data);
-        const desired = search.get("c");
-        if (desired) {
-          const id = Number(desired);
-          setSelectedChat((prev) => prev ?? (data.find(c => c.id === id)?.id ?? data[0]?.id ?? null));
-          // clean param
-          router.replace(location.pathname);
+    (async () => {
+      const results = await loadConversations(1);
+      if (cancelled) return;
+
+      let desiredId: number | null = conversationParam ? Number(conversationParam) : null;
+      if (desiredId !== null && Number.isNaN(desiredId)) {
+        desiredId = null;
+      }
+
+      if (desiredId != null) {
+        const exists = results.find((c) => c.id === desiredId) ?? null;
+        if (exists) {
+          setSelectedChat(desiredId);
+        } else if (results.length > 0) {
+          setSelectedChat(results[0].id);
         } else {
-          setSelectedChat((prev) => prev ?? data[0]?.id ?? null);
+          setSelectedChat(null);
         }
-      })
-      .catch(() => {
-        toast.error("No se pudieron cargar las conversaciones.");
-      })
-      .finally(() => !abort && setLoadingConversations(false));
+        if (typeof window !== "undefined") {
+          router.replace(window.location.pathname);
+        }
+      } else if (results.length > 0) {
+        setSelectedChat((prev) => prev ?? results[0].id);
+      } else {
+        setSelectedChat(null);
+      }
+    })();
 
-    return () => { abort = true; };
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [loadConversations, router, conversationParam]);
 
   // CARGAR MENSAJES DE LA CONVERSACIÓN SELECCIONADA
   useEffect(() => {
     if (selectedChat == null) return;
-    let abort = false;
-    setLoadingMessages(true);
+    let cancelled = false;
 
-    apiGet<Message[]>(`/conversaciones/${selectedChat}/mensajes/`)
-      .then(async (data) => {
-        if (abort) return;
-        setMessages(data);
-        let currentConvo = conversations.find(c => c.id === selectedChat)
-        if (currentConvo) {
-          currentConvo.noLeidos = 0;
-          setConversations([...conversations]);
+    (async () => {
+      await loadMessages(selectedChat, 1);
+      if (cancelled) return;
+
+      setMessagePage(1);
+      requestAnimationFrame(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
         }
-        // Refresh navbar unread status since messages were marked as read on the backend
-        await refreshUnreadStatus();
-      })
-      .catch(() => {
-        toast.error("No se pudieron cargar los mensajes.");
-      })
-      .finally(() => !abort && setLoadingMessages(false));
+      });
 
-    return () => { abort = true; };
-  }, [selectedChat]);
+      setConversations((prev) =>
+        prev
+          .map((c) =>
+            c.id === selectedChat ? { ...c, noLeidos: 0 } : c
+          )
+          .sort((a, b) => (a.id === selectedChat ? -1 : b.id === selectedChat ? 1 : 0))
+      );
+
+      await refreshUnreadStatus();
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedChat, loadMessages, refreshUnreadStatus]);
 
   // ENVIAR MENSAJE
   const handleSendMessage = async () => {
@@ -105,11 +245,15 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
     <div className="space-y-6">
       <PageTitle> Mis Conversaciones</PageTitle>
 
-      <div className="grid lg:grid-cols-3 gap-6 h-[600px]">
+      <div className="grid lg:grid-cols-3 gap-6" style={{ minHeight: "60vh", maxHeight: "75vh" }}>
         {/* LISTA DE CONVERSACIONES */}
         <Card className="lg:col-span-1">
           <CardHeader><CardTitle>Conversaciones</CardTitle></CardHeader>
-          <CardContent className="p-0 overflow-y-auto">
+          <CardContent
+            ref={conversationsContainerRef}
+            onScroll={handleConversationsScroll}
+            className="p-0 overflow-y-auto"
+          >
             {loadingConversations ? (
               <div className="space-y-4 p-4">
                 {[1,2,3].map(i => <Skeleton key={i} className="h-16 w-full bg-gray-300" />)}
@@ -123,40 +267,45 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
                 </div>
               </div>
             ) : (
-              conversations.map((conversation) => (
-                <div
-                  key={conversation.id}
-                  onClick={() => setSelectedChat(conversation.id)}
-                  className={`p-4 cursor-pointer hover:bg-gray-50 ${
-                    selectedChat === conversation.id ? "bg-blue-50 border-l-4 border-blue-500" : ""
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center">
-                        {conversation.nombre.charAt(0)}
+              <>
+                {conversations.map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    onClick={() => setSelectedChat(conversation.id)}
+                    className={`p-4 cursor-pointer hover:bg-gray-50 ${
+                      selectedChat === conversation.id ? "bg-blue-50 border-l-4 border-blue-500" : ""
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center">
+                          {conversation.nombre.charAt(0)}
+                        </div>
+                        <div className="ml-3">
+                          <h4 className="font-medium">{conversation.nombre}</h4>
+                          <p className="text-xs text-gray-500">{conversation.tipo}</p>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h4 className="font-medium">{conversation.nombre}</h4>
-                        <p className="text-xs text-gray-500">{conversation.tipo}</p>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">{conversation.hora}</p>
+                        {conversation.noLeidos > 0 && (
+                          <Badge className="bg-red-500 text-white text-xs mt-1">{conversation.noLeidos}</Badge>
+                        )}
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-500">{conversation.hora}</p>
-                      {conversation.noLeidos > 0 && (
-                        <Badge className="bg-red-500 text-white text-xs mt-1">{conversation.noLeidos}</Badge>
-                      )}
-                    </div>
+                    <p className="text-sm text-gray-600 truncate">{conversation.ultimoMensaje}</p>
                   </div>
-                  <p className="text-sm text-gray-600 truncate">{conversation.ultimoMensaje}</p>
-                </div>
-              ))
+                ))}
+                {loadingMoreConversations && (
+                  <div className="p-3 text-center text-xs text-muted-foreground">Cargando más conversaciones...</div>
+                )}
+              </>
             )}
           </CardContent>
         </Card>
 
         {/* MENSAJES */}
-        <Card className="lg:col-span-2 flex flex-col">
+        <Card className="lg:col-span-2 flex flex-col min-h-[360px]">
           {loadingMessages ? (
             <CardContent className="flex-1 flex items-center justify-center p-4">
               <div className="space-y-4 w-full flex flex-col items-center">
@@ -184,7 +333,17 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
                 </div>
               </CardHeader>
 
-              <CardContent className="flex-1 overflow-y-auto p-4">
+              <CardContent
+                ref={messagesContainerRef}
+                onScroll={handleMessagesScroll}
+                className="flex-1 overflow-y-auto p-4"
+                style={{ maxHeight: "calc(100vh - 340px)" }}
+              >
+                {loadingOlderMessages && hasOlderMessages && (
+                  <div className="flex justify-center pb-4 text-xs text-muted-foreground">
+                    Cargando mensajes anteriores...
+                  </div>
+                )}
                 {messages.length === 0 ? (
                   <div className="h-full w-full flex items-center justify-center">
                     <div className="text-center">

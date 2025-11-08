@@ -19,10 +19,12 @@ import Link from "next/link";
 import { apiGet, apiPost } from "@/lib/api";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
+import { PaginatedResponse } from "@/lib/types";
 import { CalificarModal } from "@/components/ui/CalificarModal";
 import { ReviewCard } from "@/components/ui/ReviewCard";
 import { Flag } from "lucide-react";
 import { formatDate } from "@/lib/utils/dateFormat";
+import { PaginationControls } from "@/components/PaginationControls";
 
 type UsuarioMini = { id: number; username: string; first_name?: string; last_name?: string; foto_perfil?: string };
 type CalificacionMini = { puntuacion: number; comentario?: string | null; creado_en: string } | null;
@@ -41,6 +43,8 @@ type ServicioRead = {
   puede_calificar?: boolean;
 };
 
+const REVIEWS_PAGE_SIZE = 3;
+
 export default function ClienteDashboard() {
   const [activeTab, setActiveTab] = useState("inicio");
   const user = useUser();
@@ -51,6 +55,10 @@ export default function ClienteDashboard() {
   const [upcomingServices, setUpcomingServices] = useState<ServicioRead[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [reviewsTotal, setReviewsTotal] = useState(0);
+  const [reviewsTotalPages, setReviewsTotalPages] = useState(0);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
   const [currentService, setCurrentService] = useState<ServicioRead | null>(null);
 
   // Calificar modal state
@@ -65,35 +73,35 @@ export default function ClienteDashboard() {
     const ac = new AbortController();
     (async () => {
       try {
-        
-        const [recientes, proximos, recibidas] = await Promise.all([
-          apiGet<ServicioRead[]>("/servicios", {
+        const [recientes, proximos] = await Promise.all([
+          apiGet<PaginatedResponse<ServicioRead>>("/servicios", {
             cliente_id: user.id,
             aceptado: "true",
             fecha_inicio_before: nowISO,
             fecha_inicio_after: new Date(new Date(nowISO).getTime() - 1000 * 60 * 60 * 24 * 30).toISOString(),
             ordering: "-fecha_fin",
+            page_size: 10,
           }),
-          apiGet<ServicioRead[]>("/servicios", {
+          apiGet<PaginatedResponse<ServicioRead>>("/servicios", {
             cliente_id: user.id,
             fecha_inicio_after: nowISO,
             ordering: "-fecha_inicio",
             aceptado: "true",
-
+            page_size: 20,
           }),
-          apiGet<any[]>("/calificaciones", { receptor_id: user.id }),
         ]);
 
 
         if (!ac.signal.aborted) {
-          // Filter out active services from recent services
-          const serviciosCompletados = recientes.filter((s) => !s.en_curso);
+          const recientesResultados = recientes.results || [];
+          const proximosResultados = proximos.results || [];
+
+          const serviciosCompletados = recientesResultados.filter((s) => !s.en_curso);
           setRecentServices(serviciosCompletados.slice(0, 5));
-          setUpcomingServices(proximos);
-          const servicioActivo = recientes.find((s) => s.en_curso);
+          setUpcomingServices(proximosResultados);
+          const servicioActivo = recientesResultados.find((s) => s.en_curso);
           setCurrentService(servicioActivo || null);
           setNeedsCarer(!servicioActivo);
-          setReviews(recibidas);
         }
       } catch (e) {
         if (!ac.signal.aborted) toast.error("No se pudieron cargar tus servicios");
@@ -104,6 +112,51 @@ export default function ClienteDashboard() {
 
     return () => ac.abort();
   }, [user, nowISO]);
+
+  useEffect(() => {
+    setReviewsPage(1);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    (async () => {
+      setReviewsLoading(true);
+      try {
+        const response = await apiGet<PaginatedResponse<any>>("/calificaciones", {
+          receptor_id: user.id,
+          page: reviewsPage,
+          page_size: REVIEWS_PAGE_SIZE,
+        });
+        if (cancelled) return;
+        const total = response.count ?? response.results?.length ?? 0;
+        const totalPages = total === 0 ? 0 : Math.max(1, Math.ceil(total / REVIEWS_PAGE_SIZE));
+        if (totalPages > 0 && reviewsPage > totalPages) {
+          setReviewsPage(totalPages);
+          return;
+        }
+        setReviews(response.results || []);
+        setReviewsTotal(total);
+        setReviewsTotalPages(totalPages);
+      } catch {
+        if (!cancelled) {
+          toast.error("No se pudieron cargar las calificaciones");
+          setReviews([]);
+          setReviewsTotal(0);
+          setReviewsTotalPages(0);
+        }
+      } finally {
+        if (!cancelled) {
+          setReviewsLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, reviewsPage]);
 
   const abrirModal = (servicioId: number, contraparteNombre: string) => {
     setSeleccion({ servicioId, contraparteNombre });
@@ -144,6 +197,20 @@ export default function ClienteDashboard() {
       toast.error('No se pudo actualizar el reporte');
     }
   };
+
+  const handleReviewPageChange = (page: number) => {
+    if (reviewsTotalPages === 0) return;
+    const clamped = Math.max(1, Math.min(page, reviewsTotalPages));
+    if (clamped !== reviewsPage) {
+      setReviewsPage(clamped);
+    }
+  };
+
+  useEffect(() => {
+    if (reviewsTotalPages === 0 && reviewsPage !== 1) {
+      setReviewsPage(1);
+    }
+  }, [reviewsTotalPages]);
 
   // Show loading skeleton on initial load
   if (loading && recentServices.length === 0 && upcomingServices.length === 0) {
@@ -403,25 +470,45 @@ export default function ClienteDashboard() {
                 <Star className="h-5 w-5 mr-2" />
                 Mis Calificaciones
               </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Mostrando {reviews.length} de {reviewsTotal} reseñas
+              </p>
             </CardHeader>
             <CardContent>
-              {reviews.length === 0 ? (
+              {reviewsLoading ? (
+                <div className="text-center text-sm text-muted-foreground">
+                  Cargando calificaciones...
+                </div>
+              ) : reviews.length === 0 ? (
                 <div className="text-gray-600">Aún no recibiste calificaciones.</div>
               ) : (
-                <div className="space-y-3">
-                  {reviews.map((r) => (
-                    <ReviewCard
-                      key={r.id}
-                      id={r.id}
-                      rating={r.puntuacion}
-                      comment={r.comentario}
-                      date={r.creado_en}
-                      showReportButton={true}
-                      isReported={r.reportada}
-                      onReport={toggleReport}
+                <>
+                  <div className="space-y-3">
+                    {reviews.map((r) => (
+                      <ReviewCard
+                        key={r.id}
+                        id={r.id}
+                        rating={r.puntuacion}
+                        comment={r.comentario}
+                        date={r.creado_en}
+                        showReportButton={true}
+                        isReported={r.reportada}
+                        onReport={toggleReport}
+                      />
+                    ))}
+                  </div>
+                  {reviewsTotalPages > 1 && (
+                    <PaginationControls
+                      page={reviewsPage}
+                      totalPages={reviewsTotalPages}
+                      count={reviewsTotal}
+                      pageSize={REVIEWS_PAGE_SIZE}
+                      onPageChange={handleReviewPageChange}
+                      disabled={reviewsLoading}
+                      className="mt-4"
                     />
-                  ))}
-                </div>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>

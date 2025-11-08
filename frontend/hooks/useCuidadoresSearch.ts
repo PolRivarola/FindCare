@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/api";
+import { PaginatedResponse } from "@/lib/types";
 
 interface SearchFilters {
   especialidad: number[];
@@ -14,6 +15,8 @@ interface SearchParams {
   ciudad: string;
 }
 
+const PAGE_SIZE = 9;
+
 export function useCuidadoresSearch() {
   const [cuidadores, setCuidadores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +25,9 @@ export function useCuidadoresSearch() {
   const [ciudades, setCiudades] = useState<any[]>([]);
   const [diasSemanales, setDiasSemanales] = useState<any[]>([]);
   const [horariosDiarios, setHorariosDiarios] = useState<any[]>([]);
+  const [pagination, setPagination] = useState({ page: 1, hasNext: false, total: 0 });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const lastSearchParams = useRef<SearchParams | null>(null);
 
   const fetchInitialData = async () => {
     try {
@@ -43,50 +49,69 @@ export function useCuidadoresSearch() {
     }
   };
 
+  const buildSearchParams = (params: SearchParams, page: number) => {
+    const searchParams: Record<string, any> = {
+      ordering: params.orden || "-anios_experiencia",
+      page,
+      page_size: PAGE_SIZE,
+    };
+
+    if (params.filters.especialidad.length > 0) {
+      searchParams.especialidad = params.filters.especialidad;
+    }
+
+    if (params.filters.experiencia) {
+      searchParams.min_experiencia = params.filters.experiencia;
+    }
+
+    if (params.provincia) {
+      const provinciaObj = provincias.find((p) => p.nombre === params.provincia);
+      if (provinciaObj) {
+        searchParams.provincia = provinciaObj.id;
+      }
+    }
+
+    if (params.ciudad) {
+      const ciudadObj = ciudades.find((c) => c.nombre === params.ciudad);
+      if (ciudadObj) {
+        searchParams.ciudad = ciudadObj.id;
+      }
+    }
+
+    return searchParams;
+  };
+
   const searchCuidadores = async (params: SearchParams) => {
+    lastSearchParams.current = params;
     try {
       setLoading(true);
-      
-      const searchParams: Record<string, any> = {
-        ordering: params.orden || "-anios_experiencia",
-      };
-
-      // Filter by specialty (tipos_cliente) - backend expects 'especialidad' as array
-      if (params.filters.especialidad.length > 0) {
-        params.filters.especialidad.forEach(id => {
-          if (!searchParams.especialidad) searchParams.especialidad = [];
-          searchParams.especialidad.push(id);
-        });
-      }
-
-      // Filter by minimum experience - backend expects 'min_experiencia'
-      if (params.filters.experiencia) {
-        searchParams.min_experiencia = params.filters.experiencia;
-      }
-
-      // Filter by provincia - backend expects provincia ID, not name
-      if (params.provincia) {
-        const provinciaObj = provincias.find(p => p.nombre === params.provincia);
-        if (provinciaObj) {
-          searchParams.provincia = provinciaObj.id;
-        }
-      }
-
-      // Filter by ciudad - backend expects ciudad ID, not name
-      if (params.ciudad) {
-        const ciudadObj = ciudades.find(c => c.nombre === params.ciudad);
-        if (ciudadObj) {
-          searchParams.ciudad = ciudadObj.id;
-        }
-      }
-
-      const data = await apiGet<any[]>("/search", searchParams);
-      setCuidadores(data);
+      const searchParams = buildSearchParams(params, 1);
+      const data = await apiGet<PaginatedResponse<any>>("/search", searchParams);
+      setCuidadores(data.results);
+      setPagination({ page: 1, hasNext: Boolean(data.next), total: data.count });
     } catch (error) {
       toast.error("Error al buscar cuidadores");
       setCuidadores([]);
+      setPagination({ page: 1, hasNext: false, total: 0 });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMoreCuidadores = async () => {
+    if (!pagination.hasNext || loadingMore || !lastSearchParams.current) return;
+
+    const nextPage = pagination.page + 1;
+    setLoadingMore(true);
+    try {
+      const searchParams = buildSearchParams(lastSearchParams.current, nextPage);
+      const data = await apiGet<PaginatedResponse<any>>("/search", searchParams);
+      setCuidadores((prev) => [...prev, ...data.results]);
+      setPagination({ page: nextPage, hasNext: Boolean(data.next), total: data.count });
+    } catch (error) {
+      toast.error("Error al cargar más cuidadores");
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -102,6 +127,10 @@ export function useCuidadoresSearch() {
     ciudades,
     diasSemanales,
     horariosDiarios,
+    total: pagination.total,
+    hasMore: pagination.hasNext,
+    loadingMore,
     searchCuidadores,
+    loadMoreCuidadores,
   };
 }

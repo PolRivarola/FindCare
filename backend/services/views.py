@@ -42,6 +42,7 @@ from .serializers import (
     ExpMiniSerializer,
 )
 from .filters import ServicioFilter
+from .pagination import ServicioPagination, CalificacionPagination
 
 from location.models import Provincia, Ciudad, Direccion
 from users.models import Cuidador, Cliente, TipoCliente, FotoCliente
@@ -81,7 +82,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
         .prefetch_related("dias_semanales", "calificaciones")
         .all()
     )
-    pagination_class = None
+    pagination_class = ServicioPagination
     serializer_class = ServicioSerializer
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -215,6 +216,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
 class CalificacionViewSet(viewsets.ModelViewSet):
     queryset = Calificacion.objects.select_related("autor", "receptor").all()
     serializer_class = CalificacionSerializer
+    pagination_class = CalificacionPagination
 
     def get_queryset(self):
         qs = super().get_queryset()
