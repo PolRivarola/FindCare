@@ -130,8 +130,7 @@ export function ReviewCard({
           
           {comment && (
             <p className={cn(
-              "text-gray-700",
-              variant === "compact" ? "text-xs md:text-sm" : "text-xs md:text-sm mt-1"
+              "text-gray-700 text-base w-3/4",
             )}>
               {comment}
             </p>

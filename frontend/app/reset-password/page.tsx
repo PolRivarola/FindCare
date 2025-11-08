@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { Suspense, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,7 +12,33 @@ import Link from "next/link"
 import { useSearchParams, useRouter } from "next/navigation"
 import { apiPost } from "@/lib/api"
 
-export default function ResetPassword() {
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordFallback />}>
+      <ResetPasswordContent />
+    </Suspense>
+  )
+}
+
+function ResetPasswordFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-8">
+      <div className="max-w-md w-full mx-4">
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <div className="h-12 w-12 mx-auto rounded-full bg-blue-200 animate-pulse" />
+            <div className="space-y-2 text-center">
+              <div className="h-4 w-40 mx-auto rounded bg-gray-200 animate-pulse" />
+              <div className="h-3 w-56 mx-auto rounded bg-gray-200 animate-pulse" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function ResetPasswordContent() {
   const [step, setStep] = useState<"reset" | "success" | "error">("reset")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
