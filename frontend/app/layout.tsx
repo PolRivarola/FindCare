@@ -5,6 +5,7 @@ import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
 import { UserProvider } from "@/context/UserContext"
 import NavBar from "@/components/NavBar"
+import { RouteProgress } from "@/components/RouteProgress"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,9 +25,10 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className}>
         <UserProvider>
-        <NavBar />
-        {children}
-        <Toaster richColors position="top-center"  />
+          <NavBar />
+          {children}
+          <Toaster richColors position="top-center"  />
+          <RouteProgress />
         </UserProvider>
         </body>
       

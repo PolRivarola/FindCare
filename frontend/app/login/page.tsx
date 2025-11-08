@@ -34,7 +34,6 @@ export default function Login() {
         await refreshUser();
       } catch (error) {
         // Ignore logout errors - user might not be logged in
-        console.log("Logout error (ignored):", error);
       }
     };
     logout();
@@ -67,7 +66,6 @@ export default function Login() {
 
     if (!r.ok) {
       const j = await r.json().catch(() => ({} as any));
-      // extrae mensaje amigable sin cambiar el Alert del UI
       const msg =
         j.detail ||
         j.non_field_errors?.[0] ||
@@ -82,13 +80,6 @@ export default function Login() {
 
     const j = await r.json();
     localStorage.removeItem("token");
-    await refreshUser();
-
-    console.log("Usuario logueado:", j.user);
-    console.log("es_cuidador:", j.user.es_cuidador);
-    console.log("es_cliente:", j.user.es_cliente);
-    console.log("is_staff:", j.user.is_staff);
-    console.log("is_superuser:", j.user.is_superuser);
 
     let redirect = "/dashboard";
     if (j.user.es_cuidador) {
@@ -98,11 +89,12 @@ export default function Login() {
     } else if (j.user.is_staff || j.user.is_superuser) {
       redirect = "admin/";
     } else {
-      // Fallback for users with no specific role
       redirect = "/";
     }
 
     router.push(redirect);
+    await refreshUser();
+    router.refresh();
   }
 
   return (

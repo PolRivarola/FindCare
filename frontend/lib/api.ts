@@ -19,6 +19,39 @@ function handleAuthError(status: number, response: Response) {
   }
 }
 
+// Helper function to make API calls with automatic token refresh
+async function makeAuthenticatedRequest(
+  url: string, 
+  options: RequestInit,
+  retryOnAuth = true
+): Promise<Response> {
+  const response = await fetch(url, {
+    ...options,
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  // If we get a 401 and haven't retried yet, try to refresh the token
+  if (response.status === 401 && retryOnAuth) {
+    try {
+      // Try to refresh the token
+      const refreshResponse = await fetch('/api/auth/refresh-local', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (refreshResponse.ok) {
+        // Token refreshed successfully, retry the original request
+        return makeAuthenticatedRequest(url, options, false);
+      }
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+    }
+  }
+
+  return response;
+}
+
 export async function apiGet<T>(endpoint: string, params?: Record<string, any>) {
   let query = "";
   if (params) {
@@ -35,7 +68,10 @@ export async function apiGet<T>(endpoint: string, params?: Record<string, any>) 
     query = `?${searchParams.toString()}`;
   }
   const url = `${API_BASE_URL}${withSlash(endpoint)}${query}`;
-  const r = await fetch(url, { method: "GET", credentials: "include", headers: { "Content-Type": "application/json" }, cache: "no-store" });
+  const r = await makeAuthenticatedRequest(url, { 
+    method: "GET", 
+    headers: { "Content-Type": "application/json" } 
+  });
   if (!r.ok) {
     handleAuthError(r.status, r);
     throw new Error(await r.text());
@@ -45,9 +81,8 @@ export async function apiGet<T>(endpoint: string, params?: Record<string, any>) 
 
 export async function apiPost<T>(endpoint: string, body?: any) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, {
+  const r = await makeAuthenticatedRequest(url, {
     method: "POST",
-    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body ?? {}),
   });
@@ -61,7 +96,11 @@ export async function apiPost<T>(endpoint: string, body?: any) {
 
 export async function apiPut<T>(endpoint: string, body?: any) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, { method: "PUT", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const r = await makeAuthenticatedRequest(url, { 
+    method: "PUT", 
+    headers: { "Content-Type": "application/json" }, 
+    body: JSON.stringify(body) 
+  });
   if (!r.ok) {
     handleAuthError(r.status, r);
     throw new Error(await r.text());
@@ -71,18 +110,24 @@ export async function apiPut<T>(endpoint: string, body?: any) {
 
 export async function apiDelete(endpoint: string) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" }});
+  const r = await makeAuthenticatedRequest(url, { 
+    method: "DELETE", 
+    headers: { "Content-Type": "application/json" }
+  });
+  
   if (!r.ok) {
     handleAuthError(r.status, r);
-    throw new Error(await r.text());
+    const errorText = await r.text();
+    throw new Error(errorText || `HTTP ${r.status}: ${r.statusText}`);
   }
+  
+  return;
 }
 
 export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, {
+  const r = await makeAuthenticatedRequest(url, {
     method: "POST",
-    credentials: "include",
     // Don't set Content-Type - let browser set it with boundary for multipart/form-data
     body: formData,
   });
@@ -95,9 +140,8 @@ export async function apiPostFormData<T>(endpoint: string, formData: FormData) {
 
 export async function apiPatchFormData<T>(endpoint: string, formData: FormData) {
   const url = `${API_BASE_URL}${withSlash(endpoint)}`;
-  const r = await fetch(url, {
+  const r = await makeAuthenticatedRequest(url, {
     method: "PATCH",
-    credentials: "include",
     // Let the browser set multipart boundary automatically
     body: formData,
   });

@@ -103,7 +103,7 @@ export default function ChatPage({ tipoUsuario }: { tipoUsuario: "cliente" | "cu
 
   return (
     <div className="space-y-6">
-      <PageTitle>{tipoUsuario === "cliente" ? "Chat con cuidadores" : "Chat con clientes"}</PageTitle>
+      <PageTitle> Mis Conversaciones</PageTitle>
 
       <div className="grid lg:grid-cols-3 gap-6 h-[600px]">
         {/* LISTA DE CONVERSACIONES */}

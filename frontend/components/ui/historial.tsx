@@ -15,7 +15,7 @@ import { CalificarModal } from "@/components/ui/CalificarModal";
 import { StarRating } from "@/components/ui/StarRating";
 import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
 
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost, apiDelete } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import {
@@ -24,6 +24,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 /** ====== Tipos que devuelve el backend (ServicioReadSerializer) ====== */
 type UsuarioMini = {
@@ -75,6 +85,10 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   // modal de detalles
   const [detalleModalOpen, setDetalleModalOpen] = useState(false);
   const [servicioSeleccionado, setServicioSeleccionado] = useState<ServicioRead | null>(null);
+
+  // modal de cancelación
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [servicioACancelar, setServicioACancelar] = useState<number | null>(null);
 
   const nowISO = useMemo(() => new Date().toISOString(), []);
 
@@ -186,6 +200,50 @@ export function HistorialServicios({ tipoUsuario }: Props) {
     };
   };
 
+  const abrirModalCancelacion = (servicioId: number) => {
+    setServicioACancelar(servicioId);
+    setCancelModalOpen(true);
+  };
+
+  const confirmarCancelacion = async () => {
+    if (!servicioACancelar) return;
+
+    
+    try {
+      const url = `/api/b/servicios/${servicioACancelar}/`;
+      
+      const response = await fetch(url, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+            
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Delete failed with status:", response.status);
+        console.error("Error response body:", errorText);
+        console.error("Response headers:", Object.fromEntries(response.headers.entries()));
+        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+      }
+      
+      
+      setPendingRows((prev) => prev.filter((s) => s.id !== servicioACancelar));
+      setRows((prev) => prev.filter((s) => s.id !== servicioACancelar));
+      
+      setCancelModalOpen(false);
+      setServicioACancelar(null);
+      
+      toast.success("Solicitud cancelada correctamente");
+      
+      
+    } catch (error: any) {
+      console.error("Error in confirmarCancelacion:", error);
+      toast.error(`Error: ${error?.message || "No se pudo cancelar la solicitud"}`);
+    }
+  };
   const enviarCalificacion = async (puntuacion: number, comentario: string) => {
     if (!seleccion) return;
     try {
@@ -243,7 +301,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
       ) : (
         <div className="space-y-3 md:space-y-4">
           {/* Combine accepted and pending services, sort by date */}
-          {[...rows, ...pendingRows]
+          {[...(rows || []), ...(pendingRows || [])]
             .sort((a, b) => new Date(b.fecha_inicio).getTime() - new Date(a.fecha_inicio).getTime())
             .map((s) => {
             const contraparte = getContraparte(s);
@@ -323,11 +381,18 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                   </Link>
                   
                   {!s.aceptado && tipoUsuario === "cliente" ? (
-                    // For pending services, only show details and profile buttons
-                    <div className="h-9 min-w-[80px] flex items-center justify-center">
+                    <div className="flex items-center flex-wrap gap-2"><div className="h-9 min-w-[80px] flex items-center justify-center">
                       <Clock className="h-4 w-4 text-gray-400 mr-1" />
                       <span className="text-gray-400 text-xs">Esperando respuesta</span>
                     </div>
+                    <Button 
+                            variant="destructive" 
+                            size="sm" 
+                            className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center"
+                            onClick={() => abrirModalCancelacion(s.id)}
+                          >
+                            Cancelar
+                          </Button></div>
                   ) : s.en_curso || s.fecha_inicio > nowISO ? (
                     <TooltipProvider delayDuration={100}>
                       <Tooltip>
@@ -408,6 +473,27 @@ export function HistorialServicios({ tipoUsuario }: Props) {
           showActions={false} // Hide action buttons in historial
         />
       )}
+
+      <AlertDialog open={cancelModalOpen} onOpenChange={setCancelModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Cancelar solicitud</AlertDialogTitle>
+            <AlertDialogDescription>
+              ¿Estás seguro de que quieres cancelar esta solicitud de servicio? 
+              Esta acción no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>No, mantener</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmarCancelacion}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Sí, cancelar solicitud
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

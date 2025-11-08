@@ -25,6 +25,9 @@ class Conversacion(models.Model):
                 name="uniq_conv_cliente_cuidador"
             )
         ]
+    
+    def __str__(self):
+        return f"{self.cliente} - {self.cuidador}"
 
 class Mensaje(models.Model):
     conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE, related_name="mensajes")
@@ -35,5 +38,7 @@ class Mensaje(models.Model):
 
     class Meta:
         ordering = ["creado_en"]
-    
+
+    def __str__(self):
+        return f"{self.emisor} - {self.contenido}"
     

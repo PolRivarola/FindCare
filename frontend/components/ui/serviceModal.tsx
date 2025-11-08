@@ -195,7 +195,7 @@ export function DetalleSolicitudModal({
             <CardContent className="p-4">
               <div className="flex items-center gap-3 mb-3">
                 <FileText className="h-5 w-5 text-purple-600" />
-                <h4 className="font-semibold text-gray-900">Tipos de Servicio</h4>
+                <h4 className="font-semibold text-gray-900">Sobre el Servicio</h4>
               </div>
               <div className="flex flex-wrap gap-2">
 

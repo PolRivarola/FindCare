@@ -82,7 +82,6 @@ export default function ClienteForm({
       return;
     }
 
-    // Validación de contraseñas
     if (mode === "create") {
       if (!password || !confirmPassword) {
         toast.error("Completa la contraseña y su confirmación");
@@ -106,10 +105,8 @@ export default function ClienteForm({
       }
     }
 
-    // Crear FormData
     const fd = new FormData();
     
-    // 1) Campos obligatorios - siempre se envían (ya validados arriba)
     fd.append("first_name", perfil.first_name);
     fd.append("last_name", perfil.last_name);
     fd.append("email", perfil.email);
@@ -118,7 +115,6 @@ export default function ClienteForm({
     fd.append("provincia", perfil.provincia);
     fd.append("ciudad", perfil.ciudad);
 
-    // 2) Campos opcionales - solo si tienen valor
     const putOptional = (k: string, v: any) => {
       if (v !== undefined && v !== null && v !== "") {
         fd.append(k, String(v));
@@ -127,17 +123,14 @@ export default function ClienteForm({
     putOptional("descripcion", perfil.descripcion);
     putOptional("direccion", perfil.direccion);
 
-    // 3) Foto de perfil
     if (perfil.fotoFile) {
       fd.append("foto_perfil", perfil.fotoFile);
     }
     
-    // Handle photo deletion
     if (perfil.fotoDeleted) {
       fd.append("delete_foto_perfil", "true");
     }
 
-    // 4) Categorías - convertir nombres a IDs
     const categoriasIds = categoriasDisponibles
       .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
       .map((c) => c.id);

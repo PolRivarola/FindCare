@@ -48,12 +48,11 @@ export function useServiceRequest() {
         receptor_id: Number(selectedCuidador.id),
         fecha_inicio: `${formData.fecha_inicio}T00:00:00`,
         fecha_fin: `${formData.fecha_fin}T23:59:59`,
-        descripcion: `Tipos de servicio solicitados: ${formData.servicio.join(", ")}\n\nDescripción adicional: ${formData.descripcion}\n\nUbicación: ${formData.ubicacion}`,
+        descripcion: `Tipos de servicio solicitados: ${formData.servicio.join(", ")}\n\nDescripción adicional: ${formData.descripcion}\n\n`,
         horas_dia: formData.hora,
         dias_semanales_ids: diaIds,
       };
 
-      console.log("Sending service request payload:", payload);
       await apiPost("/servicios", payload);
       
       setSolicitudEnviada(prev => ({

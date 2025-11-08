@@ -40,11 +40,8 @@ export default function CuidadorDashboard() {
 
 
 useEffect(() => {
-  console.log("Cargando solicitudes para el cuidador...");
   if (!user) return;   
-  console.log(user)             
   const uid = user.id;              
-  console.log(uid)
   const ac = new AbortController();
   (async function load() {
 
@@ -68,7 +65,6 @@ useEffect(() => {
         aceptado: "false",          
         ordering: "-fecha_inicio",
       });
-      console.log("Solicitudes cargadas:", data);
 
       if (!ac.signal.aborted) setSolicitudes(mapServiciosToUI(data) as unknown as Solicitud[]);
 

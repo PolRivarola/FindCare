@@ -78,9 +78,10 @@ class ServicioViewSet(viewsets.ModelViewSet):
         Servicio.objects
         .select_related("cliente", "receptor")
         .select_related("cliente__direccion__ciudad__provincia", "receptor__direccion__ciudad__provincia")
-        .prefetch_related("dias_semanales")
+        .prefetch_related("dias_semanales", "calificaciones")
         .all()
     )
+    pagination_class = None
     serializer_class = ServicioSerializer
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -100,6 +101,26 @@ class ServicioViewSet(viewsets.ModelViewSet):
             raise ValidationError({"dias_semanales_ids": "Debe seleccionar al menos un día de la semana."})
         
         serializer.save(cliente=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Allow deletion only by the client who created the service and only if not accepted yet.
+        """
+        servicio = self.get_object()
+        
+        if request.user.id != servicio.cliente_id:
+            return Response(
+                {"detail": "Solo el cliente que creó la solicitud puede cancelarla."}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        if servicio.aceptado:
+            return Response(
+                {"detail": "No se puede cancelar una solicitud que ya ha sido aceptada."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        return super().destroy(request, *args, **kwargs)
 
     @action(detail=False, methods=["get"], url_path="stats/cuidador")
     def stats_cuidador(self, request):
@@ -625,17 +646,27 @@ class ClientePerfilView(APIView):
 
         user.save()
 
+        raw_cats_ids = request.data.getlist("categorias_ids")
         raw_cats = request.data.get("categorias")
-        cats = []
-        if isinstance(raw_cats, str) and raw_cats.strip():
+        
+        if raw_cats_ids:
             try:
-                parsed = json.loads(raw_cats)
-                if isinstance(parsed, list):
-                    cats = list(TipoCliente.objects.filter(nombre__in=parsed))
-            except Exception:
-                cats = []
-        if cats:
-            user.cliente.tipos_cliente.set(cats)
+                cats_ids = [int(id_str) for id_str in raw_cats_ids]
+                cats = TipoCliente.objects.filter(id__in=cats_ids)
+                user.cliente.tipos_cliente.set(cats)
+            except (ValueError, TypeError):
+                pass
+        elif raw_cats:
+            cats = []
+            if isinstance(raw_cats, str) and raw_cats.strip():
+                try:
+                    parsed = json.loads(raw_cats)
+                    if isinstance(parsed, list):
+                        cats = list(TipoCliente.objects.filter(nombre__in=parsed))
+                except Exception:
+                    cats = []
+            if cats:
+                user.cliente.tipos_cliente.set(cats)
 
         fotos_a_conservar = request.data.get("fotos_existentes")
         if fotos_a_conservar is not None:

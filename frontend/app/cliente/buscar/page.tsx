@@ -179,6 +179,7 @@ export default function BuscarCuidadoresPage() {
           loading={modalLoading}
           diasSemanales={diasSemanales}
           horariosDiarios={horariosDiarios}
+          serviciosDisponibles={serviciosDisponibles}
         />
       </div>
     </div>

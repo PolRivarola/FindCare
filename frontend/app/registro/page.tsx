@@ -161,9 +161,13 @@ export default function Registro() {
       fd.append("password", clienteData.password);
       fd.append("confirm_password", clienteData.confirmPassword);
 
-      // si usas categorías para cliente por nombre -> conviértelas a ids si tu API las requiere
-      // (aquí las dejo como nombres por si tu endpoint las acepta como tal)
-      clienteData.categorias.forEach((n) => fd.append("categorias", n));
+      // categorías como IDs (como espera RegistroClienteSerializer)
+      if (clienteData.categorias && clienteData.categorias.length > 0) {
+        const categoriasIds = categoriasDisponibles
+          .filter((c) => clienteData.categorias.includes(c.nombre))
+          .map((c) => c.id);
+        categoriasIds.forEach((id) => fd.append("tipos_cliente_ids", String(id)));
+      }
 
       const res = await fetch("/api/b/registro/cliente", {
         method: "POST",

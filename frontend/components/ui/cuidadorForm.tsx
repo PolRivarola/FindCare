@@ -461,6 +461,14 @@ export default function CuidadorForm({
           <p className="text-sm text-gray-600 mt-2">
             Sube tus certificaciones y documentos relevantes
           </p>
+          <p className="text-sm text-gray-600 mt-2">
+            Nuestros clientes valoran la transparencia y seguridad, por lo que recomendamos cargar documentos como:
+            <ul className="list-disc list-inside text-gray-600 mt-2">
+              <li>Certificado de antecedentes penales</li>
+              <li>Documento de identidad</li>
+              <li>Carnet de conducir</li>
+            </ul>
+          </p>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <div className="border-2 border-dashed border-purple-300 rounded-lg p-8 text-center bg-purple-50/50">

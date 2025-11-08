@@ -12,11 +12,13 @@ export default function LogoutButton() {
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
-      await refreshUser(); // Refresh user context to update navbar
+      router.replace("/login");
+      await refreshUser(); // Sync navbar and content after navigation
     } catch (e) {
       toast.error("Error al cerrar sesión");
     } finally {
-      router.replace("/login");
+      // Ensure the latest data is loaded on the login page
+      router.refresh();
     }
   };
 

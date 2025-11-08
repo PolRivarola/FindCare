@@ -125,14 +125,6 @@ class ServicioSerializer(serializers.ModelSerializer):
         ya = any(c.autor_id == req.user.id for c in obj.calificaciones.all())
         return not ya
 
-class CalificacionSerializer(serializers.ModelSerializer):
-    usuario = UsuarioSerializer(read_only=True)
-
-    class Meta:
-        model = Calificacion
-        fields = ['id', 'usuario', 'comentario', 'fecha', 'puntuacion']
-        read_only_fields = ['id', 'fecha']
-
 class ExperienciaSerializer(serializers.ModelSerializer):
     cuidador = UsuarioSerializer(read_only=True)
 

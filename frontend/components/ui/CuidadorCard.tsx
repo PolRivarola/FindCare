@@ -75,6 +75,7 @@ export function CuidadorCard({ cuidador, solicitudEnviada, onSolicitarServicio }
               >
                 {solicitudEnviada ? "Solicitud enviada" : "Solicitar Servicio"}
               </Button>
+              
             </div>
           </div>
         </div>

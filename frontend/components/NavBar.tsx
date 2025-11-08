@@ -7,11 +7,53 @@ import { NavLink } from "@/components/NavLink"
 import { useEffect, useState } from "react"
 import { apiGet } from "@/lib/api"
 
+type NavVariant = "guest" | "cliente" | "cuidador" | "admin"
+
+const DESKTOP_SKELETON_WIDTHS: Record<NavVariant, number[]> = {
+  guest: [64, 96, 80],
+  cliente: [96, 140, 96, 110, 120, 72],
+  cuidador: [96, 120, 96, 110, 120, 72],
+  admin: [96, 96],
+}
+
+const MOBILE_SKELETON_HEIGHTS: Record<NavVariant, number> = {
+  guest: 3,
+  cliente: 6,
+  cuidador: 6,
+  admin: 2,
+}
+
+function DesktopNavSkeleton({ variant }: { variant: NavVariant }) {
+  return (
+    <div className="flex items-center space-x-6">
+      {DESKTOP_SKELETON_WIDTHS[variant].map((width, index) => (
+        <div
+          key={index}
+          className="h-6 rounded bg-gray-200 animate-pulse"
+          style={{ width }}
+        ></div>
+      ))}
+    </div>
+  )
+}
+
+function MobileNavSkeleton({ variant }: { variant: NavVariant }) {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: MOBILE_SKELETON_HEIGHTS[variant] }).map((_, index) => (
+        <div key={index} className="h-10 rounded bg-gray-200 animate-pulse"></div>
+      ))}
+    </div>
+  )
+}
+
 export default function NavBar() {
   const { user, isLoading } = useUserContext()
   const [hasUnread, setHasUnread] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isInitialLoad, setIsInitialLoad] = useState(true)
+  const [skeletonVariant, setSkeletonVariant] = useState<NavVariant>("guest")
+  const showSkeleton = isLoading || isInitialLoad
 
   // Add a small delay after user loads to sync with page content loading
   // This prevents the navbar from looking "ready" before page content loads
@@ -28,6 +70,18 @@ export default function NavBar() {
       setIsInitialLoad(false)
     }
   }, [isLoading, user])
+
+  useEffect(() => {
+    if (user?.es_cliente) {
+      setSkeletonVariant("cliente")
+    } else if (user?.es_cuidador) {
+      setSkeletonVariant("cuidador")
+    } else if (user) {
+      setSkeletonVariant("admin")
+    } else {
+      setSkeletonVariant("guest")
+    }
+  }, [user])
 
   // Fetch unread messages
   const fetchUnread = async () => {
@@ -69,13 +123,9 @@ export default function NavBar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {isLoading || isInitialLoad ? (
+            {showSkeleton ? (
               // Show loading state to prevent flash of wrong content
-              <div className="flex items-center space-x-6">
-                <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
-                <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
-                <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
-              </div>
+              <DesktopNavSkeleton variant={skeletonVariant} />
             ) : !user ? (
               <>
                 <NavLink href="/" icon={Search}>
@@ -90,7 +140,7 @@ export default function NavBar() {
               </>
             ) : null}
 
-            {user && user.es_cliente && (
+            {!showSkeleton && user && user.es_cliente && (
               <>
                 <NavLink href="/cliente/dashboard" icon={Heart}>
                   Dashboard
@@ -111,7 +161,7 @@ export default function NavBar() {
               </>
             )}
 
-            {user && user.es_cuidador && (
+            {!showSkeleton && user && user.es_cuidador && (
               <>
                 <NavLink href="/cuidador/dashboard" icon={Heart}>
                   Dashboard
@@ -131,7 +181,7 @@ export default function NavBar() {
                 <LogoutButton />
               </>
             )}
-            {user && !user.es_cuidador && !user.es_cliente && (
+            {!showSkeleton && user && !user.es_cuidador && !user.es_cliente && (
               <LogoutButton />
             )}
           </nav>
@@ -154,12 +204,8 @@ export default function NavBar() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t py-4">
             <nav className="flex flex-col space-y-3">
-              {isLoading || isInitialLoad ? (
-                <div className="space-y-3">
-                  <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-                </div>
+              {showSkeleton ? (
+                <MobileNavSkeleton variant={skeletonVariant} />
               ) : !user ? (
                 <>
                   <Link href="/" className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(false)}>
@@ -177,7 +223,7 @@ export default function NavBar() {
                 </>
               ) : null}
 
-              {user && user.es_cliente && (
+              {!showSkeleton && user && user.es_cliente && (
                 <>
                   <Link href="/cliente/dashboard" className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(false)}>
                     <Heart className="h-5 w-5 text-gray-600" />
@@ -206,7 +252,7 @@ export default function NavBar() {
                 </>
               )}
 
-              {user && user.es_cuidador && (
+              {!showSkeleton && user && user.es_cuidador && (
                 <>
                   <Link href="/cuidador/dashboard" className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(false)}>
                     <Heart className="h-5 w-5 text-gray-600" />
@@ -235,7 +281,7 @@ export default function NavBar() {
                 </>
               )}
 
-              {user && !user.es_cuidador && !user.es_cliente && (
+              {!showSkeleton && user && !user.es_cuidador && !user.es_cliente && (
                 <div className="px-4"><LogoutButton /></div>
               )}
             </nav>

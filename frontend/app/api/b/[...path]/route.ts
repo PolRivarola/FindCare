@@ -57,24 +57,38 @@ async function handler(req: NextRequest, { params }: { params: { path: string[] 
 
   if (contentType) headers.set("content-type", contentType);
 
-  const res = await fetch(dest, {
-    method: req.method,
-    headers,
-    body,
-    cache: "no-store",
-    redirect: "manual",
-  });
+  try {
+    const res = await fetch(dest, {
+      method: req.method,
+      headers,
+      body,
+      cache: "no-store",
+      redirect: "manual",
+    });
+    
+    const buf = await res.arrayBuffer();
+    
+    if (res.status === 204) {
+      const out = new NextResponse(null, { status: 204 });
+      for (const h of ["content-type", "content-disposition", "set-cookie"]) {
+        const v = res.headers.get(h);
+        if (v) out.headers.set(h, v);
+      }
+      return out;
+    }
+    
+    const out = new NextResponse(buf, { status: res.status });
 
-  const buf = await res.arrayBuffer();
-  const out = new NextResponse(buf, { status: res.status });
+    for (const h of ["content-type", "content-disposition", "set-cookie"]) {
+      const v = res.headers.get(h);
+      if (v) out.headers.set(h, v);
+    }
 
-  // pass through useful headers
-  for (const h of ["content-type", "content-disposition", "set-cookie"]) {
-    const v = res.headers.get(h);
-    if (v) out.headers.set(h, v);
+    return out;
+  } catch (error) {
+    console.error(`[PROXY] Error:`, error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
-
-  return out;
 }
 
 export {

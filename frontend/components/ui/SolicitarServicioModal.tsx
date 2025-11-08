@@ -19,6 +19,7 @@ interface SolicitarServicioModalProps {
   loading?: boolean;
   diasSemanales?: any[];
   horariosDiarios?: any[];
+  serviciosDisponibles?: { id: number; nombre: string }[];
 }
 
 export function SolicitarServicioModal({
@@ -29,6 +30,7 @@ export function SolicitarServicioModal({
   loading = false,
   diasSemanales = [],
   horariosDiarios = [],
+  serviciosDisponibles = [],
 }: SolicitarServicioModalProps) {
   const [formData, setFormData] = useState({
     servicio: [] as string[],
@@ -164,13 +166,13 @@ export function SolicitarServicioModal({
     onClose();
   };
 
-  const servicioOptions = [
-    { value: "discapacidad-intelectual", label: "Discapacidad Intelectual" },
-    { value: "edad-avanzada", label: "Edad Avanzada" },
-    { value: "discapacidad-motriz", label: "Discapacidad Motriz" },
-    { value: "cuidado-postoperatorio", label: "Cuidado Postoperatorio" },
-    { value: "acompanamiento-medico", label: "Acompañamiento Médico" },
-  ];
+  // Convert API data to the format expected by the form
+  const servicioOptions = useMemo(() => {
+    return serviciosDisponibles.map(servicio => ({
+      value: servicio.nombre.toLowerCase().replace(/\s+/g, '-'),
+      label: servicio.nombre
+    }));
+  }, [serviciosDisponibles]);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -194,7 +196,7 @@ export function SolicitarServicioModal({
               <FileText className="h-4 w-4 inline mr-2 text-purple-600 " />
               Tipo de Servicio
             </Label>
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {servicioOptions.map((item) => (
                 <div key={item.value} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50">
                   <Checkbox

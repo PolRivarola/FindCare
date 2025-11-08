@@ -54,7 +54,6 @@ export async function getUserOrNull() {
 
 export async function requireUser(): Promise<AppUser> {
   const u = await getUserOrNull();
-  console.log("User",u)
   if (!u) redirect("/login");
   return u;
 }

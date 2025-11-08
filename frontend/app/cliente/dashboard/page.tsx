@@ -71,7 +71,8 @@ export default function ClienteDashboard() {
             cliente_id: user.id,
             aceptado: "true",
             fecha_inicio_before: nowISO,
-            ordering: "-fecha_inicio",
+            fecha_inicio_after: new Date(new Date(nowISO).getTime() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+            ordering: "-fecha_fin",
           }),
           apiGet<ServicioRead[]>("/servicios", {
             cliente_id: user.id,

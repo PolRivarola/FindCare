@@ -26,12 +26,23 @@ export async function POST() {
   }
 
   const res = NextResponse.json({ access: data.access }, { status: 200 });
-  // 👇 Aquí SÍ está permitido setear cookies
+  // Set the new access token
   res.cookies.set(ACCESS, data.access, {
     httpOnly: true,
     secure: SECURE,
     sameSite: "lax",
     path: "/",
   });
+  
+  // If Django rotated the refresh token (ROTATE_REFRESH_TOKENS: True), set the new one
+  if (data.refresh) {
+    res.cookies.set(REFRESH, data.refresh, {
+      httpOnly: true,
+      secure: SECURE,
+      sameSite: "lax",
+      path: "/",
+    });
+  }
+  
   return res;
 }
