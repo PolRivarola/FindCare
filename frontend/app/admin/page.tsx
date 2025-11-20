@@ -19,6 +19,7 @@ import {
 import { ReviewCard } from "@/components/ui/ReviewCard";
 import { toast } from "sonner";
 import { apiGet, apiPost } from "@/lib/api";
+import Link from "next/link";
 
 // ====== TYPES ======
 interface FlaggedRating {
@@ -218,18 +219,21 @@ export default function AdminDashboard() {
             value={stats.totalUsuarios}
             icon={<Users className="h-12 w-12 text-purple-600" />}
             bgColor=""
+            href="/admin/users"
           />
           <StatsCard
             title="Cuidadores"
             value={stats.cuidadoresActivos}
             icon={<Heart className="h-12 w-12 text-purple-600" />}
             bgColor=""
+            href="/admin/cuidadores"
           />
           <StatsCard
             title="Clientes"
             value={stats.clientesActivos}
             icon={<User className="h-12 w-12 text-purple-600" />}
             bgColor=""
+            href="/admin/clientes"
           />
           <StatsCard
             title="Reportes Pendientes"
@@ -258,11 +262,12 @@ interface StatsCardProps {
   value: number;
   icon: React.ReactNode;
   bgColor?: string;
+  href?: string;
 }
 
-function StatsCard({ title, value, icon, bgColor }: StatsCardProps) {
-  return (
-    <Card>
+function StatsCard({ title, value, icon, bgColor, href }: StatsCardProps) {
+  const cardContent = (
+    <Card className={href ? "cursor-pointer hover:shadow-lg transition-shadow" : ""}>
       <CardContent className="p-6">
         <div className="flex items-center">
           <div className={`p-2 rounded-lg`}>
@@ -276,6 +281,16 @@ function StatsCard({ title, value, icon, bgColor }: StatsCardProps) {
       </CardContent>
     </Card>
   );
+
+  if (href) {
+    return (
+      <Link href={href}>
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }
 
 interface FlaggedRatingsCardProps {

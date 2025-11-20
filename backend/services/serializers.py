@@ -218,6 +218,7 @@ class CuidadorPerfilUpdateSerializer(serializers.Serializer):
     direccion = serializers.CharField(required=False)
 
     categorias_ids = serializers.ListField(child=serializers.IntegerField(), required=False)
+    tipos_cliente_ids = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     experiencias = serializers.JSONField(required=False)
 

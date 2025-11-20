@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,18 +27,19 @@ import Link from "next/link";
 import { PerfilPublico } from "@/lib/types";
 import { useUser } from "@/context/UserContext";
 import { ReviewCard } from "@/components/ui/ReviewCard";
+import { useCreateChat } from "@/hooks/useCreateChat";
 
 // Using PerfilPublico from types
 
 export default function PerfilClientePage() {
   const params = useParams();
-  const router = useRouter();
   const currentUser = useUser();
   const [perfil, setPerfil] = useState<PerfilPublico | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [notOwner, setNotOwner] = useState(false);
+  const { crearChat: crearChatHook } = useCreateChat("cuidador");
 
   const sampleTestimonials = [
     {
@@ -140,21 +141,9 @@ export default function PerfilClientePage() {
     return edad;
   };
 
-  const crearChat = async () => {
+  const crearChat = () => {
     if (!perfil) return;
-    try {
-      const res = await fetch("/api/b/conversaciones/ensure/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: perfil.id }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const convId = data.id;
-      router.push(`/cuidador/chat?c=${convId}`);
-    } catch {
-      toast.error("No se pudo abrir el chat");
-    }
+    crearChatHook(perfil.id);
   };
 
   if (loading) {

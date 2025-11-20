@@ -87,6 +87,10 @@ export default function ClienteForm({
         toast.error("Completa la contraseña y su confirmación");
         return;
       }
+      if (password.length < 8) {
+        toast.error("La contraseña debe tener al menos 8 caracteres");
+        return;
+      }
       if (password !== confirmPassword) {
         toast.error("Las contraseñas no coinciden");
         return;
@@ -96,6 +100,10 @@ export default function ClienteForm({
       if (quiereCambiar) {
         if (!currentPassword || !newPassword || !confirmNewPassword) {
           toast.error("Completa los tres campos de contraseña");
+          return;
+        }
+        if (newPassword.length < 8) {
+          toast.error("La nueva contraseña debe tener al menos 8 caracteres");
           return;
         }
         if (newPassword !== confirmNewPassword) {
@@ -136,7 +144,7 @@ export default function ClienteForm({
       .map((c) => c.id);
 
     // Enviar como claves repetidas para multipart/form-data
-    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
+    categoriasIds.forEach((id) => fd.append("tipos_cliente_ids", String(id)));
 
     // 5) Fotos adicionales
     // Separate existing photos (strings) from new photos (Files)
@@ -256,7 +264,7 @@ export default function ClienteForm({
       <Card className="border-none shadow-lg">
         <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-lg">
           <CardTitle className="flex items-center gap-2 text-xl text-gray-800">
-            Categorías de interés
+            Categorías de cuidado
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
@@ -296,7 +304,7 @@ export default function ClienteForm({
           <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input 
               type="password" 
-              placeholder="Contraseña" 
+              placeholder="Contraseña (mínimo 8 caracteres)" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"
@@ -326,7 +334,7 @@ export default function ClienteForm({
               />
               <Input 
                 type="password" 
-                placeholder="Nueva contraseña" 
+                placeholder="Nueva contraseña (mínimo 8 caracteres)" 
                 value={newPassword} 
                 onChange={(e) => setNewPassword(e.target.value)} 
                 className="h-12 border-2 border-gray-200 focus:border-purple-500 transition-colors"

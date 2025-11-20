@@ -133,7 +133,6 @@ export default function Login() {
 
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                {/* etiqueta visual igual; solo corregimos id/for para accesibilidad */}
                 <Label htmlFor="identifier">Email o Username</Label>
                 <Input
                   id="identifier"
@@ -185,17 +184,7 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Demo credentials */}
-            <div className="mt-6 p-4 bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-lg">
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                Credenciales de prueba:
-              </p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>Cliente: cliente@test.com / cliente</p>
-                <p>Cuidador: cuidador@test.com / cuidador</p>
-                <p>Admin: admin@test.com / admin</p>
-              </div>
-            </div>
+            
           </CardContent>
         </Card>
       </div>

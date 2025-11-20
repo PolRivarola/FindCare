@@ -17,8 +17,8 @@ import { DetalleSolicitudModal } from "@/components/ui/serviceModal";
 
 import { apiGet, apiPost } from "@/lib/api";
 import { PaginatedResponse } from "@/lib/types";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import { useCreateChat } from "@/hooks/useCreateChat";
 import {
   Tooltip,
   TooltipContent,
@@ -77,7 +77,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
   const [rows, setRows] = useState<ServicioRead[]>([]);
   const [pendingRows, setPendingRows] = useState<ServicioRead[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const { crearChat: crearChatHook } = useCreateChat(tipoUsuario);
   const [pagination, setPagination] = useState({ page: 1, hasNext: false, total: 0 });
   const [loadingMore, setLoadingMore] = useState(false);
   const paramsRef = useRef<Record<string, string | number>>({});
@@ -194,22 +194,9 @@ export function HistorialServicios({ tipoUsuario }: Props) {
 
   const getContraparte = (s: ServicioRead) =>
     tipoUsuario === "cuidador" ? s.cliente : s.receptor;
-  const abrirChat = async (s: ServicioRead) => {
+  const abrirChat = (s: ServicioRead) => {
     const contraparte = getContraparte(s);
-    try {
-      const res = await fetch("/api/b/conversaciones/ensure/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: contraparte.id }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const convId = data.id;
-      const chatPath = tipoUsuario === "cliente" ? "/cliente/chat" : "/cuidador/chat";
-      router.push(`${chatPath}?c=${convId}`);
-    } catch {
-      toast.error("No se pudo abrir el chat");
-    }
+    crearChatHook(contraparte.id);
   };
 
   const abrirModal = (servicioId: number, contraparteNombre: string) => {
@@ -247,6 +234,13 @@ export function HistorialServicios({ tipoUsuario }: Props) {
     setCancelModalOpen(true);
   };
 
+  const servicioACancelarData = useMemo(() => {
+    if (!servicioACancelar) return null;
+    return serviciosCombinados.find((s) => s.id === servicioACancelar);
+  }, [servicioACancelar, serviciosCombinados]);
+
+  const isExpiredService = servicioACancelarData && !servicioACancelarData.aceptado && servicioACancelarData.fecha_inicio.slice(0, 10) < nowISO.slice(0, 10);
+
   const confirmarCancelacion = async () => {
     if (!servicioACancelar) return;
 
@@ -279,10 +273,12 @@ export function HistorialServicios({ tipoUsuario }: Props) {
         total: Math.max(0, prev.total - 1),
       }));
       
+      const wasExpired = isExpiredService;
+      
       setCancelModalOpen(false);
       setServicioACancelar(null);
       
-      toast.success("Solicitud cancelada correctamente");
+      toast.success(wasExpired ? "Solicitud borrada correctamente" : "Solicitud cancelada correctamente");
       
       
     } catch (error: any) {
@@ -359,6 +355,8 @@ export function HistorialServicios({ tipoUsuario }: Props) {
               tipoUsuario === "cuidador"
                 ? `/cliente/${contraparte.id}`
                 : `/cuidador/${contraparte.id}`;
+            // Compare only dates (YYYY-MM-DD), not full timestamps
+            const isExpired = !s.aceptado && s.fecha_inicio.slice(0, 10) < nowISO.slice(0, 10);
 
             return (
               <Card
@@ -378,9 +376,15 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                     <p className="text-sm md:text-base text-gray-500 mt-1">
                       {formatDate(s.fecha_inicio.slice(0, 10))} - {formatDate(s.fecha_fin.slice(0, 10))}
                       {!s.aceptado && tipoUsuario === "cliente" && (
-                        <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-yellow-100 text-yellow-700">
-                          PENDIENTE
-                        </Badge>
+                        isExpired ? (
+                          <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-red-100 text-red-700">
+                            CADUCADO
+                          </Badge>
+                        ) : (
+                          <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-yellow-100 text-yellow-700">
+                            PENDIENTE
+                          </Badge>
+                        )
                       )}
                       {s.en_curso && (
                         <Badge className="ml-2 px-2 py-0.5 text-xs align-middle bg-green-100 text-green-700">
@@ -430,18 +434,17 @@ export function HistorialServicios({ tipoUsuario }: Props) {
                   </Link>
                   
                   {!s.aceptado && tipoUsuario === "cliente" ? (
-                    <div className="flex items-center flex-wrap gap-2"><div className="h-9 min-w-[80px] flex items-center justify-center">
-                      <Clock className="h-4 w-4 text-gray-400 mr-1" />
-                      <span className="text-gray-400 text-xs">Esperando respuesta</span>
+                    <div className="flex items-center flex-wrap gap-2">
+                      
+                      <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center"
+                        onClick={() => abrirModalCancelacion(s.id)}
+                      >
+                        {isExpired ? 'Borrar' : 'Cancelar'}
+                      </Button>
                     </div>
-                    <Button 
-                            variant="destructive" 
-                            size="sm" 
-                            className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center"
-                            onClick={() => abrirModalCancelacion(s.id)}
-                          >
-                            Cancelar
-                          </Button></div>
                   ) : s.en_curso || s.fecha_inicio > nowISO ? (
                     <TooltipProvider delayDuration={100}>
                       <Tooltip>
@@ -532,10 +535,14 @@ export function HistorialServicios({ tipoUsuario }: Props) {
       <AlertDialog open={cancelModalOpen} onOpenChange={setCancelModalOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Cancelar solicitud</AlertDialogTitle>
+            <AlertDialogTitle>
+              {isExpiredService ? 'Borrar solicitud caducada' : 'Cancelar solicitud'}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              ¿Estás seguro de que quieres cancelar esta solicitud de servicio? 
-              Esta acción no se puede deshacer.
+              {isExpiredService 
+                ? '¿Estás seguro de que quieres borrar esta solicitud caducada? Esta acción no se puede deshacer.'
+                : '¿Estás seguro de que quieres cancelar esta solicitud de servicio? Esta acción no se puede deshacer.'
+              }
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -544,7 +551,7 @@ export function HistorialServicios({ tipoUsuario }: Props) {
               onClick={confirmarCancelacion}
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
-              Sí, cancelar solicitud
+              {isExpiredService ? 'Sí, borrar' : 'Sí, cancelar solicitud'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

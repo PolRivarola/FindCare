@@ -399,9 +399,12 @@ class CuidadorPerfilView(APIView):
 
         user.save()
 
-        if "categorias_ids" in data and hasattr(user, "cuidador"):
-            qs = TipoCliente.objects.filter(id__in=data["categorias_ids"])
+        # Check for tipos_cliente_ids first (new format), then fall back to categorias_ids (old format)
+        cats_key = "tipos_cliente_ids" if "tipos_cliente_ids" in data else "categorias_ids"
+        if cats_key in data and hasattr(user, "cuidador"):
+            qs = TipoCliente.objects.filter(id__in=data[cats_key])
             user.cuidador.tipos_cliente.set(qs)
+            print(f"DEBUG - CuidadorPerfilView PATCH: Categorías actualizadas: {[c.nombre for c in qs]}")
 
         if "experiencias" in data:
             Experiencia.objects.filter(cuidador=user).delete()
@@ -422,6 +425,24 @@ class CuidadorPerfilView(APIView):
                 )
             if bulk:
                 Experiencia.objects.bulk_create(bulk)
+
+        # Manejar eliminación de certificados
+        certificados_eliminar_str = request.data.get("certificados_eliminar")
+        if certificados_eliminar_str:
+            try:
+                certificados_eliminar = json.loads(certificados_eliminar_str)
+                if isinstance(certificados_eliminar, list):
+                    for archivo_url in certificados_eliminar:
+                        if "/media/" in archivo_url:
+                            archivo_path = archivo_url.split("/media/", 1)[1]
+                            cert = Certificacion.objects.filter(cuidador=user, archivo=archivo_path).first()
+                            if cert:
+                                if cert.archivo:
+                                    cert.archivo.delete(save=False)
+                                cert.delete()
+                                print(f"DEBUG - Certificado eliminado: {archivo_path}")
+            except Exception as e:
+                print(f"DEBUG - Error eliminando certificados: {e}")
 
         files = request.FILES.getlist("certificados")
         names = request.data.getlist("certificados_nombres")
@@ -513,24 +534,44 @@ class CuidadorPerfilView(APIView):
         anios_experiencia = int(request.data.get("anios_experiencia", 0) or 0)
         Cuidador.objects.create(usuario=user, anios_experiencia=max(0, anios_experiencia))
 
-        raw_cats = request.data.get("categorias_ids")
+        # Check for tipos_cliente_ids first (new format), then fall back to categorias_ids (old format)
+        # Use getlist() for multipart/form-data with repeated keys
+        raw_cats_list = request.data.getlist("tipos_cliente_ids") or request.data.getlist("categorias_ids")
+        raw_cats_single = request.data.get("tipos_cliente_ids") or request.data.get("categorias_ids")
+        
+        print(f"DEBUG - CuidadorPerfilView POST: raw_cats_list={raw_cats_list}, raw_cats_single={raw_cats_single}")
+        
         cats_list = []
-        if isinstance(raw_cats, list):
-            cats_list = [int(x) for x in raw_cats]
-        elif isinstance(raw_cats, str) and raw_cats.strip():
+        
+        # First try getlist() (for repeated keys in FormData)
+        if raw_cats_list:
             try:
-                parsed = json.loads(raw_cats)
-                if isinstance(parsed, list):
-                    cats_list = [int(x) for x in parsed]
-            except Exception:
+                cats_list = [int(x) for x in raw_cats_list if x]
+            except (ValueError, TypeError) as e:
+                print(f"DEBUG - Error parsing getlist: {e}")
+        # Then try get() with JSON parsing
+        elif raw_cats_single:
+            if isinstance(raw_cats_single, list):
+                cats_list = [int(x) for x in raw_cats_single]
+            elif isinstance(raw_cats_single, str) and raw_cats_single.strip():
                 try:
-                    cats_list = [int(x) for x in raw_cats.split(",") if x.strip()]
+                    parsed = json.loads(raw_cats_single)
+                    if isinstance(parsed, list):
+                        cats_list = [int(x) for x in parsed]
                 except Exception:
-                    cats_list = []
+                    try:
+                        cats_list = [int(x) for x in raw_cats_single.split(",") if x.strip()]
+                    except Exception:
+                        cats_list = []
+
+        print(f"DEBUG - CuidadorPerfilView POST: cats_list final={cats_list}")
 
         if cats_list:
             qs = TipoCliente.objects.filter(id__in=cats_list)
             user.cuidador.tipos_cliente.set(qs)
+            print(f"DEBUG - CuidadorPerfilView POST: Categorías asignadas: {[c.nombre for c in qs]}")
+        else:
+            print("DEBUG - CuidadorPerfilView POST: No se encontraron categorías para asignar")
 
         raw_exps = request.data.get("experiencias")
         if raw_exps:
@@ -648,15 +689,20 @@ class ClientePerfilView(APIView):
 
         user.save()
 
-        raw_cats_ids = request.data.getlist("categorias_ids")
+        # Check for tipos_cliente_ids first (new format), then fall back to categorias_ids (old format)
+        raw_cats_ids = request.data.getlist("tipos_cliente_ids") or request.data.getlist("categorias_ids")
         raw_cats = request.data.get("categorias")
+        
+        print(f"DEBUG - ClientePerfilView PATCH: raw_cats_ids={raw_cats_ids}, raw_cats={raw_cats}")
         
         if raw_cats_ids:
             try:
                 cats_ids = [int(id_str) for id_str in raw_cats_ids]
                 cats = TipoCliente.objects.filter(id__in=cats_ids)
                 user.cliente.tipos_cliente.set(cats)
-            except (ValueError, TypeError):
+                print(f"DEBUG - Categorías actualizadas: {[c.nombre for c in cats]}")
+            except (ValueError, TypeError) as e:
+                print(f"DEBUG - Error al actualizar categorías: {e}")
                 pass
         elif raw_cats:
             cats = []

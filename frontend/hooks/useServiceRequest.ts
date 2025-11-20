@@ -44,11 +44,18 @@ export function useServiceRequest() {
         return;
       }
 
+      const servicioNames = formData.servicio.map((slug: string) => {
+        return slug
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      });
+
       const payload = {
         receptor_id: Number(selectedCuidador.id),
         fecha_inicio: `${formData.fecha_inicio}T00:00:00`,
         fecha_fin: `${formData.fecha_fin}T23:59:59`,
-        descripcion: `Tipos de servicio solicitados: ${formData.servicio.join(", ")}\n\nDescripción adicional: ${formData.descripcion}\n\n`,
+        descripcion: `Tipos de servicio solicitados: ${servicioNames.join(", ")}\n\nDescripción adicional: ${formData.descripcion}`,
         horas_dia: formData.hora,
         dias_semanales_ids: diaIds,
       };

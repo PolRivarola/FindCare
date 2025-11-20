@@ -27,11 +27,9 @@ export async function getUserOrNull(): Promise<AppUser | null> {
   let access = jar.get(ACCESS)?.value;
   const refresh = jar.get(REFRESH)?.value;
 
-  // 1) Intento con el access actual
   let r = await fetchMe(access);
   if (r.ok) return (await r.json()) as AppUser;
 
-  // 2) Si falla por expirado y tengo refresh → refresco
   if (r.status === 401 && refresh) {
     const rr = await fetch(`${API_BASE}/auth/refresh`, {
       method: "POST",
@@ -43,9 +41,7 @@ export async function getUserOrNull(): Promise<AppUser | null> {
     if (rr.ok) {
       const data = await rr.json();
       access = data.access;
-      // seteo nuevo access en cookie (HttpOnly) para siguientes requests
       (await
-            // seteo nuevo access en cookie (HttpOnly) para siguientes requests
             cookies()).set(ACCESS, access!, {
         httpOnly: true, secure: true, sameSite: "lax", path: "/"
       });

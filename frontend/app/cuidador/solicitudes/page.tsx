@@ -36,7 +36,7 @@ export default function SolicitudesServicios() {
         const response = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios", {
           receptor_id: uid,
           aceptado: "false",
-          ordering: "-fecha_inicio",
+          ordering: "-id",
           page_size: PAGE_SIZE,
         });
 
@@ -69,7 +69,7 @@ export default function SolicitudesServicios() {
       const response = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios", {
         receptor_id: user.id,
         aceptado: "false",
-        ordering: "-fecha_inicio",
+        ordering: "-id",
         page: nextPage,
         page_size: PAGE_SIZE,
       });

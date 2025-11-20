@@ -20,7 +20,19 @@ export async function POST(req: Request) {
   }
 
   const res = NextResponse.json({ ok: true, user: data.user ?? null }, { status: 200 });
-  res.cookies.set(ACCESS,  data.access,  { httpOnly: true, secure: SECURE, sameSite: "lax", path: "/" });
-  res.cookies.set(REFRESH, data.refresh, { httpOnly: true, secure: SECURE, sameSite: "lax", path: "/" });
+  res.cookies.set(ACCESS,  data.access,  { 
+    httpOnly: true, 
+    secure: SECURE, 
+    sameSite: "lax", 
+    path: "/",
+    maxAge: 60 * 60 * 2  
+  });
+  res.cookies.set(REFRESH, data.refresh, { 
+    httpOnly: true, 
+    secure: SECURE, 
+    sameSite: "lax", 
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7  // 7 days
+  });
   return res;
 }

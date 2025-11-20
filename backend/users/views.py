@@ -54,11 +54,29 @@ class RegistroClienteView(CreateAPIView):
     queryset = Cliente.objects.all()
     serializer_class = RegistroClienteSerializer
     permission_classes = [AllowAny]
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cliente = serializer.save()
+        return Response(
+            {"detail": "Cliente registrado exitosamente", "username": cliente.usuario.username},
+            status=201
+        )
 
 class RegistroCuidadorView(CreateAPIView):
     queryset = Cuidador.objects.all()
     serializer_class = RegistroCuidadorSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [AllowAny]
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cuidador = serializer.save()
+        return Response(
+            {"detail": "Cuidador registrado exitosamente", "username": cuidador.usuario.username},
+            status=201
+        ) 
 
 
 class CuidadorSearchView(ListAPIView):

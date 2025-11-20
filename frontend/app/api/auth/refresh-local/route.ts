@@ -26,21 +26,23 @@ export async function POST() {
   }
 
   const res = NextResponse.json({ access: data.access }, { status: 200 });
-  // Set the new access token
+  // Set the new access token (expires in 2 hours)
   res.cookies.set(ACCESS, data.access, {
     httpOnly: true,
     secure: SECURE,
     sameSite: "lax",
     path: "/",
+    maxAge: 60 * 60 * 2  // 2 hours
   });
   
-  // If Django rotated the refresh token (ROTATE_REFRESH_TOKENS: True), set the new one
+  // If Django rotated the refresh token (ROTATE_REFRESH_TOKENS: True), set the new one (expires in 7 days)
   if (data.refresh) {
     res.cookies.set(REFRESH, data.refresh, {
       httpOnly: true,
       secure: SECURE,
       sameSite: "lax",
       path: "/",
+      maxAge: 60 * 60 * 24 * 7  // 7 days
     });
   }
   

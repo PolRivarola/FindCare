@@ -64,6 +64,7 @@ export default function CuidadorForm({
 }: Props) {
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [certLocal, setCertLocal] = useState<CertLocal[]>([]);
+  const [certificadosAEliminar, setCertificadosAEliminar] = useState<string[]>([]); // URLs de certificados a eliminar
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -111,6 +112,19 @@ export default function CuidadorForm({
     setCertLocal(arr);
   };
 
+  const removeExistingCertificado = (archivo: string) => {
+    // Agregar a la lista de certificados a eliminar
+    setCertificadosAEliminar((prev) => [...prev, archivo]);
+    
+    // Remover del perfil actual para actualizar la UI
+    if (perfil) {
+      setPerfil({
+        ...perfil,
+        certificados: perfil.certificados.filter((c) => c.archivo !== archivo),
+      });
+    }
+  };
+
   const submit = async () => {
     if (!perfil) return;
     
@@ -151,6 +165,14 @@ export default function CuidadorForm({
       toast.error("Completa la contraseña y su confirmación");
       return;
     }
+    if (mode === "create" && password.length < 8) {
+      toast.error("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+    if (mode === "create" && password !== confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
+      return;
+    }
   
     
     const fd = new FormData();
@@ -184,13 +206,20 @@ export default function CuidadorForm({
       .filter((c) => new Set(perfil.categorias || []).has(c.nombre))
       .map((c) => c.id);
 
+    console.log("DEBUG - CuidadorForm: categorias seleccionadas (nombres):", perfil.categorias);
+    console.log("DEBUG - CuidadorForm: categorias IDs a enviar:", categoriasIds);
+
     // Enviar como claves repetidas para multipart/form-data
-    categoriasIds.forEach((id) => fd.append("categorias_ids", String(id)));
+    categoriasIds.forEach((id) => fd.append("tipos_cliente_ids", String(id)));
 
     if (mode === "create") {
       // Validación básica en front
       if (!password || !confirmPassword) {
         alert("Completa la contraseña y su confirmación");
+        return;
+      }
+      if (password.length < 8) {
+        alert("La contraseña debe tener al menos 8 caracteres");
         return;
       }
       if (password !== confirmPassword) {
@@ -208,6 +237,10 @@ export default function CuidadorForm({
       if (quiereCambiar) {
         if (!currentPassword || !newPassword || !confirmNewPassword) {
           alert("Para cambiar la contraseña completa los tres campos.");
+          return;
+        }
+        if (newPassword.length < 8) {
+          alert("La nueva contraseña debe tener al menos 8 caracteres");
           return;
         }
         if (newPassword !== confirmNewPassword) {
@@ -243,6 +276,11 @@ export default function CuidadorForm({
       // Nombre visible opcional para cada archivo
       fd.append("certificados_nombres", c.name || c.file.name);
     });
+
+    // 7) Certificados a eliminar
+    if (certificadosAEliminar.length > 0) {
+      fd.append("certificados_eliminar", JSON.stringify(certificadosAEliminar));
+    }
 
     
     await onSubmit(fd);
@@ -536,17 +574,34 @@ export default function CuidadorForm({
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {perfil.certificados.map((c, i) => (
-                  <a
+                  <div
                     key={i}
-                    href={c.archivo} // ahora absoluto: http://127.0.0.1:8000/media/...
-                    target="_blank"
-                    rel="noopener noreferrer"
-                      className="flex items-center gap-3 bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="flex items-center justify-between bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200"
                   >
-                    <span className="text-sm font-medium text-gray-800 truncate flex-1">
-                      {c.nombre}
-                    </span>
-                  </a>
+                    <a
+                      href={c.archivo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 flex-1 hover:text-purple-600 transition-colors"
+                    >
+                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-800 truncate">
+                        {c.nombre}
+                      </span>
+                    </a>
+                    {mode === "edit" && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeExistingCertificado(c.archivo)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 ml-2"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
@@ -561,7 +616,7 @@ export default function CuidadorForm({
             <CardTitle className="text-xl text-gray-800">Crear contraseña</CardTitle>
           </CardHeader>
           <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input type="password" placeholder="Contraseña (mínimo 8 caracteres)" value={password} onChange={(e) => setPassword(e.target.value)} />
             <Input type="password" placeholder="Repetir contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           </CardContent>
         </Card>
@@ -573,7 +628,7 @@ export default function CuidadorForm({
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Input type="password" placeholder="Contraseña actual" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-              <Input type="password" placeholder="Nueva contraseña" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <Input type="password" placeholder="Nueva contraseña (mínimo 8 caracteres)" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
               <Input type="password" placeholder="Repetir nueva contraseña" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
             </div>
           </CardContent>

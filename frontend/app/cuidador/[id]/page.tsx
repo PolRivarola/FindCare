@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,13 +13,15 @@ import Link from "next/link";
 import { PerfilPublico } from "@/lib/types";
 import { useUser } from "@/context/UserContext";
 import { ReviewCard } from "@/components/ui/ReviewCard";
+import { useCreateChat } from "@/hooks/useCreateChat";
 
 export default function PerfilPublicoPage() {
   const params = useParams();
-  const router = useRouter();
   const currentUser = useUser();
   const [perfil, setPerfil] = useState<PerfilPublico | null>(null);
   const [loading, setLoading] = useState(true);
+  const tipoUsuario = currentUser?.es_cliente ? "cliente" : "cuidador";
+  const { crearChat: crearChatHook } = useCreateChat(tipoUsuario);
 
 
   useEffect(() => {
@@ -86,21 +88,9 @@ export default function PerfilPublicoPage() {
     );
   }
 
-  const crearChat = async () => {
+  const crearChat = () => {
     if (!perfil) return;
-    try {
-      const res = await fetch("/api/b/conversaciones/ensure/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: perfil.id }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const chatPath = currentUser?.es_cliente ? "/cliente/chat" : "/cuidador/chat";
-      router.push(`${chatPath}?c=${data.id}`);
-    } catch {
-      toast.error("No se pudo abrir el chat");
-    }
+    crearChatHook(perfil.id);
   };
 
   return (
@@ -296,7 +286,7 @@ export default function PerfilPublicoPage() {
                             })()}
                           </span>
                         </div>
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-gray-700 leading-relaxed break-all">
                           {exp.descripcion}
                         </p>
                       </div>

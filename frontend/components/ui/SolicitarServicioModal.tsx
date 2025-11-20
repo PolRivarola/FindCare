@@ -72,11 +72,11 @@ export function SolicitarServicioModal({
     const startDate = parseLocalDate(formData.fecha_inicio);
     const endDate = parseLocalDate(formData.fecha_fin);
 
-    if (startDate >= endDate) {
+    if (startDate > endDate) {
       return enabled;
     }
 
-    // Iterate through each day in the range
+    // Iterate through each day in the range (inclusive of both start and end dates)
     const currentDate = new Date(startDate);
     while (currentDate <= endDate) {
       const dayNumber = currentDate.getDay();
@@ -232,7 +232,13 @@ export function SolicitarServicioModal({
               <DateInput
                 id="fecha_inicio"
                 value={formData.fecha_inicio}
-                min={new Date().toISOString().split('T')[0]}
+                min={(() => {
+                  const today = new Date();
+                  const year = today.getFullYear();
+                  const month = String(today.getMonth() + 1).padStart(2, '0');
+                  const day = String(today.getDate()).padStart(2, '0');
+                  return `${year}-${month}-${day}`;
+                })()}
                 onChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
@@ -307,10 +313,35 @@ export function SolicitarServicioModal({
 
           {/* Días de la Semana */}
           <div>
-            <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
-              Días de la Semana
-            </Label>
+            <div className="flex items-center justify-between mb-3">
+              <Label className="text-sm font-medium text-gray-700">
+                <Calendar className="h-4 w-4 inline mr-2 text-purple-600" />
+                Días de la Semana
+              </Label>
+              {enabledDays.size > 0 && (() => {
+                const allEnabledDays = Array.from(enabledDays);
+                const allSelected = allEnabledDays.every(day => 
+                  formData.dias_semanales.includes(day)
+                );
+                
+                return (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        dias_semanales: allSelected ? [] : allEnabledDays,
+                      }));
+                    }}
+                    className="text-xs h-8"
+                  >
+                    {allSelected ? 'Deseleccionar todos' : 'Seleccionar todos'}
+                  </Button>
+                );
+              })()}
+            </div>
             <div className="grid grid-cols-2 gap-3">
               {diasSemanales.map((dia) => {
                 const isEnabled = enabledDays.has(dia.nombre);

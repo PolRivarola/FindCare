@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ServicioDTO, Solicitud, PaginatedResponse } from "@/lib/types";
 
-import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star, FileText } from "lucide-react";
+import { Heart, Bell, History, User, MessageCircle, Calendar, DollarSign, Star, FileText, CircleUserRound } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { apiGet, apiPost, apiDelete } from "@/lib/api";
+import { useCreateChat } from "@/hooks/useCreateChat";
 import {
   Dialog,
   DialogTrigger,
@@ -25,19 +26,49 @@ import { useUser } from "@/context/UserContext";
 import { mapServiciosToUI } from "@/lib/mappers/servicios";
 import { SolicitudCard } from "@/components/ui/SolicitudCard";
 import { PaginationControls } from "@/components/PaginationControls";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const REVIEWS_PAGE_SIZE = 3;
+
+type UsuarioMini = { 
+  id: number; 
+  username: string; 
+  first_name?: string; 
+  last_name?: string; 
+  foto_perfil?: string;
+  ciudad?: string;
+  provincia?: string;
+};
+type ServicioActivo = {
+  id: number;
+  cliente: UsuarioMini;
+  fecha_inicio: string;
+  fecha_fin: string;
+  descripcion: string;
+  horas_dia: string;
+  dias_semanales: Array<{ id: number; nombre: string }>;
+  en_curso: boolean;
+};
 
 export default function CuidadorDashboard() {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpenId, setModalOpenId] = useState<number | null>(null);
+  const [serviceModalOpenId, setServiceModalOpenId] = useState<number | null>(null);
   const user = useUser();
+  const { crearChat } = useCreateChat("cuidador");
   const [reviews, setReviews] = useState<any[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [reviewsTotal, setReviewsTotal] = useState(0);
   const [reviewsTotalPages, setReviewsTotalPages] = useState(0);
   const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [ongoingServices, setOngoingServices] = useState<ServicioActivo[]>([]);
   const [stats, setStats] = useState({
   serviciosCompletados: 0,
   calificacionPromedio: 0,
@@ -69,12 +100,27 @@ useEffect(() => {
       const data = await apiGet<PaginatedResponse<ServicioDTO>>("/servicios/", {
         receptor_id: uid,           
         aceptado: "false",          
-        ordering: "-fecha_inicio",
+        ordering: "-id",
         page_size: 6,
       });
 
       if (!ac.signal.aborted)
         setSolicitudes(mapServiciosToUI(data.results) as unknown as Solicitud[]);
+
+      // Fetch ongoing services (accepted, started before today, ending after today)
+      const now = new Date().toISOString();
+      const ongoingData = await apiGet<PaginatedResponse<any>>("/servicios/", {
+        receptor_id: uid,
+        aceptado: "true",
+        fecha_inicio_before: now,
+        fecha_fin_after: now,
+        ordering: "-fecha_inicio",
+        page_size: 10,
+      });
+
+      if (!ac.signal.aborted) {
+        setOngoingServices(ongoingData.results || []);
+      }
 
     } catch {
       if (!ac.signal.aborted) {
@@ -149,7 +195,6 @@ useEffect(() => {
   }
 }, [reviewsTotalPages]);
 
-
   const aceptarSolicitud = (id: number) => {
     apiPost(`/cuidador/solicitudes/${id}/aceptar`, {})
       .then(() => {
@@ -179,6 +224,27 @@ useEffect(() => {
     } catch {
       toast.error('No se pudo actualizar el reporte');
     }
+  };
+
+  const nombre = (u: UsuarioMini) =>
+    [u.first_name, u.last_name].filter(Boolean).join(" ").trim() || u.username;
+
+  // Convert ServicioActivo to Solicitud format for the modal
+  const mapServicioToSolicitud = (service: ServicioActivo): Solicitud => {
+    return {
+      id: service.id,
+      id_cliente: service.cliente.id,
+      cliente: nombre(service.cliente),
+      cliente_ciudad: service.cliente.ciudad || "",
+      cliente_provincia: service.cliente.provincia || "",
+      servicio: [service.descripcion],
+      fecha_inicio: service.fecha_inicio,
+      fecha_fin: service.fecha_fin,
+      hora: service.horas_dia || "",
+      rangos_horarios: [],
+      dias_semanales: service.dias_semanales?.map(d => d.nombre) || [],
+      foto: service.cliente.foto_perfil || "",
+    };
   };
 
   // Show loading skeleton on initial load
@@ -359,21 +425,140 @@ useEffect(() => {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-            <CardContent className="p-6 text-center">
-              <User className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Actualizar Perfil</h3>
-              <p className="text-gray-600 mb-4">
-                Mantén tu información actualizada
-              </p>
-              <Link href="/cuidador/perfil">
-                <Button variant="outline" className="w-full">
-                  Editar Perfil
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+          {ongoingServices.length > 0 ? (
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                {ongoingServices.length === 1 ? (
+                  // Single service - no carousel needed
+                  <>
+                  <h3 className="text-lg font-semibold mb-2 text-center">Client{ongoingServices.length > 1 ? "es" : "e"} Actual{ongoingServices.length > 1 ? "es" : ""} </h3>
+                  <div className="text-center flex flex-row justify-around h-full  items-center gap-4">
+                    <div>
+                    
+                    {ongoingServices[0].cliente.foto_perfil ? (
+                      <img
+                        src={ongoingServices[0].cliente.foto_perfil}
+                        alt={`Foto de ${nombre(ongoingServices[0].cliente)}`}
+                        className="h-36 w-36 rounded-full mx-auto mb-4 object-cover border-2 border-blue-200"
+                      />
+                    ) : (
+                      <CircleUserRound className="h-36 w-36 text-blue-600 mx-auto mb-4" />
+                    )}
+                    
+                    <p className="text-gray-600 mb-4 font-medium">
+                      {nombre(ongoingServices[0].cliente)}
+                    </p>
+                    </div>
+                    
+                    
+                    <div className="flex flex-col gap-2 justify-center">
+                      <Button 
+                        className="w-full" 
+                        variant="gradient"
+                        onClick={() => setServiceModalOpenId(ongoingServices[0].id)}
+                      >
+                        Ver Detalles
+                      </Button>
+                      <Button 
+                        className="w-full" 
+                        variant="gradient"
+                        onClick={() => crearChat(ongoingServices[0].cliente.id)}
+                      >
+                        Enviar mensaje
+                      </Button>
+                      <Link className="w-full" href={`/cliente/${ongoingServices[0].cliente.id}`}>
+                        <Button className="w-full" variant="gradient">Ver perfil</Button>
+                      </Link>
+                    </div>
+                  </div>
+                  </>
+                ) : (
+                  // Multiple services - use carousel
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold mb-4">Clientes Actuales</h3>
+                    <Carousel className="w-full max-w-xs mx-auto">
+                      <CarouselContent>
+                        {ongoingServices.map((service) => (
+                          <CarouselItem key={service.id}>
+                            <div className="flex flex-col items-center">
+                              {service.cliente.foto_perfil ? (
+                                <img
+                                  src={service.cliente.foto_perfil}
+                                  alt={`Foto de ${nombre(service.cliente)}`}
+                                  className="h-28 w-28 rounded-full mb-4 object-cover border-2 border-blue-200"
+                                />
+                              ) : (
+                                <CircleUserRound className="h-28 w-28 text-blue-600 mb-4" />
+                              )}
+                              
+                              <p className="text-gray-600 mb-4 font-medium">
+                                {nombre(service.cliente)}
+                              </p>
+                              
+                              <div className="flex flex-col gap-2 w-full">
+                                <Button 
+                                  className="w-full" 
+                                  variant="gradient"
+                                  onClick={() => setServiceModalOpenId(service.id)}
+                                >
+                                  Ver Detalles
+                                </Button>
+                                <Button 
+                                  className="w-full" 
+                                  variant="gradient"
+                                  onClick={() => crearChat(service.cliente.id)}
+                                >
+                                  Enviar mensaje
+                                </Button>
+                                <Link className="w-full" href={`/cliente/${service.cliente.id}`}>
+                                  <Button className="w-full" variant="gradient">Ver perfil</Button>
+                                </Link>
+                              </div>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious />
+                      <CarouselNext />
+                    </Carousel>
+                    <p className="text-sm text-gray-500 mt-4">
+                      {ongoingServices.length} servicios activos
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <User className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Actualizar Perfil</h3>
+                <p className="text-gray-600 mb-4">
+                  Mantén tu información actualizada
+                </p>
+                <Link href="/cuidador/perfil">
+                  <Button variant="outline" className="w-full">
+                    Editar Perfil
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )}
         </div>
+
+        {/* Service Detail Modals for ongoing services */}
+        {ongoingServices.map((service) => (
+          serviceModalOpenId === service.id && (
+            <DetalleSolicitudModal
+              key={service.id}
+              solicitud={mapServicioToSolicitud(service)}
+              open={true}
+              onOpenChange={(open) => setServiceModalOpenId(open ? service.id : null)}
+              actualizarSolicitudes={() => {}} // No-op since we don't need to update the list
+              showActions={false}
+            />
+          )
+        ))}
       </main>
       {/* Calificaciones recibidas */}
       <div className="p-6">
@@ -381,7 +566,7 @@ useEffect(() => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Star className="h-5 w-5 mr-2" />
-              Opiniones Recibidas
+              Calificaciones Recibidas
             </CardTitle>
             <p className="text-sm text-muted-foreground">
               Mostrando {reviews.length} de {reviewsTotal} reseñas

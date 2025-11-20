@@ -15,7 +15,7 @@ interface SearchParams {
   ciudad: string;
 }
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 5;
 
 export function useCuidadoresSearch() {
   const [cuidadores, setCuidadores] = useState<any[]>([]);

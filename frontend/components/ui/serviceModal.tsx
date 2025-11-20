@@ -197,9 +197,8 @@ export function DetalleSolicitudModal({
                 <FileText className="h-5 w-5 text-purple-600" />
                 <h4 className="font-semibold text-gray-900">Sobre el Servicio</h4>
               </div>
-              <div className="flex flex-wrap gap-2">
-
-                {solicitud.servicio}
+              <div className="text-sm text-gray-700 whitespace-pre-line">
+                {Array.isArray(solicitud.servicio) ? solicitud.servicio.join('\n') : solicitud.servicio}
               </div>
             </CardContent>
           </Card>

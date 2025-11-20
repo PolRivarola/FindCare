@@ -25,6 +25,7 @@ import { ReviewCard } from "@/components/ui/ReviewCard";
 import { Flag } from "lucide-react";
 import { formatDate } from "@/lib/utils/dateFormat";
 import { PaginationControls } from "@/components/PaginationControls";
+import { useCreateChat } from "@/hooks/useCreateChat";
 
 type UsuarioMini = { id: number; username: string; first_name?: string; last_name?: string; foto_perfil?: string };
 type CalificacionMini = { puntuacion: number; comentario?: string | null; creado_en: string } | null;
@@ -48,6 +49,7 @@ const REVIEWS_PAGE_SIZE = 3;
 export default function ClienteDashboard() {
   const [activeTab, setActiveTab] = useState("inicio");
   const user = useUser();
+  const { crearChat } = useCreateChat("cliente");
   const nowISO = useMemo(() => new Date().toISOString(), []);
 
   const [needsCarer, setNeedsCarer] = useState(true);
@@ -78,7 +80,7 @@ export default function ClienteDashboard() {
             cliente_id: user.id,
             aceptado: "true",
             fecha_inicio_before: nowISO,
-            fecha_inicio_after: new Date(new Date(nowISO).getTime() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+            fecha_inicio_after: new Date(new Date(nowISO).getTime() - 1000 * 60 * 60 * 24 * 31).toISOString(), // Started in last 31 days
             ordering: "-fecha_fin",
             page_size: 10,
           }),
@@ -310,9 +312,14 @@ export default function ClienteDashboard() {
                 </p>
                 </div>
                 <div className="flex flex-col gap-2 justify-center">
-                <Link className="w-full" href="/cliente/chat">
-                  <Button className="w-full " variant="gradient"  >Enviar mensaje</Button>
-                </Link>
+                <Button 
+                  className="w-full" 
+                  variant="gradient"
+                  onClick={() => currentService && crearChat(currentService.receptor.id)}
+                  disabled={!currentService}
+                >
+                  Enviar mensaje
+                </Button>
                 <Link className="w-full" href={currentService ? `/cuidador/${currentService.receptor.id}` : "/cliente/buscar"}>
                   <Button className="w-full" variant="gradient">Ver perfil</Button>
                 </Link>
@@ -451,7 +458,9 @@ export default function ClienteDashboard() {
                           </p>
                         </div>
                         <div>
-                          <Link href="/cliente/chat"><Button size="sm">Contactar</Button></Link>
+                          <Button size="sm" onClick={() => crearChat(service.receptor.id)}>
+                            Contactar
+                          </Button>
                         </div>
                       </div>
                     );
@@ -468,7 +477,7 @@ export default function ClienteDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Star className="h-5 w-5 mr-2" />
-                Mis Calificaciones
+                Calificaciones Recibidas
               </CardTitle>
               <p className="text-sm text-muted-foreground">
                 Mostrando {reviews.length} de {reviewsTotal} reseñas

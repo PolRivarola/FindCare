@@ -131,45 +131,9 @@ export default function Registro() {
   };
 
   // Ajusta esto a tu endpoint de registro de cliente (en tu backend tenías rutas /api/registro/cliente)
-  const handleRegistroCliente = async () => {
+  const handleRegistroCliente = async (fd: FormData) => {
     try {
-      const fd = new FormData();
-      // campos básicos
-      fd.append("first_name", clienteData.first_name || "");
-      fd.append("last_name", clienteData.last_name || "");
-      fd.append("email", clienteData.email || "");
-      fd.append("telefono", clienteData.telefono || "");
-      if (clienteData.fecha_nacimiento)
-        fd.append("fecha_nacimiento", clienteData.fecha_nacimiento);
-      fd.append("descripcion", clienteData.descripcion || "");
-      if (clienteData.fotoFile) fd.append("foto_perfil", clienteData.fotoFile);
-
-      // dirección
-      fd.append("provincia", clienteData.provincia || "");
-      fd.append("ciudad", clienteData.ciudad || "");
-      fd.append("direccion", clienteData.direccion || "");
-
-      // contraseña
-      if (!clienteData.password || !clienteData.confirmPassword) {
-        toast.error("Completa contraseña y su confirmación");
-        return;
-      }
-      if (clienteData.password !== clienteData.confirmPassword) {
-        toast.error("Las contraseñas no coinciden");
-        return;
-      }
-      fd.append("password", clienteData.password);
-      fd.append("confirm_password", clienteData.confirmPassword);
-
-      // categorías como IDs (como espera RegistroClienteSerializer)
-      if (clienteData.categorias && clienteData.categorias.length > 0) {
-        const categoriasIds = categoriasDisponibles
-          .filter((c) => clienteData.categorias.includes(c.nombre))
-          .map((c) => c.id);
-        categoriasIds.forEach((id) => fd.append("tipos_cliente_ids", String(id)));
-      }
-
-      const res = await fetch("/api/b/registro/cliente", {
+      const res = await fetch("/api/b/registro/cliente/", {
         method: "POST",
         body: fd,
       });

@@ -4,6 +4,13 @@ import { ReportModal } from "./ReportModal";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { formatDate } from "@/lib/utils/dateFormat";
+import { Bell, Flag } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ReviewCardProps {
   id: number;
@@ -89,16 +96,34 @@ export function ReviewCard({
     }
 
     if (showReportButton && onReport) {
-      return (
+      return isReported ? (
         <Button 
-          variant={isReported ? "destructive" : "gradient"} 
+          variant="destructive" 
           size="sm" 
           onClick={handleReportClick}
           disabled={isLoading}
-          className="w-full sm:w-auto mt-3 sm:mt-0 text-xs md:text-sm"
+          className="w-full sm:w-auto mt-3 sm:mt-0 text-xs md:text-sm flex items-center gap-1"
         >
-          {isReported ? 'Quitar reporte' : 'Reportar'}
+          <Flag className="h-4 w-4" />
+          Quitar reporte
         </Button>
+      ) : (
+        <TooltipProvider delayDuration={100}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleReportClick}
+                disabled={isLoading}
+                className="flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 h-9 min-w-[80px] justify-center hover:text-red-600 hover:border-red-600"
+              >
+                <Bell className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Reportar</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     }
 

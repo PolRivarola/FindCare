@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { Heart, Search, History, User, MessageCircle, Bell, MessageCircleQuestion, Menu, X } from "lucide-react"
+import { Heart, Search, History, User, MessageCircle, Bell, MessageCircleQuestion, Menu, X, House } from "lucide-react"
 import { useUserContext } from "@/context/UserContext"
 import LogoutButton from "@/components/LogoutButton"
 import { NavLink } from "@/components/NavLink"
@@ -209,7 +209,7 @@ export default function NavBar() {
               ) : !user ? (
                 <>
                   <Link href="/" className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(false)}>
-                    <Search className="h-5 w-5 text-gray-600" />
+                    <House className="h-5 w-5 text-gray-600" />
                     <span>Inicio</span>
                   </Link>
                   <Link href="/sobre" className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(false)}>

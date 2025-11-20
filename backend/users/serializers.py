@@ -38,7 +38,15 @@ class UsuarioReadSerializer(serializers.ModelSerializer):
 
 
 class UsuarioCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(
+        write_only=True, 
+        min_length=8,
+        error_messages={
+            'min_length': 'La contraseña debe tener al menos 8 caracteres.',
+            'required': 'La contraseña es obligatoria.',
+            'blank': 'La contraseña no puede estar vacía.'
+        }
+    )
     direccion_id = serializers.PrimaryKeyRelatedField(
         queryset=Direccion.objects.all(),
         source='direccion',
@@ -148,7 +156,15 @@ class CuidadorSerializer(serializers.ModelSerializer):
 class RegistroClienteSerializer(serializers.Serializer):
     username = serializers.CharField(required=False, read_only=True)
     email = serializers.EmailField()
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(
+        write_only=True, 
+        min_length=8,
+        error_messages={
+            'min_length': 'La contraseña debe tener al menos 8 caracteres.',
+            'required': 'La contraseña es obligatoria.',
+            'blank': 'La contraseña no puede estar vacía.'
+        }
+    )
 
     first_name = serializers.CharField(required=False, allow_blank=True)
     last_name = serializers.CharField(required=False, allow_blank=True)
@@ -157,12 +173,10 @@ class RegistroClienteSerializer(serializers.Serializer):
     descripcion = serializers.CharField(required=False, allow_blank=True)
     descripcion_min = serializers.CharField(required=False, allow_blank=True)
 
-    direccion_id = serializers.PrimaryKeyRelatedField(
-        queryset=Direccion.objects.all(),
-        source="direccion",
-        required=False,
-        allow_null=True
-    )
+    # Location fields (names as strings)
+    provincia = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    ciudad = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    direccion = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
     tipos_cliente_ids = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -177,19 +191,48 @@ class RegistroClienteSerializer(serializers.Serializer):
     )
 
     def create(self, validated_data):
+        from location.models import Provincia, Ciudad, Direccion
+        
         tipos_cliente = validated_data.pop('tipos_cliente_ids', [])
         fotos = validated_data.pop('fotos', [])
         password = validated_data.pop('password', None)
+        
+        # Extract location data
+        provincia_nombre = validated_data.pop('provincia', None)
+        ciudad_nombre = validated_data.pop('ciudad', None)
+        direccion_calle = validated_data.pop('direccion', None)
+        
         if not password:
-            raise ValidationError({"password": "Es requerido"})
+            raise ValidationError({"password": "La contraseña es obligatoria y debe tener al menos 8 caracteres."})
 
         validated_data.pop('username', None)
         first_name = validated_data.get('first_name', '')
         last_name = validated_data.get('last_name', '')
         fecha_nac = validated_data.get('fecha_nacimiento')
+        email = validated_data.get('email', '')
         
         username = generate_username(first_name, last_name, fecha_nac)
+        
+        # Debug: verificar que el email y categorías estén presentes
+        print(f"DEBUG - Registro Cliente: email={email}, username={username}, tipos_cliente={[t.id for t in tipos_cliente]}")
+        print(f"DEBUG - Location: provincia={provincia_nombre}, ciudad={ciudad_nombre}, direccion={direccion_calle}")
+        
+        # Create or get Direccion
+        direccion_obj = None
+        if provincia_nombre and ciudad_nombre:
+            try:
+                provincia = Provincia.objects.get(nombre__iexact=provincia_nombre)
+                ciudad = Ciudad.objects.get(nombre__iexact=ciudad_nombre, provincia=provincia)
+                direccion_obj = Direccion.objects.create(
+                    direccion=direccion_calle or '',
+                    ciudad=ciudad
+                )
+                print(f"DEBUG - Dirección creada: {direccion_obj.id}")
+            except (Provincia.DoesNotExist, Ciudad.DoesNotExist) as e:
+                print(f"DEBUG - Error creando dirección: {e}")
+        
         validated_data['username'] = username
+        validated_data['direccion'] = direccion_obj
         usuario = Usuario(**validated_data)
         usuario.set_password(password)
         usuario.save()
@@ -197,6 +240,7 @@ class RegistroClienteSerializer(serializers.Serializer):
         cliente = Cliente.objects.create(usuario=usuario)
         if tipos_cliente:
             cliente.tipos_cliente.set(tipos_cliente)
+            print(f"DEBUG - Categorías asignadas: {[t.nombre for t in tipos_cliente]}")
 
         for imagen in fotos:
             FotoCliente.objects.create(cliente=cliente, imagen=imagen)
@@ -214,6 +258,9 @@ class RegistroCuidadorSerializer(serializers.ModelSerializer):
         source='tipos_cliente',
         write_only=True
     )
+    provincia = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    ciudad = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    direccion = serializers.CharField(required=False, allow_blank=True, write_only=True)
 
     class Meta:
         model = Cuidador
@@ -221,14 +268,44 @@ class RegistroCuidadorSerializer(serializers.ModelSerializer):
             'usuario',
             'anios_experiencia',
             'tipos_cliente_ids',
+            'provincia',
+            'ciudad',
+            'direccion',
         ]
 
     def create(self, validated_data):
+        from location.models import Provincia, Ciudad, Direccion
+        
         usuario_data = validated_data.pop('usuario', None)
         if not usuario_data:
             raise ValidationError({"usuario": "Es requerido"})
 
         tipos_cliente = validated_data.pop('tipos_cliente', [])
+        
+        # Extraer datos de ubicación
+        provincia_nombre = validated_data.pop('provincia', None)
+        ciudad_nombre = validated_data.pop('ciudad', None)
+        direccion_calle = validated_data.pop('direccion', None)
+        
+        print(f"DEBUG CUIDADOR - Provincia: {provincia_nombre}, Ciudad: {ciudad_nombre}, Dirección: {direccion_calle}")
+
+        # Crear dirección si hay datos de ubicación
+        direccion_obj = None
+        if provincia_nombre and ciudad_nombre:
+            try:
+                provincia = Provincia.objects.get(nombre__iexact=provincia_nombre)
+                ciudad = Ciudad.objects.get(nombre__iexact=ciudad_nombre, provincia=provincia)
+                direccion_obj = Direccion.objects.create(
+                    direccion=direccion_calle or '',
+                    ciudad=ciudad
+                )
+                print(f"DEBUG CUIDADOR - Dirección creada: {direccion_obj.id}")
+            except (Provincia.DoesNotExist, Ciudad.DoesNotExist) as e:
+                print(f"DEBUG CUIDADOR - Error creando dirección: {e}")
+        
+        # Asignar dirección al usuario_data
+        if direccion_obj:
+            usuario_data['direccion'] = direccion_obj
 
         user_ser = UsuarioCreateSerializer(data=usuario_data)
         user_ser.is_valid(raise_exception=True)

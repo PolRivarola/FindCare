@@ -29,7 +29,7 @@ export function SolicitudCard({ solicitud, onVerDetalles }: SolicitudCardProps) 
         )}
         <div className="flex flex-col gap-1 md:gap-2 flex-1 min-w-0">
           <p className="text-lg md:text-xl font-semibold truncate">{solicitud.cliente}</p>
-          <p className="text-sm md:text-base text-gray-500 line-clamp-2">{solicitud.servicio}</p>
+          <p className="text-sm md:text-base text-gray-500 w-2/3 line-clamp-2">{solicitud.servicio}</p>
           <p className="text-xs md:text-sm text-gray-500">
             {formatDate(solicitud.fecha_inicio)} - {formatDate(solicitud.fecha_fin)}
           </p>
